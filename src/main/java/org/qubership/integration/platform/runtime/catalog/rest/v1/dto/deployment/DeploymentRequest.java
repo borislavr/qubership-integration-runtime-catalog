@@ -34,7 +34,7 @@ public class DeploymentRequest extends BaseRequest {
     @Pattern(regexp = "^[-._a-zA-Z0-9]+$", message = "Invalid domain format")
     private String domain;
     @Schema(description = "Snapshot id")
-    @Pattern(regexp = "^[-._a-zA-Z0-9]+$", message = "Invalid domain format")
+    @Pattern(regexp = "^[-._a-zA-Z0-9]+$", message = "Invalid snapshotId format")
     private String snapshotId;
     @Deprecated
     @Schema(description = "Not used")
