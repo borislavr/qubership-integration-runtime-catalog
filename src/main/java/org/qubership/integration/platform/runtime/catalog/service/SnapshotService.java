@@ -90,7 +90,8 @@ public class SnapshotService {
                            ActionsLogService actionLogger,
                            ElementPropertiesVerificationService elementPropertiesVerificationService,
                            MaskedFieldsService maskedFieldsService,
-                           TransactionHandler  transactionHandler, SnapshotLabelsRepository snapshotLabelsRepository) {
+                           TransactionHandler  transactionHandler,
+                           SnapshotLabelsRepository snapshotLabelsRepository) {
         this.snapshotRepository = snapshotRepository;
         this.elementRepository = elementRepository;
         this.elementService = elementService;
@@ -356,6 +357,7 @@ public class SnapshotService {
         snapshots.forEach(snapshot -> {logSnapshotAction(snapshot,snapshot.getChain(),LogOperation.DELETE);});
     }
 
+//    @Transactional
     public void deleteById(String snapshotId) {
         deploymentService.deleteAllBySnapshotId(snapshotId);
         Snapshot snapshot = findById(snapshotId);
@@ -363,10 +365,7 @@ public class SnapshotService {
         Chain chain = snapshot.getChain();
         if (chain.getCurrentSnapshot() != null) {
             if (chain.getCurrentSnapshot().getId().equals(snapshotId)){
-                chainService.clearCurrentSnapshot(chain.getId());
-            }
-            if (snapshot.getChain().getCurrentSnapshot().getId().equals(snapshotId)) {
-                chainService.clearCurrentSnapshot(snapshot.getChain().getId());
+                chain.setCurrentSnapshot(null);
             }
         }
         snapshotRepository.deleteById(snapshotId);
