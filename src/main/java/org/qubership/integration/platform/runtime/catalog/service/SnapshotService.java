@@ -357,6 +357,7 @@ public class SnapshotService {
         snapshots.forEach(snapshot -> {logSnapshotAction(snapshot,snapshot.getChain(),LogOperation.DELETE);});
     }
 
+//    @Transactional
     public void deleteById(String snapshotId) {
         deploymentService.deleteAllBySnapshotId(snapshotId);
         Snapshot snapshot = findById(snapshotId);
