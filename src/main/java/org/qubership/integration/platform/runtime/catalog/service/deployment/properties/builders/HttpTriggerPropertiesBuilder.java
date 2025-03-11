@@ -60,7 +60,11 @@ public class HttpTriggerPropertiesBuilder implements ElementPropertiesBuilder {
             returnProperties.put(ACTUAL_CHAIN_OVERRIDE_STEP_NAME_FIELD, HTTP_TRIGGER_CHAIN_CALL_STEP_NAME);
         }
         returnProperties.put(ConfigurationPropertiesConstants.METHOD, element.getPropertyAsString(CamelOptions.HTTP_METHOD_RESTRICT));
-        returnProperties.put(ConfigurationPropertiesConstants.PATH, element.getPropertyAsString(CamelOptions.CONTEXT_PATH));
+        boolean isImplementedService = CamelOptions.SYSTEM_TYPE_IMPLEMENTED.equals(element.getPropertyAsString(CamelOptions.SYSTEM_TYPE));
+        String path = isImplementedService
+            ? element.getPropertyAsString(CamelOptions.OPERATION_PATH)
+            : element.getPropertyAsString(CamelOptions.CONTEXT_PATH);
+        returnProperties.put(ConfigurationPropertiesConstants.PATH, path);
         return returnProperties;
     }
 }
