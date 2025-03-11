@@ -17,6 +17,10 @@
 package org.qubership.integration.platform.runtime.catalog.service.deployment.properties.builders;
 
 import lombok.extern.slf4j.Slf4j;
+
+import org.qubership.integration.platform.catalog.consul.ConfigurationPropertiesConstants;
+import org.qubership.integration.platform.catalog.model.constant.CamelOptions;
+import org.qubership.integration.platform.catalog.model.library.ElementProperty;
 import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.element.ChainElement;
 import org.qubership.integration.platform.runtime.catalog.service.ElementService;
 import org.qubership.integration.platform.runtime.catalog.service.deployment.properties.ElementPropertiesBuilder;
@@ -55,7 +59,8 @@ public class HttpTriggerPropertiesBuilder implements ElementPropertiesBuilder {
                     (Map<String, Object>) elementProperties.getOrDefault(HTTP_TRIGGER_FAILURE_HANDLER_CHAIN_CALL_CONTAINER, Collections.emptyMap())));
             returnProperties.put(ACTUAL_CHAIN_OVERRIDE_STEP_NAME_FIELD, HTTP_TRIGGER_CHAIN_CALL_STEP_NAME);
         }
-
+        returnProperties.put(ConfigurationPropertiesConstants.METHOD, element.getPropertyAsString(CamelOptions.HTTP_METHOD_RESTRICT));
+        returnProperties.put(ConfigurationPropertiesConstants.PATH, element.getPropertyAsString(CamelOptions.CONTEXT_PATH));
         return returnProperties;
     }
 }
