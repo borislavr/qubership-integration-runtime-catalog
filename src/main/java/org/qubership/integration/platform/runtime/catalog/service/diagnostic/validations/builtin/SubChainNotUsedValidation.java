@@ -16,15 +16,15 @@
 
 package org.qubership.integration.platform.runtime.catalog.service.diagnostic.validations.builtin;
 
+import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
+import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.element.ChainElement;
+import org.qubership.integration.platform.catalog.persistence.configs.entity.diagnostic.ValidationChainAlert;
+import org.qubership.integration.platform.catalog.persistence.configs.repository.diagnostic.ElementValidationRepository;
 import org.qubership.integration.platform.runtime.catalog.model.diagnostic.ValidationImplementationType;
 import org.qubership.integration.platform.runtime.catalog.service.diagnostic.ValidationEntityType;
 import org.qubership.integration.platform.runtime.catalog.service.diagnostic.ValidationSeverity;
 import org.qubership.integration.platform.runtime.catalog.service.diagnostic.validations.DiagnosticValidationUnexpectedException;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.element.ChainElement;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.diagnostic.ValidationChainAlert;
-import org.qubership.integration.platform.catalog.persistence.configs.repository.diagnostic.ElementValidationRepository;
-import lombok.extern.slf4j.Slf4j;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
@@ -42,10 +42,10 @@ public class SubChainNotUsedValidation extends BuiltinValidation {
                 "sub-chain-not-used_4NIY0ODV",
                 "Sub-chain is used by single chain or not used at all",
                 "Rule allows to find chains which were not used in other chains, or they were used only once.",
-                "Sub-chains are designed to handle frequent and common scenarios and are expected to be linked" +
-                        " with large numbers of chains. Verify that sub-chains are properly linked to all chains," +
-                        " where they are supposed to be used. Consider including sub-chain logic into the main chain" +
-                        " if only this chain uses it.",
+                "Sub-chains are designed to handle frequent and common scenarios and are expected to be linked"
+                        + " with large numbers of chains. Verify that sub-chains are properly linked to all chains,"
+                        + " where they are supposed to be used. Consider including sub-chain logic into the main chain"
+                        + " if only this chain uses it.",
                 ValidationEntityType.CHAIN_ELEMENT,
                 ValidationImplementationType.BUILT_IN,
                 ValidationSeverity.ERROR

@@ -16,8 +16,8 @@
 
 package org.qubership.integration.platform.runtime.catalog.service.deployment.properties;
 
-import org.qubership.integration.platform.runtime.catalog.service.deployment.properties.builders.CompoundPropertiesBuilder;
 import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.element.ChainElement;
+import org.qubership.integration.platform.runtime.catalog.service.deployment.properties.builders.CompoundPropertiesBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -26,6 +26,7 @@ import java.util.Collection;
 @Component
 public class ElementPropertiesBuilderFactory {
     private final Collection<ElementPropertiesBuilder> builders;
+
     @Autowired
     ElementPropertiesBuilderFactory(Collection<ElementPropertiesBuilder> builders) {
         this.builders = builders;

@@ -16,8 +16,8 @@
 
 package org.qubership.integration.platform.runtime.catalog.service.verification.properties;
 
-import org.qubership.integration.platform.runtime.catalog.service.verification.properties.verifiers.CompoundPropertiesVerifier;
 import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.element.ChainElement;
+import org.qubership.integration.platform.runtime.catalog.service.verification.properties.verifiers.CompoundPropertiesVerifier;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -26,6 +26,7 @@ import java.util.Collection;
 @Component
 public class ElementPropertiesVerifierFactory {
     private final Collection<ElementPropertiesVerifier> verifiers;
+
     @Autowired
     ElementPropertiesVerifierFactory(Collection<ElementPropertiesVerifier> verifiers) {
         this.verifiers = verifiers;

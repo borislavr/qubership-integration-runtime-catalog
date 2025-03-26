@@ -18,13 +18,13 @@ package org.qubership.integration.platform.runtime.catalog.builder.templates.hel
 
 import com.github.jknack.handlebars.Helper;
 import com.github.jknack.handlebars.Options;
-import org.qubership.integration.platform.runtime.catalog.builder.templates.TemplatesHelper;
-import org.qubership.integration.platform.runtime.catalog.util.MaasUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.qubership.integration.platform.catalog.model.library.ElementDescriptor;
 import org.qubership.integration.platform.catalog.model.library.ElementProperty;
 import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.element.ChainElement;
 import org.qubership.integration.platform.catalog.service.library.LibraryElementsService;
-import org.apache.commons.lang3.StringUtils;
+import org.qubership.integration.platform.runtime.catalog.builder.templates.TemplatesHelper;
+import org.qubership.integration.platform.runtime.catalog.util.MaasUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
@@ -57,15 +57,16 @@ public class QueryParamsHelper extends BaseHelper implements Helper<ChainElement
         ArrayList<String> maasEnabledParams = MaasUtils.getMaasParams(element);
         for (ElementProperty property : queryProperties) {
             String value = getPropertyValue(element, property);
-            if(!maasEnabledParams.isEmpty() && maasEnabledParams.contains(property.getName())){
+            if (!maasEnabledParams.isEmpty() && maasEnabledParams.contains(property.getName())) {
                 value = MaasUtils.getMaasParamPlaceholder(element.getOriginalId(), property.getName());
                 setPropertyValue(str, property, value);
-            }else if (StringUtils.isNotBlank(value)) {
+            } else if (StringUtils.isNotBlank(value)) {
                 setPropertyValue(str, property, value);
             }
         }
         return str.toString();
     }
+
     private String getPropertyValue(ChainElement element, ElementProperty property) {
         String value = element.getPropertyAsString(property.getName());
         if (property.isMultiple()) {
@@ -76,6 +77,7 @@ public class QueryParamsHelper extends BaseHelper implements Helper<ChainElement
         }
         return value;
     }
+
     private void setPropertyValue(StringBuilder str, ElementProperty property, String value) {
         if (str.length() == 0) {
             str.append("?");

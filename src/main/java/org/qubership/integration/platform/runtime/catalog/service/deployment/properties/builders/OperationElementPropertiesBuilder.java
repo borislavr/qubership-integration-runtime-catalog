@@ -16,13 +16,13 @@
 
 package org.qubership.integration.platform.runtime.catalog.service.deployment.properties.builders;
 
-import org.qubership.integration.platform.runtime.catalog.rest.v1.exception.exceptions.DeploymentProcessingException;
-import org.qubership.integration.platform.runtime.catalog.service.deployment.properties.ElementPropertiesBuilder;
+import org.apache.commons.lang3.StringUtils;
 import org.qubership.integration.platform.catalog.model.constant.CamelNames;
 import org.qubership.integration.platform.catalog.model.constant.CamelOptions;
 import org.qubership.integration.platform.catalog.model.system.ServiceEnvironment;
 import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.element.ChainElement;
-import org.apache.commons.lang3.StringUtils;
+import org.qubership.integration.platform.runtime.catalog.rest.v1.exception.exceptions.DeploymentProcessingException;
+import org.qubership.integration.platform.runtime.catalog.service.deployment.properties.ElementPropertiesBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -119,9 +119,9 @@ public class OperationElementPropertiesBuilder implements ElementPropertiesBuild
     }
 
     private static String getQueueName(ChainElement element, String queueNameFromEnv) {
-        if(element.getProperties() != null && element.getProperties().containsKey(CamelNames.OPERATION_ASYNC_PROPERTIES)){
+        if (element.getProperties() != null && element.getProperties().containsKey(CamelNames.OPERATION_ASYNC_PROPERTIES)) {
             Map<String, Object> prop = (Map<String, Object>) element.getProperties().get(CamelNames.OPERATION_ASYNC_PROPERTIES);
-            if (prop != null && prop.containsKey(CamelOptions.QUEUES)){
+            if (prop != null && prop.containsKey(CamelOptions.QUEUES)) {
                 String queueName = (String) prop.get(CamelOptions.QUEUES);
                 return StringUtils.isNotEmpty(queueName) ? queueName : queueNameFromEnv;
             }

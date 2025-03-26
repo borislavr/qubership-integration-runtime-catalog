@@ -16,7 +16,8 @@
 
 package org.qubership.integration.platform.runtime.catalog.model.mapper.datatypes;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.qubership.integration.platform.runtime.catalog.model.mapper.mapping.definition.Attribute;
 import org.qubership.integration.platform.runtime.catalog.model.mapper.metadata.MetadataAware;
 
@@ -37,6 +38,7 @@ import java.util.Collection;
 })
 public interface DataType extends MetadataAware {
     TypeKind getKind();
+
     <R, A, E extends Exception> R accept(DataTypeVisitor<R, A, E> visitor, A arg) throws E;
 
     Collection<Attribute> getNestedAttributes();

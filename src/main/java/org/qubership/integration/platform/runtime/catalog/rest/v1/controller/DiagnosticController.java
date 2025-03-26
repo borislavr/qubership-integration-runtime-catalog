@@ -16,6 +16,13 @@
 
 package org.qubership.integration.platform.runtime.catalog.rest.v1.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.tuple.Pair;
+import org.qubership.integration.platform.catalog.persistence.configs.entity.diagnostic.ValidationState;
+import org.qubership.integration.platform.catalog.persistence.configs.entity.diagnostic.ValidationStatus;
 import org.qubership.integration.platform.runtime.catalog.model.diagnostic.ValidationAlertsSet;
 import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.diagnostic.DiagnosticValidationDTO;
 import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.diagnostic.DiagnosticValidationFilterDTO;
@@ -23,13 +30,6 @@ import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.diagnostic
 import org.qubership.integration.platform.runtime.catalog.rest.v1.mapper.DiagnosticValidationMapper;
 import org.qubership.integration.platform.runtime.catalog.service.diagnostic.DiagnosticService;
 import org.qubership.integration.platform.runtime.catalog.service.diagnostic.validations.AbstractValidation;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.diagnostic.ValidationState;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.diagnostic.ValidationStatus;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -101,8 +101,8 @@ public class DiagnosticController {
     @PatchMapping("/validations")
     @Operation(description = "Run diagnostic validations")
     public ResponseEntity<Void> runValidations(
-            @RequestParam(required = false, defaultValue = "") @Parameter(description = "List of validation IDs that need to be run." +
-                    " If the parameter is empty, then all validations will be run") Set<String> validationIds
+            @RequestParam(required = false, defaultValue = "") @Parameter(description = "List of validation IDs that need to be run."
+                    + " If the parameter is empty, then all validations will be run") Set<String> validationIds
     ) {
         log.info("Request to start validations processing for: {}",
                 validationIds == null || validationIds.isEmpty() ? "all validations" : validationIds);
@@ -112,9 +112,9 @@ public class DiagnosticController {
 
     // clear entities for failed and in-progress validations
     private static void clearEntitiesByState(DiagnosticValidationDTO dto) {
-        if (dto.getStatus().getState() == ValidationState.FAILED ||
-            dto.getStatus().getState() == ValidationState.IN_PROGRESS ||
-            dto.getStatus().getState() == ValidationState.NOT_STARTED
+        if (dto.getStatus().getState() == ValidationState.FAILED
+                || dto.getStatus().getState() == ValidationState.IN_PROGRESS
+                || dto.getStatus().getState() == ValidationState.NOT_STARTED
         ) {
             dto.setAlertsCount(0);
             dto.setChainEntities(dto.getChainEntities() == null ? null : Collections.emptyList());

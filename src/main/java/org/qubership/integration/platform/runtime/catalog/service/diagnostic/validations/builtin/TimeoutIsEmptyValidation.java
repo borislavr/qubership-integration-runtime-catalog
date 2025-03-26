@@ -16,15 +16,15 @@
 
 package org.qubership.integration.platform.runtime.catalog.service.diagnostic.validations.builtin;
 
+import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
+import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.element.ChainElement;
+import org.qubership.integration.platform.catalog.persistence.configs.entity.diagnostic.ValidationChainAlert;
+import org.qubership.integration.platform.catalog.persistence.configs.repository.diagnostic.ElementValidationRepository;
 import org.qubership.integration.platform.runtime.catalog.model.diagnostic.ValidationImplementationType;
 import org.qubership.integration.platform.runtime.catalog.service.diagnostic.ValidationEntityType;
 import org.qubership.integration.platform.runtime.catalog.service.diagnostic.ValidationSeverity;
 import org.qubership.integration.platform.runtime.catalog.service.diagnostic.validations.DiagnosticValidationUnexpectedException;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.element.ChainElement;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.diagnostic.ValidationChainAlert;
-import org.qubership.integration.platform.catalog.persistence.configs.repository.diagnostic.ElementValidationRepository;
-import lombok.extern.slf4j.Slf4j;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
@@ -40,8 +40,8 @@ public class TimeoutIsEmptyValidation extends BuiltinValidation {
                 "timeout-is-empty_SKWPF0NJ",
                 "Timeout is empty",
                 "Rule allows to find chain elements with empty timeout value.",
-                "Please consider specifying proper timeout values for chain elements or services" +
-                        " environments linked to them in order to ensure compliance with project needs.",
+                "Please consider specifying proper timeout values for chain elements or services"
+                        + " environments linked to them in order to ensure compliance with project needs.",
                 ValidationEntityType.CHAIN_ELEMENT,
                 ValidationImplementationType.BUILT_IN,
                 ValidationSeverity.ERROR

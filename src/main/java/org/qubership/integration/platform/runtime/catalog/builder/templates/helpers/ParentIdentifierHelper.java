@@ -18,9 +18,9 @@ package org.qubership.integration.platform.runtime.catalog.builder.templates.hel
 
 import com.github.jknack.handlebars.Helper;
 import com.github.jknack.handlebars.Options;
-import org.qubership.integration.platform.runtime.catalog.builder.templates.TemplatesHelper;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.element.ChainElement;
 import org.apache.commons.lang3.StringUtils;
+import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.element.ChainElement;
+import org.qubership.integration.platform.runtime.catalog.builder.templates.TemplatesHelper;
 
 import java.util.Optional;
 
@@ -29,8 +29,8 @@ public class ParentIdentifierHelper implements Helper<ChainElement> {
 
     @Override
     public Object apply(ChainElement element, Options options) {
-        return element.getParent() != null ?
-                Optional.ofNullable(element.getParent().getId()).orElse(StringUtils.EMPTY) :
-                StringUtils.EMPTY;
+        return element.getParent() != null
+                ? Optional.ofNullable(element.getParent().getId()).orElse(StringUtils.EMPTY)
+                : StringUtils.EMPTY;
     }
 }

@@ -20,12 +20,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.jknack.handlebars.internal.lang3.tuple.Pair;
-import org.qubership.integration.platform.runtime.catalog.model.exportimport.chain.ChainElementExternalEntity;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.element.ChainElement;
-import org.qubership.integration.platform.catalog.service.exportimport.ExportImportUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.element.ChainElement;
+import org.qubership.integration.platform.catalog.service.exportimport.ExportImportUtils;
+import org.qubership.integration.platform.runtime.catalog.model.exportimport.chain.ChainElementExternalEntity;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
@@ -183,8 +183,8 @@ public class ChainElementFilePropertiesSubstitutor {
                     propertyContent = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(propsToExportSeparatelyMap);
                 }
             } else {
-                throw new IllegalArgumentException("Invalid property '" + EXPORT_FILE_EXTENSION_PROPERTY +
-                        "' of element " + externalElement.getId());
+                throw new IllegalArgumentException("Invalid property '" + EXPORT_FILE_EXTENSION_PROPERTY
+                        + "' of element " + externalElement.getId());
             }
 
             if (propertyContent != null) {
@@ -274,7 +274,7 @@ public class ChainElementFilePropertiesSubstitutor {
         return MAPPING_DESCRIPTION + DASH + BEFORE + DASH + id + "." + JSON_EXTENSION;
     }
 
-    private Object getIdOrCode(Map<String, Object> mapProp){
+    private Object getIdOrCode(Map<String, Object> mapProp) {
         return mapProp.get(ID) == null ? mapProp.get(CODE) : mapProp.get(ID);
     }
 

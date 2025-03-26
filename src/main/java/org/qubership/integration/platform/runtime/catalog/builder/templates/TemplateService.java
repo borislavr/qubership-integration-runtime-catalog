@@ -23,12 +23,12 @@ import com.github.jknack.handlebars.Template;
 import com.github.jknack.handlebars.helper.ConditionalHelpers;
 import com.github.jknack.handlebars.helper.StringHelpers;
 import com.github.jknack.handlebars.io.ClassPathTemplateLoader;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.qubership.integration.platform.catalog.exception.SnapshotCreationException;
 import org.qubership.integration.platform.catalog.model.library.ElementType;
 import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.element.ChainElement;
 import org.qubership.integration.platform.catalog.service.library.LibraryElementsService;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -91,8 +91,9 @@ public final class TemplateService {
 
     public String applyTemplate(ChainElement element) {
         Template template = getTemplate(element);
-        if (template == null)
+        if (template == null) {
             throw new SnapshotCreationException("Element is not supposed to be outside a parent container.", element);
+        }
 
         String renderedElement;
         try {
@@ -100,10 +101,11 @@ public final class TemplateService {
         } catch (IOException | RuntimeException e) {
             log.warn("Error while applying template to the element {}: {}", element.getType(), e.getMessage());
             if (e.getCause() instanceof SnapshotCreationException) {
-                if (StringUtils.isBlank(((SnapshotCreationException) e.getCause()).getElementId()))
+                if (StringUtils.isBlank(((SnapshotCreationException) e.getCause()).getElementId())) {
                     throw new SnapshotCreationException(e.getCause().getMessage(), element, e);
-                else
+                } else {
                     throw (SnapshotCreationException) e.getCause();
+                }
             }
             throw new SnapshotCreationException("Fields are not properly defined or require mandatory connection", element, e);
         }
@@ -113,12 +115,13 @@ public final class TemplateService {
 
     public Template getTemplate(ChainElement element) {
         return libraryService.getElementDescriptor(element).getType() == ElementType.COMPOSITE_TRIGGER
-                ? getTemplate(element.getType() + (element.getInputDependencies().isEmpty() && element.getParent() == null ?
-                        COMPOSITE_TRIGGER_DIR_SUFFIX :
-                        COMPOSITE_TRIGGER_MODULE_DIR_SUFFIX))
+                ? getTemplate(element.getType() + (element.getInputDependencies().isEmpty() && element.getParent() == null
+                        ? COMPOSITE_TRIGGER_DIR_SUFFIX
+                        : COMPOSITE_TRIGGER_MODULE_DIR_SUFFIX))
                 : getTemplate(element.getType());
     }
 
+    @SuppressWarnings("checkstyle:EmptyCatchBlock")
     public Template getTemplate(String name) {
         try {
             return handlebars.compile(name);

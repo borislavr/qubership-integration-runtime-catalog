@@ -16,21 +16,24 @@
 
 package org.qubership.integration.platform.runtime.catalog.service;
 
+import jakarta.persistence.EntityNotFoundException;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.qubership.integration.platform.catalog.model.system.ServiceEnvironment;
 import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.element.ChainElement;
 import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.element.ContainerChainElement;
 import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.element.SwimlaneChainElement;
 import org.qubership.integration.platform.catalog.persistence.configs.repository.chain.ElementRepository;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.qubership.integration.platform.catalog.service.ElementBaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.auditing.AuditingHandler;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import jakarta.persistence.EntityNotFoundException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -65,20 +68,20 @@ public class ElementService extends ElementBaseService {
                 .orElseThrow(() -> new EntityNotFoundException(CHAIN_ELEMENT_WITH_ID_NOT_FOUND_MESSAGE + id));
     }
 
-    public Optional<ChainElement> findByIdOptional(String id) {
-        return elementRepository.findById(id);
-    }
-
-    public List<ChainElement> findAllBySnapshotIdAndType(String snapshotId, String type) {
-        return elementRepository.findAllBySnapshotIdAndType(snapshotId, type);
-    }
-
     public <T extends ChainElement> T findById(String id, Class<T> elementClass) {
         ChainElement element = findById(id);
         if (elementClass.isAssignableFrom(element.getClass())) {
             return elementClass.cast(element);
         }
         return null;
+    }
+
+    public Optional<ChainElement> findByIdOptional(String id) {
+        return elementRepository.findById(id);
+    }
+
+    public List<ChainElement> findAllBySnapshotIdAndType(String snapshotId, String type) {
+        return elementRepository.findAllBySnapshotIdAndType(snapshotId, type);
     }
 
     public ChainElement save(ChainElement element) {
@@ -136,39 +139,41 @@ public class ElementService extends ElementBaseService {
                 case SERVICE_CALL_COMPONENT:
                 case ASYNC_API_TRIGGER_COMPONENT:
                 case HTTP_TRIGGER_COMPONENT:
-                    systemId = element.getProperties() == null ? null :
-                            (String) element.getProperties().get(SYSTEM_ID);
+                    systemId = element.getProperties() == null ? null
+                           : (String) element.getProperties().get(SYSTEM_ID);
                     break;
                 default:
                     continue;
             }
-            if (StringUtils.isEmpty(systemId))
+            if (StringUtils.isEmpty(systemId)) {
                 continue;
+            }
 
-            if (!elementsBySystemId.containsKey(systemId))
+            if (!elementsBySystemId.containsKey(systemId)) {
                 elementsBySystemId.put(systemId, new ArrayList<>());
+            }
             elementsBySystemId.get(systemId).add(element);
         }
         return elementsBySystemId;
     }
 
-    public void setActualizedChainElements(List<ChainElement> oldChainElementStates, List<ChainElement> newChainElementStates){
+    public void setActualizedChainElements(List<ChainElement> oldChainElementStates, List<ChainElement> newChainElementStates) {
         //We must actualize states of non container elements before
-        elementRepository.actualizeCollectionStateWOUpdates(getAllChildElements(oldChainElementStates),getAllChildElements(newChainElementStates));
-        elementRepository.actualizeCollectionStateWOUpdates(getAllParentElements(oldChainElementStates),getAllParentElements(newChainElementStates));
+        elementRepository.actualizeCollectionStateWOUpdates(getAllChildElements(oldChainElementStates), getAllChildElements(newChainElementStates));
+        elementRepository.actualizeCollectionStateWOUpdates(getAllParentElements(oldChainElementStates), getAllParentElements(newChainElementStates));
         //Merge (updates) will persist child entities too, so we need to do it as a last step
-        elementRepository.actualizeCollectionStateOnlyUpdates(getAllChildElements(oldChainElementStates),getAllChildElements(newChainElementStates));
-        elementRepository.actualizeCollectionStateOnlyUpdates(getAllParentElements(oldChainElementStates),getAllParentElements(newChainElementStates));
+        elementRepository.actualizeCollectionStateOnlyUpdates(getAllChildElements(oldChainElementStates), getAllChildElements(newChainElementStates));
+        elementRepository.actualizeCollectionStateOnlyUpdates(getAllParentElements(oldChainElementStates), getAllParentElements(newChainElementStates));
     }
 
-    private List<ChainElement> getAllChildElements(List<ChainElement> chainElementList){
+    private List<ChainElement> getAllChildElements(List<ChainElement> chainElementList) {
         return chainElementList
                 .stream()
                 .flatMap(chainElement -> {
-                    if (chainElement instanceof ContainerChainElement containerChainElement){
+                    if (chainElement instanceof ContainerChainElement containerChainElement) {
                         return getAllChildElements(containerChainElement.getElements()).stream();
                     }
-                    if (chainElement instanceof SwimlaneChainElement swimlaneChainElement){
+                    if (chainElement instanceof SwimlaneChainElement swimlaneChainElement) {
                         return getAllChildElements(swimlaneChainElement.getElements()).stream();
                     }
                     return Stream.of(chainElement);
@@ -176,7 +181,7 @@ public class ElementService extends ElementBaseService {
                 .collect(Collectors.toList());
     }
 
-    private List<ChainElement> getAllParentElements(List<ChainElement> chainElementList){
+    private List<ChainElement> getAllParentElements(List<ChainElement> chainElementList) {
         return chainElementList
                 .stream()
                 .filter(chainElement -> (chainElement instanceof ContainerChainElement) || (chainElement instanceof SwimlaneChainElement))

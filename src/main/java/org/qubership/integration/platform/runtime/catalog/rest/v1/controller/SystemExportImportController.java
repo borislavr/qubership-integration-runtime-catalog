@@ -16,17 +16,17 @@
 
 package org.qubership.integration.platform.runtime.catalog.rest.v1.controller;
 
-import org.qubership.integration.platform.runtime.catalog.model.exportimport.system.ImportSystemResult;
-import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.system.imports.ImportSystemStatus;
-import org.qubership.integration.platform.runtime.catalog.service.exportimport.SystemExportImportService;
-import org.qubership.integration.platform.runtime.catalog.rest.v3.controller.ImportControllerV3;
-import org.qubership.integration.platform.catalog.service.exportimport.ExportImportUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.extensions.Extension;
 import io.swagger.v3.oas.annotations.extensions.ExtensionProperty;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
+import org.qubership.integration.platform.catalog.service.exportimport.ExportImportUtils;
+import org.qubership.integration.platform.runtime.catalog.model.exportimport.system.ImportSystemResult;
+import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.system.imports.ImportSystemStatus;
+import org.qubership.integration.platform.runtime.catalog.rest.v3.controller.ImportControllerV3;
+import org.qubership.integration.platform.runtime.catalog.service.exportimport.SystemExportImportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -56,8 +56,9 @@ public class SystemExportImportController {
     public ResponseEntity<Object> exportSystems(@RequestParam(required = false) @Parameter(description = "List of service ids, separated by comma") List<String> systemIds,
                                                 @RequestParam(required = false) @Parameter(description = "If specified, only these specifications will be exported") List<String> usedSystemModelIds) {
         byte[] zip = systemExportImportService.exportSystemsRequest(systemIds, usedSystemModelIds);
-        if (zip == null)
+        if (zip == null) {
             return ResponseEntity.noContent().build();
+        }
 
         return ExportImportUtils.convertFileToResponse(zip, ExportImportUtils.generateArchiveExportName());
     }
@@ -76,8 +77,9 @@ public class SystemExportImportController {
         if (result.isEmpty()) {
             return ResponseEntity.noContent().build();
         } else {
-            HttpStatus responseCode = result.stream().anyMatch(dto -> dto.getStatus().equals(ImportSystemStatus.ERROR)) ?
-                    HttpStatus.MULTI_STATUS : HttpStatus.OK;
+            HttpStatus responseCode = result.stream().anyMatch(dto -> dto.getStatus().equals(ImportSystemStatus.ERROR))
+                    ? HttpStatus.MULTI_STATUS
+                    : HttpStatus.OK;
             return ResponseEntity.status(responseCode).body(result);
         }
     }

@@ -16,22 +16,22 @@
 
 package org.qubership.integration.platform.runtime.catalog.rest.v1.controller;
 
-import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.deployment.bulk.BulkDeploymentRequest;
-import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.deployment.bulk.BulkDeploymentResponse;
-import org.qubership.integration.platform.runtime.catalog.service.DeploymentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.tuple.Pair;
+import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.deployment.bulk.BulkDeploymentRequest;
+import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.deployment.bulk.BulkDeploymentResponse;
+import org.qubership.integration.platform.runtime.catalog.service.DeploymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
+import javax.validation.Valid;
 
 @Slf4j
 @RestController
@@ -51,8 +51,8 @@ public class BulkDeploymentController {
     public ResponseEntity<List<BulkDeploymentResponse>> bulkCreate(@RequestBody @Valid @Parameter(description = "Chain bulk deploy request object") BulkDeploymentRequest request) {
         log.info("Request to bulk redeploy chains");
         Pair<Boolean, List<BulkDeploymentResponse>> bulkDeploymentResponses = deploymentService.bulkCreate(request);
-        return bulkDeploymentResponses.getLeft() ?
-                ResponseEntity.status(HttpStatus.MULTI_STATUS).body(bulkDeploymentResponses.getRight()) :
-                ResponseEntity.ok(bulkDeploymentResponses.getRight());
+        return bulkDeploymentResponses.getLeft()
+                ? ResponseEntity.status(HttpStatus.MULTI_STATUS).body(bulkDeploymentResponses.getRight())
+                : ResponseEntity.ok(bulkDeploymentResponses.getRight());
     }
 }

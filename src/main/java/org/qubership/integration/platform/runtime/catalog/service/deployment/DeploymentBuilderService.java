@@ -19,12 +19,8 @@ package org.qubership.integration.platform.runtime.catalog.service.deployment;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
-import org.qubership.integration.platform.runtime.catalog.builder.BuilderConstants;
 import org.qubership.integration.platform.catalog.model.constant.CamelOptions;
-import org.qubership.integration.platform.runtime.catalog.model.deployment.update.DeploymentConfiguration;
 import org.qubership.integration.platform.catalog.model.deployment.update.DeploymentInfo;
-import org.qubership.integration.platform.runtime.catalog.model.deployment.update.DeploymentUpdate;
-import org.qubership.integration.platform.runtime.catalog.model.deployment.update.ElementProperties;
 import org.qubership.integration.platform.catalog.model.library.ElementDescriptor;
 import org.qubership.integration.platform.catalog.model.library.ElementType;
 import org.qubership.integration.platform.catalog.model.system.IntegrationSystemType;
@@ -35,11 +31,15 @@ import org.qubership.integration.platform.catalog.persistence.configs.entity.cha
 import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.element.ChainElement;
 import org.qubership.integration.platform.catalog.persistence.configs.entity.system.Environment;
 import org.qubership.integration.platform.catalog.persistence.configs.entity.system.IntegrationSystem;
+import org.qubership.integration.platform.catalog.service.library.LibraryElementsService;
+import org.qubership.integration.platform.catalog.util.ElementUtils;
+import org.qubership.integration.platform.runtime.catalog.builder.BuilderConstants;
+import org.qubership.integration.platform.runtime.catalog.model.deployment.update.DeploymentConfiguration;
+import org.qubership.integration.platform.runtime.catalog.model.deployment.update.DeploymentUpdate;
+import org.qubership.integration.platform.runtime.catalog.model.deployment.update.ElementProperties;
 import org.qubership.integration.platform.runtime.catalog.rest.v1.mapper.DeploymentRouteMapper;
 import org.qubership.integration.platform.runtime.catalog.service.*;
 import org.qubership.integration.platform.runtime.catalog.service.deployment.properties.ElementPropertiesBuilderFactory;
-import org.qubership.integration.platform.catalog.service.library.LibraryElementsService;
-import org.qubership.integration.platform.catalog.util.ElementUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
@@ -51,7 +51,8 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static org.qubership.integration.platform.catalog.consul.ConfigurationPropertiesConstants.*;
-import static org.qubership.integration.platform.catalog.model.constant.CamelNames.*;
+import static org.qubership.integration.platform.catalog.model.constant.CamelNames.CHECKPOINT;
+import static org.qubership.integration.platform.catalog.model.constant.CamelNames.SCHEDULER;
 
 @Slf4j
 @Component
@@ -133,15 +134,15 @@ public class DeploymentBuilderService {
         Snapshot snapshot = deployment.getSnapshot();
 
         Set<ChainElement> groupContainers = snapshot.getElements().stream()
-                .filter(item -> ElementService.CONTAINER_TYPE_NAME.equals(item.getType()) ||
-                        Optional.ofNullable(libraryService.getElementDescriptor(item.getType()))
+                .filter(item -> ElementService.CONTAINER_TYPE_NAME.equals(item.getType())
+                        || Optional.ofNullable(libraryService.getElementDescriptor(item.getType()))
                                 .map(descriptor -> ElementType.REUSE == descriptor.getType())
                                 .orElse(false))
                 .collect(Collectors.toSet());
 
         List<ChainElement> filteredElements = snapshot.getElements().stream()
-                .filter(item -> !item.getType().equals(ElementService.CONTAINER_TYPE_NAME) &&
-                        Optional.ofNullable(libraryService.getElementDescriptor(item.getType()))
+                .filter(item -> !item.getType().equals(ElementService.CONTAINER_TYPE_NAME)
+                        && Optional.ofNullable(libraryService.getElementDescriptor(item.getType()))
                                 .map(ElementDescriptor::getType)
                                 .map(type -> ElementType.REUSE != type
                                         && ElementType.REUSE_REFERENCE != type
@@ -196,14 +197,14 @@ public class DeploymentBuilderService {
 
     private boolean containsCheckpointsElements(List<ElementProperties> elementProperties) {
         return elementProperties.stream().anyMatch(
-                properties -> properties.getProperties() != null &&
-                        CHECKPOINT.equals(properties.getProperties().get(ELEMENT_TYPE)));
+                properties -> properties.getProperties() != null
+                        && CHECKPOINT.equals(properties.getProperties().get(ELEMENT_TYPE)));
     }
 
     private boolean containsSchedulerElements(List<ElementProperties> elementProperties) {
         return elementProperties.stream().anyMatch(
-                properties -> properties.getProperties() != null &&
-                        SCHEDULER.equals(properties.getProperties().get(ELEMENT_TYPE)));
+                properties -> properties.getProperties() != null
+                        && SCHEDULER.equals(properties.getProperties().get(ELEMENT_TYPE)));
     }
 
     private String replacePlaceholders(Snapshot snapshot, Deployment deployment) {

@@ -19,20 +19,18 @@ package org.qubership.integration.platform.runtime.catalog.builder.templates.hel
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.lang3.StringUtils;
+import org.qubership.integration.platform.catalog.exception.SnapshotCreationException;
+import org.qubership.integration.platform.catalog.model.system.ServiceEnvironment;
+import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.element.ChainElement;
+import org.qubership.integration.platform.catalog.util.ElementUtils;
 import org.qubership.integration.platform.runtime.catalog.builder.templates.TemplatesHelper;
+import org.qubership.integration.platform.runtime.catalog.util.MaasUtils;
 
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-
-import org.qubership.integration.platform.runtime.catalog.util.MaasUtils;
-import org.qubership.integration.platform.catalog.exception.SnapshotCreationException;
-import org.qubership.integration.platform.catalog.model.system.ServiceEnvironment;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.element.ChainElement;
-import org.qubership.integration.platform.catalog.util.ElementUtils;
-import org.apache.commons.lang3.StringUtils;
-
 import java.util.stream.Stream;
 
 import static java.util.Objects.isNull;
@@ -50,14 +48,11 @@ public class EnvironmentPropertiesHelper {
     private static final String[] AMQP_MAAS_PARAM_ARRAY = {VHOST, USERNAME, PASSWORD, SSL};
     public static final ArrayList<String> AMQP_MAAS_PARAM_LIST = new ArrayList<>(Arrays.asList(AMQP_MAAS_PARAM_ARRAY));
 
-    /**
-     * Handlebars helper, that returns environment properties in json format
-     */
-    @SuppressWarnings("unused")
-    public CharSequence environmentPropertiesJson(ChainElement element) {
+    public Map<String, Object> environmentProperties(ChainElement element) {
         ServiceEnvironment environment = element.getEnvironment();
-        if (environment == null)
+        if (environment == null) {
             throw new SnapshotCreationException("Couldn't find service or active service environment.", element);
+        }
         Map<String, Object> environmentProperties = environment.getProperties();
         if (environmentProperties != null) {
             Map<String, Object> mergedProperties =
@@ -65,27 +60,36 @@ public class EnvironmentPropertiesHelper {
                                     ElementUtils.extractServiceCallProperties(element.getProperties()), environmentProperties)
                             .entrySet().stream()
                             .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-            try {
-                return OBJECT_MAPPER.writeValueAsString(mergedProperties);
-            } catch (JsonProcessingException e) {
-                throw new RuntimeException(
-                        "Error processing json in environmentPropertiesJson helper", e);
-            }
+            return mergedProperties;
         }
-        return StringUtils.EMPTY;
+        return null;
     }
 
     /**
-     * Handlebars helper, that returns merged [environment + element async] properties in json format
+     * Handlebars helper, that returns environment properties in json format
      */
     @SuppressWarnings("unused")
-    public CharSequence asyncPropertiesJson(ChainElement element) {
+    public CharSequence environmentPropertiesJson(ChainElement element) {
+        Map<String, Object> props = environmentProperties(element);
+        if (props == null) {
+            return StringUtils.EMPTY;
+        }
+        try {
+            return OBJECT_MAPPER.writeValueAsString(props);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(
+                    "Error processing json in environmentPropertiesJson helper", e);
+        }
+    }
+
+    public Map<String, Object> asyncProperties(ChainElement element) {
         ServiceEnvironment environment = element.getEnvironment();
-        if (environment == null)
+        if (environment == null) {
             throw new SnapshotCreationException("Couldn't find service or active service environment.", element);
+        }
         ArrayList<String> maasParamList = MaasUtils.getMaasParams(element);
         if (environment.getProperties() != null) {
-            if(!maasParamList.isEmpty() ) {
+            if (!maasParamList.isEmpty()) {
                 putMassParams(element, environment);
             }
             Map<String, Object> filteredEnvProperties = environment.getProperties();
@@ -95,25 +99,36 @@ public class EnvironmentPropertiesHelper {
                 .entrySet().stream()
                 .filter(filterAsyncProperties())
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-
-            try {
-                return OBJECT_MAPPER.writeValueAsString(mergedProperties);
-            } catch (JsonProcessingException e) {
-                throw new RuntimeException(
-                    "Error processing json in environmentPropertiesJson helper", e);
-            }
+            return mergedProperties;
         }
-        return StringUtils.EMPTY;
+        return null;
+    }
+
+    /**
+     * Handlebars helper, that returns merged [environment + element async] properties in json format
+     */
+    @SuppressWarnings("unused")
+    public CharSequence asyncPropertiesJson(ChainElement element) {
+        Map<String, Object> props = asyncProperties(element);
+        if (props == null) {
+            return StringUtils.EMPTY;
+        }
+        try {
+            return OBJECT_MAPPER.writeValueAsString(props);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(
+                "Error processing json in environmentPropertiesJson helper", e);
+        }
     }
 
     private static void putMassParams(ChainElement element, ServiceEnvironment environment) {
         Map<String, Object> elementProperties = element.getProperties();
         ArrayList<String> maasParamList = new ArrayList<>();
         String operationProtocolType = "";
-        if(elementProperties.get(OPERATION_PROTOCOL_TYPE_PROP) != null){
+        if (elementProperties.get(OPERATION_PROTOCOL_TYPE_PROP) != null) {
             operationProtocolType = (String) elementProperties.get(OPERATION_PROTOCOL_TYPE_PROP);
         }
-        if(StringUtils.isNotEmpty(operationProtocolType)) {
+        if (StringUtils.isNotEmpty(operationProtocolType)) {
             if (StringUtils.equalsIgnoreCase(OPERATION_PROTOCOL_TYPE_KAFKA, operationProtocolType)) {
                 maasParamList = KAFKA_MAAS_PARAM_LIST;
             } else if (StringUtils.isNotEmpty(operationProtocolType) && StringUtils.equalsIgnoreCase(OPERATION_PROTOCOL_TYPE_AMQP, operationProtocolType)) {
@@ -125,12 +140,7 @@ public class EnvironmentPropertiesHelper {
         }
     }
 
-
-    /**
-     * Handlebars helper, that returns merged [environment + element grpc] properties in json format
-     */
-    @SuppressWarnings("unused")
-    public CharSequence grpcPropertiesJson(ChainElement element) {
+    public Map<String, Object> grpcProperties(ChainElement element) {
         ServiceEnvironment environment = element.getEnvironment();
         if (isNull(environment)) {
             throw new SnapshotCreationException("Couldn't find service or active service environment.", element);
@@ -149,8 +159,20 @@ public class EnvironmentPropertiesHelper {
                         Map.Entry::getValue,
                         (oldValue, newValue) -> newValue
                 ));
+        return properties;
+    }
+
+    private static Predicate<Entry<String, Object>> grpcProperties() {
+        return prop -> nonNull(prop.getValue()) && GRPC_PROPERTY_NAMES.contains(prop.getKey());
+    }
+
+    /**
+     * Handlebars helper, that returns merged [environment + element grpc] properties in json format
+     */
+    @SuppressWarnings("unused")
+    public CharSequence grpcPropertiesJson(ChainElement element) {
         try {
-            return OBJECT_MAPPER.writeValueAsString(properties);
+            return OBJECT_MAPPER.writeValueAsString(grpcProperties(element));
         } catch (JsonProcessingException e) {
             throw new RuntimeException(
                     "Error processing json in environmentPropertiesJson helper", e);
@@ -159,10 +181,6 @@ public class EnvironmentPropertiesHelper {
 
     private static Predicate<Entry<String, Object>> filterAsyncProperties() {
         return prop -> prop.getValue() != null && !(prop.getKey().startsWith(MAAS_ENV_PROP_PREFIX));
-    }
-
-    private static Predicate<Entry<String, Object>> grpcProperties() {
-        return prop -> nonNull(prop.getValue()) && GRPC_PROPERTY_NAMES.contains(prop.getKey());
     }
 
     private static ObjectMapper initObjectMapper() {

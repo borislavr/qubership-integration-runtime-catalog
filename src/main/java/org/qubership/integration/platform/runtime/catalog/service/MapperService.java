@@ -16,11 +16,10 @@
 
 package org.qubership.integration.platform.runtime.catalog.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.qubership.integration.platform.runtime.catalog.mapper.MappingInterpretation;
 import org.qubership.integration.platform.runtime.catalog.mapper.MappingInterpreter;
 import org.qubership.integration.platform.runtime.catalog.model.mapper.mapping.MappingDescription;
-import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,20 +34,20 @@ public class MapperService {
     private final Map<String, MappingInterpreter> interpreters = new HashMap<>();
 
     @Autowired
-    public MapperService(List<MappingInterpreter> interpreters){
-        for (MappingInterpreter interpreter: interpreters){
+    public MapperService(List<MappingInterpreter> interpreters) {
+        for (MappingInterpreter interpreter : interpreters) {
             MappingInterpretation interpretation = interpreter.getClass().getAnnotation(MappingInterpretation.class);
-            if (interpretation != null){
-                this.interpreters.put(interpretation.value(),interpreter);
+            if (interpretation != null) {
+                this.interpreters.put(interpretation.value(), interpreter);
             }
         }
     }
 
-    private MappingInterpreter getInterpreter(String interpreterName){
+    private MappingInterpreter getInterpreter(String interpreterName) {
         return this.interpreters.get(interpreterName);
     }
 
-    public String getMappingInterpretation(MappingDescription mappingDescription){
+    public String getMappingInterpretation(MappingDescription mappingDescription) {
         MappingInterpreter interpreter = getInterpreter("AtlasMap");
         return interpreter.getInterpretation(mappingDescription);
     }

@@ -16,19 +16,19 @@
 
 package org.qubership.integration.platform.runtime.catalog.service.diagnostic.validations.builtin;
 
-import org.qubership.integration.platform.runtime.catalog.model.diagnostic.ValidationImplementationType;
-import org.qubership.integration.platform.runtime.catalog.service.ChainService;
-import org.qubership.integration.platform.runtime.catalog.service.diagnostic.ValidationEntityType;
-import org.qubership.integration.platform.runtime.catalog.service.diagnostic.ValidationSeverity;
-import org.qubership.integration.platform.runtime.catalog.service.diagnostic.validations.DiagnosticValidationUnexpectedException;
+import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.qubership.integration.platform.catalog.consul.ConsulService;
 import org.qubership.integration.platform.catalog.consul.exception.KVNotFoundException;
 import org.qubership.integration.platform.catalog.model.chain.SessionsLoggingLevel;
 import org.qubership.integration.platform.catalog.model.deployment.properties.DeploymentRuntimeProperties;
 import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.Chain;
 import org.qubership.integration.platform.catalog.persistence.configs.entity.diagnostic.ValidationChainAlert;
-import lombok.extern.slf4j.Slf4j;
-import org.jetbrains.annotations.NotNull;
+import org.qubership.integration.platform.runtime.catalog.model.diagnostic.ValidationImplementationType;
+import org.qubership.integration.platform.runtime.catalog.service.ChainService;
+import org.qubership.integration.platform.runtime.catalog.service.diagnostic.ValidationEntityType;
+import org.qubership.integration.platform.runtime.catalog.service.diagnostic.ValidationSeverity;
+import org.qubership.integration.platform.runtime.catalog.service.diagnostic.validations.DiagnosticValidationUnexpectedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -49,9 +49,9 @@ public class ExcessiveLoggingValidation extends BuiltinValidation {
                 "excessive-logging_I8P3SG4G",
                 "Deployment has excessive logging settings",
                 "Rule allows to detect chains, deployed with \"Debug\" session level of logging.",
-                "Utilizing the \"Debug\" logging level might lead" +
-                        " to issues with log storage space or drastically degrade performance." +
-                        " It is recommended to reduce the level of logging and use \"Debug\" mode only on test environments.",
+                "Utilizing the \"Debug\" logging level might lead"
+                        + " to issues with log storage space or drastically degrade performance."
+                        + " It is recommended to reduce the level of logging and use \"Debug\" mode only on test environments.",
                 ValidationEntityType.CHAIN,
                 ValidationImplementationType.BUILT_IN,
                 ValidationSeverity.WARNING

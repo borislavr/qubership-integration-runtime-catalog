@@ -34,16 +34,16 @@ import org.qubership.integration.platform.catalog.persistence.configs.entity.act
 import org.qubership.integration.platform.catalog.persistence.configs.entity.actionlog.LogOperation;
 import org.qubership.integration.platform.catalog.persistence.configs.entity.instructions.ImportInstruction;
 import org.qubership.integration.platform.catalog.persistence.configs.repository.instructions.ImportInstructionsRepository;
-import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.exportimport.remoteimport.ChainCommitRequestAction;
-import org.qubership.integration.platform.runtime.catalog.service.exportimport.CommonVariablesImportService;
+import org.qubership.integration.platform.catalog.service.ActionsLogService;
 import org.qubership.integration.platform.catalog.service.exportimport.ExportImportUtils;
 import org.qubership.integration.platform.catalog.validation.EntityValidator;
-import org.qubership.integration.platform.catalog.service.*;
 import org.qubership.integration.platform.runtime.catalog.model.exportimport.instructions.ChainsIgnoreOverrideResult;
 import org.qubership.integration.platform.runtime.catalog.model.exportimport.instructions.IgnoreResult;
 import org.qubership.integration.platform.runtime.catalog.model.exportimport.instructions.ImportInstructionResult;
 import org.qubership.integration.platform.runtime.catalog.model.exportimport.instructions.ImportInstructionStatus;
+import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.exportimport.remoteimport.ChainCommitRequestAction;
 import org.qubership.integration.platform.runtime.catalog.service.*;
+import org.qubership.integration.platform.runtime.catalog.service.exportimport.CommonVariablesImportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -197,6 +197,40 @@ public class ImportInstructionsService {
         }
     }
 
+    private List<ImportInstructionResult> uploadImportInstructionsConfig(
+            String fileName,
+            byte[] fileContent,
+            Set<String> labels
+    ) {
+        GeneralImportInstructionsConfig importInstructionsConfig = parseImportInstructionsConfig(fileName, fileContent);
+        importInstructionsConfig.setLabels(labels);
+
+        entityValidator.validate(importInstructionsConfig);
+
+        logAction(fileName, null, EntityType.IMPORT_INSTRUCTIONS, LogOperation.IMPORT);
+
+        List<ImportInstructionResult> importInstructionResults = new ArrayList<>();
+        importInstructionResults.addAll(performChainDeleteInstructions(importInstructionsConfig));
+        importInstructionResults.addAll(performSpecificationDeleteInstructions(importInstructionsConfig));
+        importInstructionResults.addAll(performSpecificationGroupDeleteInstructions(importInstructionsConfig));
+        importInstructionResults.addAll(performServiceDeleteInstructions(importInstructionsConfig));
+
+        List<ImportInstruction> savedImportInstructions = saveImportInstructions(importInstructionsConfig);
+        importInstructionResults.addAll(commonVariablesImportService
+                .uploadCommonVariablesImportInstructions(fileName, fileContent, labels));
+
+        savedImportInstructions.forEach(importInstruction ->
+                logSingleInstructionAction(
+                        importInstruction.getId(),
+                        importInstruction.getEntityType(),
+                        LogOperation.CREATE_OR_UPDATE
+                )
+        );
+
+        log.info("Import instructions file {} successfully uploaded", fileName);
+
+        return importInstructionResults;
+    }
 
     public Pair<String, byte[]> exportImportInstructions() {
         GeneralImportInstructionsConfig importInstructionsConfig = getAllImportInstructionsConfig();
@@ -327,41 +361,6 @@ public class ImportInstructionsService {
                 .asConfig(importInstructionsRepository.findAll());
         importInstructionsConfig.setCommonVariables(commonVariablesImportService.getCommonVariablesImportInstructionsConfig());
         return importInstructionsConfig;
-    }
-
-    private List<ImportInstructionResult> uploadImportInstructionsConfig(
-            String fileName,
-            byte[] fileContent,
-            Set<String> labels
-    ) {
-        GeneralImportInstructionsConfig importInstructionsConfig = parseImportInstructionsConfig(fileName, fileContent);
-        importInstructionsConfig.setLabels(labels);
-
-        entityValidator.validate(importInstructionsConfig);
-
-        logAction(fileName, null, EntityType.IMPORT_INSTRUCTIONS, LogOperation.IMPORT);
-
-        List<ImportInstructionResult> importInstructionResults = new ArrayList<>();
-        importInstructionResults.addAll(performChainDeleteInstructions(importInstructionsConfig));
-        importInstructionResults.addAll(performSpecificationDeleteInstructions(importInstructionsConfig));
-        importInstructionResults.addAll(performSpecificationGroupDeleteInstructions(importInstructionsConfig));
-        importInstructionResults.addAll(performServiceDeleteInstructions(importInstructionsConfig));
-
-        List<ImportInstruction> savedImportInstructions = saveImportInstructions(importInstructionsConfig);
-        importInstructionResults.addAll(commonVariablesImportService
-                .uploadCommonVariablesImportInstructions(fileName, fileContent, labels));
-
-        savedImportInstructions.forEach(importInstruction ->
-                logSingleInstructionAction(
-                        importInstruction.getId(),
-                        importInstruction.getEntityType(),
-                        LogOperation.CREATE_OR_UPDATE
-                )
-        );
-
-        log.info("Import instructions file {} successfully uploaded", fileName);
-
-        return importInstructionResults;
     }
 
     private GeneralImportInstructionsConfig parseImportInstructionsConfig(String fileName, byte[] fileContent) {

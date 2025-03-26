@@ -16,6 +16,21 @@
 
 package org.qubership.integration.platform.runtime.catalog.service.diagnostic;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityNotFoundException;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.Pair;
+import org.qubership.integration.platform.catalog.model.filter.FilterCondition;
+import org.qubership.integration.platform.catalog.persistence.TransactionHandler;
+import org.qubership.integration.platform.catalog.persistence.configs.entity.ConfigParameter;
+import org.qubership.integration.platform.catalog.persistence.configs.entity.diagnostic.ValidationChainAlert;
+import org.qubership.integration.platform.catalog.persistence.configs.entity.diagnostic.ValidationState;
+import org.qubership.integration.platform.catalog.persistence.configs.entity.diagnostic.ValidationStatus;
+import org.qubership.integration.platform.catalog.persistence.configs.repository.diagnostic.ValidationChainAlertRepository;
+import org.qubership.integration.platform.catalog.persistence.configs.repository.diagnostic.ValidationStatusRepository;
+import org.qubership.integration.platform.catalog.service.ConfigParameterService;
 import org.qubership.integration.platform.runtime.catalog.model.diagnostic.ValidationAlertsSet;
 import org.qubership.integration.platform.runtime.catalog.model.filter.FilterFeature;
 import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.FilterRequestDTO;
@@ -26,27 +41,11 @@ import org.qubership.integration.platform.runtime.catalog.service.diagnostic.val
 import org.qubership.integration.platform.runtime.catalog.service.diagnostic.validations.builtin.BuiltinValidation;
 import org.qubership.integration.platform.runtime.catalog.service.diagnostic.validations.external.ExternalValidation;
 import org.qubership.integration.platform.runtime.catalog.service.filter.ChainAlertFilterSpecificationBuilder;
-import org.qubership.integration.platform.catalog.model.filter.FilterCondition;
-import org.qubership.integration.platform.catalog.persistence.TransactionHandler;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.ConfigParameter;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.diagnostic.ValidationChainAlert;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.diagnostic.ValidationState;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.diagnostic.ValidationStatus;
-import org.qubership.integration.platform.catalog.persistence.configs.repository.diagnostic.ValidationChainAlertRepository;
-import org.qubership.integration.platform.catalog.persistence.configs.repository.diagnostic.ValidationStatusRepository;
-import org.qubership.integration.platform.catalog.service.ConfigParameterService;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityNotFoundException;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Nullable;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -55,6 +54,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import javax.annotation.Nullable;
 
 @Slf4j
 @Component
@@ -97,8 +97,8 @@ public class DiagnosticService {
         // Map<validationId, validations_with_filtered_alerts>
         Map<String, Pair<AbstractValidation, ValidationAlertsSet>> result;
 
-        if (filterRequest == null ||
-                (StringUtils.isEmpty(filterRequest.getSearchString()) && CollectionUtils.isEmpty(filterRequest.getFilters()))) {
+        if (filterRequest == null
+                || (StringUtils.isEmpty(filterRequest.getSearchString()) && CollectionUtils.isEmpty(filterRequest.getFilters()))) {
             result = validations.values().stream().collect(
                     Collectors.toMap(AbstractValidation::getId, validation -> Pair.of(validation,
                             ValidationAlertsSet.builder()
@@ -107,19 +107,21 @@ public class DiagnosticService {
         } else {
             // search has higher priority over filters
             boolean searchMode = StringUtils.isNotEmpty(filterRequest.getSearchString());
-            List<FilterRequestDTO> filters = searchMode ? Stream.of(
+            List<FilterRequestDTO> filters = searchMode
+                    ? Stream.of(
                             FilterFeature.CHAIN_NAME,
                             FilterFeature.ELEMENT_NAME,
-                            FilterFeature.ELEMENT_TYPE
-                    ).map(feature ->
-                            FilterRequestDTO
-                                    .builder()
-                                    .feature(feature)
-                                    .value(filterRequest.getSearchString())
-                                    .condition(FilterCondition.CONTAINS)
-                                    .build()
-                    ).toList() :
-                    filterRequest.getFilters();
+                            FilterFeature.ELEMENT_TYPE)
+                        .map(feature ->
+                                FilterRequestDTO
+                                        .builder()
+                                        .feature(feature)
+                                        .value(filterRequest.getSearchString())
+                                        .condition(FilterCondition.CONTAINS)
+                                        .build()
+                        )
+                        .toList()
+                    : filterRequest.getFilters();
 
             result = executeChainAlertFilterQuery(
                     filters.stream().filter(filter -> filter.getFeature() != FilterFeature.VALIDATION_SEVERITY).toList(), searchMode);
@@ -132,8 +134,9 @@ public class DiagnosticService {
     private Map<String, Pair<AbstractValidation, ValidationAlertsSet>> executeChainAlertFilterQuery(List<FilterRequestDTO> filters,
                                                                                                     boolean searchMode) {
         Map<String, Pair<AbstractValidation, ValidationAlertsSet>> result = new HashMap<>();
-        Specification<ValidationChainAlert> specification = searchMode ?
-                chainAlertSpecBuilder.buildSearch(filters) : chainAlertSpecBuilder.buildFilter(filters);
+        Specification<ValidationChainAlert> specification = searchMode
+                ? chainAlertSpecBuilder.buildSearch(filters)
+                : chainAlertSpecBuilder.buildFilter(filters);
 
         List<ValidationChainAlert> chainAlerts = chainAlertRepository.findAll(specification);
 
@@ -194,8 +197,8 @@ public class DiagnosticService {
                             String value = filter.getValue();
                             Set<ValidationSeverity> values = Arrays.stream(value.split(","))
                                     .map(ValidationSeverity::valueOf).collect(Collectors.toSet());
-                            if ((filter.getCondition() == FilterCondition.IN && values.contains(pair.getLeft().getSeverity())) ||
-                                    (filter.getCondition() == FilterCondition.NOT_IN && !values.contains(pair.getLeft().getSeverity()))
+                            if ((filter.getCondition() == FilterCondition.IN && values.contains(pair.getLeft().getSeverity()))
+                                    || (filter.getCondition() == FilterCondition.NOT_IN && !values.contains(pair.getLeft().getSeverity()))
                             ) {
                                 filteredValidations.add(k);
                             }
@@ -241,9 +244,9 @@ public class DiagnosticService {
         if (validationUpdateTryLock()) {
             return CompletableFuture.runAsync(() -> {
                 try {
-                    Set<String> filteredIds = validationIds == null || validationIds.isEmpty() ?
-                            validations.keySet() :
-                            validations.keySet().stream()
+                    Set<String> filteredIds = validationIds == null || validationIds.isEmpty()
+                            ? validations.keySet()
+                            : validations.keySet().stream()
                                     .filter(validationIds::contains)
                                     .collect(Collectors.toSet());
 
@@ -304,9 +307,9 @@ public class DiagnosticService {
             if (!result.containsKey(entry.getKey())) {
                 result.put(entry.getKey(),
                         ValidationStatus.builder()
-                            .validationId(entry.getKey())
-                            .state(ValidationState.NOT_STARTED)
-                            .build());
+                                .validationId(entry.getKey())
+                                .state(ValidationState.NOT_STARTED)
+                                .build());
             }
         }
 
@@ -344,7 +347,7 @@ public class DiagnosticService {
             configParameterService.flush();
             return true;
         } else {
-            if(!lock.getBoolean() || lock.getModifiedWhen().before(
+            if (!lock.getBoolean() || lock.getModifiedWhen().before(
                     Timestamp.valueOf(LocalDateTime.now().minusMinutes(VALIDATION_DB_LOCK_TIMEOUT_MINUTES)))) {
                 lock.setBoolean(true);
                 configParameterService.update(lock);

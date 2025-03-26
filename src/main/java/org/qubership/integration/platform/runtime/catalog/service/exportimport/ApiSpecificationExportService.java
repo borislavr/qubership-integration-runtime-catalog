@@ -19,18 +19,6 @@ package org.qubership.integration.platform.runtime.catalog.service.exportimport;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.qubership.integration.platform.runtime.catalog.rest.v1.exception.exceptions.ApiSpecificationExportException;
-import org.qubership.integration.platform.runtime.catalog.rest.v1.exception.exceptions.HttpTriggerMethodsNotSpecified;
-import org.qubership.integration.platform.runtime.catalog.rest.v1.exception.exceptions.WrongChainElementTypeException;
-import org.qubership.integration.platform.runtime.catalog.service.SystemModelService;
-import org.qubership.integration.platform.catalog.model.ElementRoute;
-import org.qubership.integration.platform.catalog.model.apispec.ApiSpecificationFormat;
-import org.qubership.integration.platform.catalog.model.apispec.ApiSpecificationType;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.Chain;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.element.ChainElement;
-import org.qubership.integration.platform.catalog.persistence.configs.repository.chain.ElementRepository;
-import org.qubership.integration.platform.catalog.persistence.configs.repository.operations.OperationRepository;
-import org.qubership.integration.platform.catalog.util.TriggerUtils;
 import io.swagger.v3.core.util.Json;
 import io.swagger.v3.core.util.Yaml;
 import io.swagger.v3.oas.models.*;
@@ -48,10 +36,23 @@ import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
 import io.swagger.v3.oas.models.servers.ServerVariable;
 import io.swagger.v3.oas.models.servers.ServerVariables;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.Builder;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.qubership.integration.platform.catalog.model.ElementRoute;
+import org.qubership.integration.platform.catalog.model.apispec.ApiSpecificationFormat;
+import org.qubership.integration.platform.catalog.model.apispec.ApiSpecificationType;
+import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.Chain;
+import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.element.ChainElement;
+import org.qubership.integration.platform.catalog.persistence.configs.repository.chain.ElementRepository;
+import org.qubership.integration.platform.catalog.persistence.configs.repository.operations.OperationRepository;
+import org.qubership.integration.platform.catalog.util.TriggerUtils;
+import org.qubership.integration.platform.runtime.catalog.rest.v1.exception.exceptions.ApiSpecificationExportException;
+import org.qubership.integration.platform.runtime.catalog.rest.v1.exception.exceptions.HttpTriggerMethodsNotSpecified;
+import org.qubership.integration.platform.runtime.catalog.rest.v1.exception.exceptions.WrongChainElementTypeException;
+import org.qubership.integration.platform.runtime.catalog.service.SystemModelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.util.Pair;
@@ -59,7 +60,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import jakarta.persistence.EntityNotFoundException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -273,7 +273,7 @@ public class ApiSpecificationExportService {
 
     private Chain getElementChain(ChainElement element) {
         Chain chain = element.getChain();
-        return isNull(chain)? element.getSnapshot().getChain() : chain;
+        return isNull(chain) ? element.getSnapshot().getChain() : chain;
     }
 
     private Paths buildPaths(Collection<ChainElement> elements) {
@@ -599,7 +599,7 @@ public class ApiSpecificationExportService {
             }
             updateReferencesForSchemas(schema.getProperties(), refModifier);
             if (schema instanceof ArraySchema) {
-                updateReferencesForSchema(((ArraySchema)schema).getItems(), refModifier);
+                updateReferencesForSchema(((ArraySchema) schema).getItems(), refModifier);
             }
             if (schema instanceof ComposedSchema) {
                 ComposedSchema composedSchema = (ComposedSchema) schema;
@@ -683,7 +683,7 @@ public class ApiSpecificationExportService {
         }
         Content content = buildContentFromValidationSchema(validationSchemaText);
         updateReferencesForContent(content, ref -> updateSchemasRefAndAddSuffixToRef(ref, element.getId()));
-        return isNull(content)? null : new RequestBody().content(content);
+        return isNull(content) ? null : new RequestBody().content(content);
     }
 
     private Content buildContentFromValidationSchema(String validationSchemaText) {

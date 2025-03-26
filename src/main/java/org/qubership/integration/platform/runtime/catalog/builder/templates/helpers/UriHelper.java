@@ -16,9 +16,9 @@
 
 package org.qubership.integration.platform.runtime.catalog.builder.templates.helpers;
 
-import org.qubership.integration.platform.runtime.catalog.builder.templates.TemplatesHelper;
 import org.qubership.integration.platform.catalog.exception.SnapshotCreationException;
 import org.qubership.integration.platform.catalog.util.SimpleHttpUriUtils;
+import org.qubership.integration.platform.runtime.catalog.builder.templates.TemplatesHelper;
 
 @TemplatesHelper
 public class UriHelper extends BaseHelper {
@@ -27,8 +27,9 @@ public class UriHelper extends BaseHelper {
      * Extract path and query from provided URI
      */
     public CharSequence extractPathAndQuery(Object uri) {
-        if (!SimpleHttpUriUtils.isValidProtocolAndDomainWithPort(uri.toString()))
+        if (!SimpleHttpUriUtils.isValidProtocolAndDomainWithPort(uri.toString())) {
             throw new SnapshotCreationException("Invalid URI format.");
+        }
         return SimpleHttpUriUtils.extractPathAndQueryFromUri(uri.toString());
     }
 }

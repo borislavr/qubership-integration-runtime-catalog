@@ -16,14 +16,11 @@
 
 package org.qubership.integration.platform.runtime.catalog.rest.v1.mapper;
 
-import org.qubership.integration.platform.runtime.catalog.model.deployment.RuntimeDeployment;
-import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.deployment.DeploymentRequest;
-import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.deployment.EngineDeploymentResponse;
-import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.deployment.RuntimeDeploymentUpdate;
-import org.qubership.integration.platform.runtime.catalog.service.ChainService;
-import org.qubership.integration.platform.runtime.catalog.service.DeploymentService;
-import org.qubership.integration.platform.runtime.catalog.service.RuntimeDeploymentService;
-import org.qubership.integration.platform.runtime.catalog.service.SnapshotService;
+import lombok.extern.slf4j.Slf4j;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.qubership.integration.platform.catalog.mapping.UserMapper;
 import org.qubership.integration.platform.catalog.model.deployment.engine.ChainRuntimeDeployment;
 import org.qubership.integration.platform.catalog.model.deployment.engine.EngineDeployment;
@@ -34,8 +31,14 @@ import org.qubership.integration.platform.catalog.model.dto.deployment.RuntimeDe
 import org.qubership.integration.platform.catalog.persistence.configs.entity.AbstractEntity;
 import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.Deployment;
 import org.qubership.integration.platform.catalog.util.MapperUtils;
-import lombok.extern.slf4j.Slf4j;
-import org.mapstruct.*;
+import org.qubership.integration.platform.runtime.catalog.model.deployment.RuntimeDeployment;
+import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.deployment.DeploymentRequest;
+import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.deployment.EngineDeploymentResponse;
+import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.deployment.RuntimeDeploymentUpdate;
+import org.qubership.integration.platform.runtime.catalog.service.ChainService;
+import org.qubership.integration.platform.runtime.catalog.service.DeploymentService;
+import org.qubership.integration.platform.runtime.catalog.service.RuntimeDeploymentService;
+import org.qubership.integration.platform.runtime.catalog.service.SnapshotService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Collection;
@@ -61,16 +64,6 @@ public abstract class DeploymentMapper {
     @Mapping(source = "chain.id", target = "chainId")
     public abstract DeploymentResponse asResponse(Deployment deployment);
 
-    public List<DeploymentResponse> asResponses(List<Deployment> deploymentEntityEngineList) {
-        if (deploymentEntityEngineList == null) {
-            return null;
-        }
-
-        return deploymentEntityEngineList.stream()
-                .map(deployment -> asResponse(deployment, runtimeDeploymentService.getRuntimeDeployment(deployment.getId())))
-                .collect(Collectors.toList());
-    }
-
     @Mapping(source = "deployment.id", target = "id")
     @Mapping(source = "deployment.chain.id", target = "chainId")
     @Mapping(source = "deployment.snapshot.id", target = "snapshotId")
@@ -80,6 +73,15 @@ public abstract class DeploymentMapper {
     @Mapping(source = "deployment.name", target = "name")
     public abstract DeploymentResponse asResponse(Deployment deployment, RuntimeDeployment state);
 
+    public List<DeploymentResponse> asResponses(List<Deployment> deploymentEntityEngineList) {
+        if (deploymentEntityEngineList == null) {
+            return null;
+        }
+
+        return deploymentEntityEngineList.stream()
+                .map(deployment -> asResponse(deployment, runtimeDeploymentService.getRuntimeDeployment(deployment.getId())))
+                .collect(Collectors.toList());
+    }
 
     @Mapping(source = "status", target = "status")
     @Mapping(source = "errorMessage", target = "error")

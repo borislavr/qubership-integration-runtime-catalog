@@ -16,9 +16,9 @@
 
 package org.qubership.integration.platform.runtime.catalog.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.Dependency;
 import org.qubership.integration.platform.catalog.persistence.configs.repository.chain.DependencyRepository;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
@@ -28,11 +28,11 @@ import java.util.Set;
 public class DependencyService {
     private final DependencyRepository dependencyRepository;
 
-    public DependencyService(DependencyRepository dependencyRepository){
+    public DependencyService(DependencyRepository dependencyRepository) {
         this.dependencyRepository = dependencyRepository;
     }
 
-    public void setActualizedElementDependencyStates(Set<Dependency> oldDependencyStates, Set<Dependency> newDependencyStates){
-        dependencyRepository.actualizeCollectionState(oldDependencyStates,newDependencyStates);
+    public void setActualizedElementDependencyStates(Set<Dependency> oldDependencyStates, Set<Dependency> newDependencyStates) {
+        dependencyRepository.actualizeCollectionState(oldDependencyStates, newDependencyStates);
     }
 }

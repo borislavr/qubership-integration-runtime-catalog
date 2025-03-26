@@ -18,9 +18,9 @@ package org.qubership.integration.platform.runtime.catalog.builder.templates.hel
 
 import com.github.jknack.handlebars.Helper;
 import com.github.jknack.handlebars.Options;
-import org.qubership.integration.platform.runtime.catalog.builder.templates.TemplatesHelper;
 import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.element.ChainElement;
 import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.element.ContainerChainElement;
+import org.qubership.integration.platform.runtime.catalog.builder.templates.TemplatesHelper;
 
 import java.io.IOException;
 import java.util.Comparator;
@@ -56,7 +56,7 @@ public class ChildrenHelper extends BaseHelper implements Helper<String> {
      * @param container Parent element, from which list of eleme
      * @param name      Name of camel elements
      * @return Children list from <code>container</code> container argument with property
-     * NAME equals <code>name</code> argument.
+     *      NAME equals <code>name</code> argument.
      */
     private List<ChainElement> findChildrenByType(ContainerChainElement container, String name, String comparisonKeyProperty) {
         return container.getElements().stream()

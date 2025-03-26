@@ -16,11 +16,11 @@
 
 package org.qubership.integration.platform.runtime.catalog.service.diagnostic.validations;
 
+import lombok.Getter;
+import org.qubership.integration.platform.catalog.model.diagnostic.ValidationAlert;
 import org.qubership.integration.platform.runtime.catalog.model.diagnostic.ValidationImplementationType;
 import org.qubership.integration.platform.runtime.catalog.service.diagnostic.ValidationEntityType;
 import org.qubership.integration.platform.runtime.catalog.service.diagnostic.ValidationSeverity;
-import org.qubership.integration.platform.catalog.model.diagnostic.ValidationAlert;
-import lombok.Getter;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,8 +51,8 @@ public abstract class AbstractValidation {
                               ValidationEntityType entityType, ValidationImplementationType implementationType,
                               ValidationSeverity severity) {
         if (!ID_VALIDATION_PATTERN.matcher(id).find()) {
-            throw new IllegalArgumentException("Validation has invalid ID: " + id +
-                    ". ID must match the pattern: " + ID_VALIDATION_PATTERN.pattern());
+            throw new IllegalArgumentException("Validation has invalid ID: " + id
+                    + ". ID must match the pattern: " + ID_VALIDATION_PATTERN.pattern());
         }
         this.id = id;
         this.title = title;

@@ -16,15 +16,15 @@
 
 package org.qubership.integration.platform.runtime.catalog.service.diagnostic.validations.builtin;
 
+import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
+import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.element.ChainElement;
+import org.qubership.integration.platform.catalog.persistence.configs.entity.diagnostic.ValidationChainAlert;
+import org.qubership.integration.platform.catalog.persistence.configs.repository.diagnostic.ElementValidationRepository;
 import org.qubership.integration.platform.runtime.catalog.model.diagnostic.ValidationImplementationType;
 import org.qubership.integration.platform.runtime.catalog.service.diagnostic.ValidationEntityType;
 import org.qubership.integration.platform.runtime.catalog.service.diagnostic.ValidationSeverity;
 import org.qubership.integration.platform.runtime.catalog.service.diagnostic.validations.DiagnosticValidationUnexpectedException;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.element.ChainElement;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.diagnostic.ValidationChainAlert;
-import org.qubership.integration.platform.catalog.persistence.configs.repository.diagnostic.ElementValidationRepository;
-import lombok.extern.slf4j.Slf4j;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
@@ -40,8 +40,8 @@ public class ScriptingFoundInChainValidation extends BuiltinValidation {
                 "scripting-found-in-chain_0WHKW1A3",
                 "Scripting found in the chain",
                 "Rule allows to find chains and chain elements which contain scripting.",
-                "Scripting is not recommended, as it often causes unexpected harm to the data or instance if done incorrectly." +
-                        " Please consider replacing scripts with mapper, if possible.",
+                "Scripting is not recommended, as it often causes unexpected harm to the data or instance if done incorrectly."
+                        + " Please consider replacing scripts with mapper, if possible.",
                 ValidationEntityType.CHAIN_ELEMENT,
                 ValidationImplementationType.BUILT_IN,
                 ValidationSeverity.WARNING

@@ -16,19 +16,20 @@
 
 package org.qubership.integration.platform.runtime.catalog.rest.v1.mapper;
 
-import org.qubership.integration.platform.runtime.catalog.model.deployment.update.DeploymentRouteUpdate;
+import org.mapstruct.Mapper;
 import org.qubership.integration.platform.catalog.mapping.UserMapper;
 import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.DeploymentRoute;
 import org.qubership.integration.platform.catalog.util.MapperUtils;
-import org.mapstruct.Mapper;
+import org.qubership.integration.platform.runtime.catalog.model.deployment.update.DeploymentRouteUpdate;
 
 import java.util.List;
 
 @Mapper(
         componentModel = "spring",
-        uses = { UserMapper.class, MapperUtils.class}
+        uses = {UserMapper.class, MapperUtils.class}
 )
 public interface DeploymentRouteMapper {
     DeploymentRouteUpdate asUpdate(DeploymentRoute deploymentRoutes);
+
     List<DeploymentRouteUpdate> asUpdates(List<DeploymentRoute> deploymentRoutes);
 }

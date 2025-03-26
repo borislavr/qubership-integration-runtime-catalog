@@ -25,12 +25,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.qubership.integration.platform.runtime.catalog.model.exportimport.chain.DeploymentExternalEntity;
 import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.*;
 import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.element.ChainElement;
 import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.element.ContainerChainElement;
 import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.element.SwimlaneChainElement;
 import org.qubership.integration.platform.catalog.persistence.configs.repository.chain.ChainRepository;
+import org.qubership.integration.platform.runtime.catalog.model.exportimport.chain.DeploymentExternalEntity;
 import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.exportimport.chain.ImportEntityStatus;
 import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.exportimport.remoteimport.ChainCommitRequestAction;
 import org.qubership.integration.platform.runtime.catalog.service.ElementService;
@@ -105,8 +105,9 @@ public class ChainDeserializer extends StdDeserializer<ChainDeserializationResul
                 resultChain = Chain.builder()
                         .id(idNode.asText())
                         .createdWhen(new Timestamp(System.currentTimeMillis()))
-                        .modifiedWhen(new Timestamp(modifiedWhenNode == null ?
-                                System.currentTimeMillis() : modifiedWhenNode.asLong()))
+                        .modifiedWhen(new Timestamp(modifiedWhenNode == null
+                                ? System.currentTimeMillis()
+                                : modifiedWhenNode.asLong()))
                         .build();
                 result.setStatus(ImportEntityStatus.CREATED);
             }

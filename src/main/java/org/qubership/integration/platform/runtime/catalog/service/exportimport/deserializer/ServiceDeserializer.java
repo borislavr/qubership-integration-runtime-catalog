@@ -24,8 +24,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.qubership.integration.platform.catalog.model.system.OperationProtocol;
 import org.qubership.integration.platform.catalog.persistence.configs.entity.system.*;
-import org.qubership.integration.platform.runtime.catalog.rest.v1.exception.exceptions.ServiceImportException;
 import org.qubership.integration.platform.catalog.service.exportimport.ExportImportUtils;
+import org.qubership.integration.platform.runtime.catalog.rest.v1.exception.exceptions.ServiceImportException;
 import org.qubership.integration.platform.runtime.catalog.service.exportimport.migrations.ImportFileMigration;
 import org.qubership.integration.platform.runtime.catalog.service.exportimport.migrations.chain.ImportFileMigrationUtils;
 import org.qubership.integration.platform.runtime.catalog.service.exportimport.migrations.system.ServiceImportFileMigration;
@@ -101,7 +101,7 @@ public class ServiceDeserializer {
             Map<String, List<JsonNode>> specificationNodesMap = new HashMap<>();
             Map<String, List<File>> sourceFiles = new HashMap<>();
             File ddlScriptFile = null;
-            for (File file: listOfFile) {
+            for (File file : listOfFile) {
                 String fileName = file.getName();
                 String parentDirName = Optional.ofNullable(file.getParentFile())
                     .map(File::toPath)
@@ -218,8 +218,7 @@ public class ServiceDeserializer {
                     IntStream.rangeClosed(1, serviceNode.get(IMPORT_VERSION_FIELD_OLD).asInt())
                             .boxed()
                             .toList();
-        }
-        else {
+        } else {
             importVersions =
                     serviceNode.get(IMPORT_MIGRATIONS_FIELD) != null
                             ? Arrays.stream(

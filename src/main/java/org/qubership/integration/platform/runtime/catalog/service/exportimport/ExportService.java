@@ -19,22 +19,22 @@ package org.qubership.integration.platform.runtime.catalog.service.exportimport;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.Deployment;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.Snapshot;
-import org.qubership.integration.platform.runtime.catalog.rest.v1.exception.exceptions.ChainExportException;
-import org.qubership.integration.platform.runtime.catalog.service.ChainService;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.actionlog.ActionLog;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.actionlog.EntityType;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.actionlog.LogOperation;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.Chain;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.element.ChainElement;
-import org.qubership.integration.platform.catalog.service.ActionsLogService;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.qubership.integration.platform.catalog.persistence.configs.entity.actionlog.ActionLog;
+import org.qubership.integration.platform.catalog.persistence.configs.entity.actionlog.EntityType;
+import org.qubership.integration.platform.catalog.persistence.configs.entity.actionlog.LogOperation;
+import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.Chain;
+import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.Deployment;
+import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.Snapshot;
+import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.element.ChainElement;
+import org.qubership.integration.platform.catalog.service.ActionsLogService;
 import org.qubership.integration.platform.catalog.service.exportimport.ExportImportUtils;
+import org.qubership.integration.platform.runtime.catalog.rest.v1.exception.exceptions.ChainExportException;
+import org.qubership.integration.platform.runtime.catalog.service.ChainService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.util.Pair;
@@ -118,8 +118,8 @@ public class ExportService {
         String chainFileName = generateChainYamlName(chain);
         List<Deployment> deployments = chain.getDeployments();
         if (deployments.size() > 1) {
-            String curSnapShot = Optional.ofNullable(chain.getCurrentSnapshot()).
-                    map(Snapshot::getId).orElse("");
+            String curSnapShot = Optional.ofNullable(chain.getCurrentSnapshot())
+                    .map(Snapshot::getId).orElse("");
             chain.setDeployments(Collections.singletonList(deployments
                     .stream().filter(deployment -> curSnapShot.equals(deployment.getSnapshot()
                             .getId())).findFirst().orElse(deployments.stream()
@@ -188,8 +188,8 @@ public class ExportService {
             if (!CollectionUtils.isEmpty(propsToExportSeparately)) {
                 Map<String, Object> properties = element.getProperties();
                 String propString = null;
-                if (ExportImportUtils.isPropertiesFileGroove(element.getProperties()) ||
-                        ExportImportUtils.isPropertiesFileSql(element.getProperties())) {
+                if (ExportImportUtils.isPropertiesFileGroove(element.getProperties())
+                        || ExportImportUtils.isPropertiesFileSql(element.getProperties())) {
                     Object propObject = properties.get(propsToExportSeparately.get(0));
                     if (propObject != null) {
                         propString = propObject.toString();
@@ -205,8 +205,8 @@ public class ExportService {
                                 .toString(4);
                     }
                 } else {
-                    throw new IllegalArgumentException("Invalid property '" + EXPORT_FILE_EXTENSION_PROPERTY +
-                            "' of element " + element.getId());
+                    throw new IllegalArgumentException("Invalid property '" + EXPORT_FILE_EXTENSION_PROPERTY
+                            + "' of element " + element.getId());
                 }
 
                 if (propString != null) {
@@ -245,9 +245,9 @@ public class ExportService {
 
     private String getPropertyStringForMapper(Map beforeProperty) throws JsonProcessingException, JSONException {
         String propString = "";
-        List<String> props = List.of(MAPPING_DESCRIPTION, MAPPING, SOURCE, TARGET) ;
+        List<String> props = List.of(MAPPING_DESCRIPTION, MAPPING, SOURCE, TARGET);
         Map<String, Object> propsToExportSeparatelyMap = (Map<String, Object>) beforeProperty.keySet().stream()
-                .filter(p -> props.stream().anyMatch(p1-> p1.equals(p)) && beforeProperty.get(p) != null)
+                .filter(p -> props.stream().anyMatch(p1 -> p1.equals(p)) && beforeProperty.get(p) != null)
                 .collect(Collectors.toMap(p -> p, beforeProperty::get));
         if (!CollectionUtils.isEmpty(propsToExportSeparatelyMap)) {
             propString = new JSONObject(objectMapper.writeValueAsString(propsToExportSeparatelyMap))

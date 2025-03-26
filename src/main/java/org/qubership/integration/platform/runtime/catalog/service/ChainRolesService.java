@@ -17,13 +17,7 @@
 package org.qubership.integration.platform.runtime.catalog.service;
 
 import com.google.common.collect.Lists;
-import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.chain.ChainRolesDTO;
-import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.chain.ChainRolesResponse;
-import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.chain.UpdateRolesRequest;
-import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.deployment.DeploymentRequest;
-import org.qubership.integration.platform.runtime.catalog.rest.v1.exception.exceptions.DeploymentProcessingException;
-import org.qubership.integration.platform.runtime.catalog.rest.v1.mapper.ChainRolesMapper;
-import org.qubership.integration.platform.runtime.catalog.rest.v1.mapper.DeploymentMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.qubership.integration.platform.catalog.exception.SnapshotCreationException;
 import org.qubership.integration.platform.catalog.model.constant.CamelNames;
 import org.qubership.integration.platform.catalog.model.deployment.engine.ChainRuntimeDeployment;
@@ -40,8 +34,14 @@ import org.qubership.integration.platform.catalog.persistence.configs.entity.cha
 import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.element.ChainElementFilterRequestDTO;
 import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.element.ChainElementSearchCriteria;
 import org.qubership.integration.platform.catalog.persistence.configs.repository.chain.ElementRepository;
-import lombok.extern.slf4j.Slf4j;
 import org.qubership.integration.platform.catalog.service.ActionsLogService;
+import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.chain.ChainRolesDTO;
+import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.chain.ChainRolesResponse;
+import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.chain.UpdateRolesRequest;
+import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.deployment.DeploymentRequest;
+import org.qubership.integration.platform.runtime.catalog.rest.v1.exception.exceptions.DeploymentProcessingException;
+import org.qubership.integration.platform.runtime.catalog.rest.v1.mapper.ChainRolesMapper;
+import org.qubership.integration.platform.runtime.catalog.rest.v1.mapper.DeploymentMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -87,8 +87,9 @@ public class ChainRolesService {
         int offset = request.getOffset();
         int limit = request.getLimit();
         List<ChainElementFilterRequestDTO> filters = request.getFilters();
-        if (offset < 0 || limit < 1)
+        if (offset < 0 || limit < 1) {
             return new ChainRolesResponse(0, Collections.emptyList());
+        }
 
         List<ChainElement> elementList = elementRepository.findElementsByFilter(offset, limit, List.of(CamelNames.HTTP_TRIGGER_COMPONENT), filters, isImplementedOnly);
         List<ChainRolesDTO> chainRolesResponse = chainRolesMapper.asChainRolesResponses(elementList);
@@ -103,8 +104,7 @@ public class ChainRolesService {
     }
 
 
-    public ChainRolesResponse chainFilters(ChainRolesResponse chainRolesResponse)
-    {
+    public ChainRolesResponse chainFilters(ChainRolesResponse chainRolesResponse) {
         this.chainRolesAndFilters = chainRolesResponse;
         return chainRolesAndFilters;
     }

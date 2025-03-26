@@ -16,12 +16,12 @@
 
 package org.qubership.integration.platform.runtime.catalog.util;
 
-import org.qubership.integration.platform.runtime.catalog.model.constant.ConnectionSourceType;
 import org.qubership.integration.platform.catalog.exception.SnapshotCreationException;
 import org.qubership.integration.platform.catalog.model.constant.CamelNames;
 import org.qubership.integration.platform.catalog.model.system.EnvironmentSourceType;
 import org.qubership.integration.platform.catalog.model.system.ServiceEnvironment;
 import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.element.ChainElement;
+import org.qubership.integration.platform.runtime.catalog.model.constant.ConnectionSourceType;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,20 +41,19 @@ public class MaasUtils {
         return String.format("%%%%{%s_%s}", elementId, paramName);
     }
 
-    public static ArrayList<String> getMaasParams(ChainElement element){
+    public static ArrayList<String> getMaasParams(ChainElement element) {
         try {
             ServiceEnvironment environment = element.getEnvironment();
             Map<String, Object> elementProperties = element.getProperties();
-            if(element.getType() == null){
+            if (element.getType() == null) {
                 return new ArrayList<>();
             }
                     switch (element.getType()) {
                         case CamelNames.SERVICE_CALL_COMPONENT,
                              CamelNames.ASYNC_API_TRIGGER_COMPONENT -> {
-                            if (environment != null &&
-                                    environment.getSourceType() == EnvironmentSourceType.MAAS_BY_CLASSIFIER &&
-                                    elementProperties.get(OPERATION_PROTOCOL_TYPE_PROP) != null)
-                            {
+                            if (environment != null
+                                    && environment.getSourceType() == EnvironmentSourceType.MAAS_BY_CLASSIFIER
+                                    && elementProperties.get(OPERATION_PROTOCOL_TYPE_PROP) != null) {
                                 switch ((String) elementProperties.get(OPERATION_PROTOCOL_TYPE_PROP)) {
                                     case OPERATION_PROTOCOL_TYPE_KAFKA -> {
                                         return KAFKA_MAAS_PARAM_LIST;
@@ -64,7 +63,7 @@ public class MaasUtils {
                                 }
                             }
                         }
-                        case CamelNames.KAFKA_SENDER_2_COMPONENT,CamelNames.KAFKA_TRIGGER_2_COMPONENT -> {
+                        case CamelNames.KAFKA_SENDER_2_COMPONENT, CamelNames.KAFKA_TRIGGER_2_COMPONENT -> {
                             if (ConnectionSourceType.MAAS.toString().equalsIgnoreCase((String) elementProperties.get(CONNECTION_SOURCE_TYPE_PROP))) {
                                 return KAFKA_MAAS_PARAM_LIST;
                             }

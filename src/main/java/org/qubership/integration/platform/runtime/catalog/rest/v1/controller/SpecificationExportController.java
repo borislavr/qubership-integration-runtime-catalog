@@ -16,12 +16,12 @@
 
 package org.qubership.integration.platform.runtime.catalog.rest.v1.controller;
 
-import org.qubership.integration.platform.runtime.catalog.service.exportimport.SpecificationExportService;
-import org.qubership.integration.platform.catalog.service.exportimport.ExportImportUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
+import org.qubership.integration.platform.catalog.service.exportimport.ExportImportUtils;
+import org.qubership.integration.platform.runtime.catalog.service.exportimport.SpecificationExportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;
 import org.springframework.http.MediaType;
@@ -48,9 +48,9 @@ public class SpecificationExportController {
     public ResponseEntity<Object> exportSpecifications(@RequestParam(required = false) @Parameter(description = "List of specification ids separated by comma") List<String> specificationIds,
                                                        @RequestParam(required = false) @Parameter(description = "List of specification group ids separated by comma") String specificationGroupId) {
         Pair<byte[], String> archivePair = specificationExportService.exportSpecifications(specificationIds, specificationGroupId);
-        return archivePair == null ?
-                ResponseEntity.noContent().build() :
-                ExportImportUtils.convertFileToResponse(archivePair.getFirst(), archivePair.getSecond());
+        return archivePair == null
+                ? ResponseEntity.noContent().build()
+                : ExportImportUtils.convertFileToResponse(archivePair.getFirst(), archivePair.getSecond());
 
     }
 }

@@ -16,8 +16,8 @@
 
 package org.qubership.integration.platform.runtime.catalog.consul;
 
-import org.qubership.integration.platform.catalog.model.compiledlibrary.CompiledLibraryEvent;
 import lombok.extern.slf4j.Slf4j;
+import org.qubership.integration.platform.catalog.model.compiledlibrary.CompiledLibraryEvent;
 import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
@@ -56,7 +56,7 @@ public class CompiledLibrarySpringEventListener {
     private void sendAllCompiledLibrariesUpdateRetryable() {
         while (true) { // worker loop
             try {
-                Object event = updateEvent.take();// wait for events
+                Object event = updateEvent.take(); // wait for events
                 log.debug("Catch library update event: {}", event);
 
                 while (true) { // retry loop
@@ -69,8 +69,8 @@ public class CompiledLibrarySpringEventListener {
                         break;
                     } catch (Exception e) {
                         MDC.put("error_code", "8050");
-                        log.warn("Retry of Event Listener failed with error: " +
-                                "Attempt to collect and send all compiled libraries update failed: {}", e.getMessage());
+                        log.warn("Retry of Event Listener failed with error: "
+                                + "Attempt to collect and send all compiled libraries update failed: {}", e.getMessage());
                         MDC.remove("error_code");
 
                         try {

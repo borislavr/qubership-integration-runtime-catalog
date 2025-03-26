@@ -18,9 +18,9 @@ package org.qubership.integration.platform.runtime.catalog.builder.templates.hel
 
 import com.github.jknack.handlebars.Helper;
 import com.github.jknack.handlebars.Options;
-import org.qubership.integration.platform.runtime.catalog.builder.templates.TemplatesHelper;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.qubership.integration.platform.runtime.catalog.builder.templates.TemplatesHelper;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -81,10 +81,12 @@ public class IfPropertyHelper extends PropertyHelperSource implements Helper<Str
             case NOT_EQUALS -> actual == null || !actual.equals(expected);
             case CONTAINS -> actual != null && actual.contains(expected);
             case NOT_CONTAINS -> actual == null || !actual.contains(expected);
-            case EMPTY -> actualObject instanceof Collection ?
-                    CollectionUtils.isEmpty((Collection<?>) actualObject) : StringUtils.isEmpty(actual);
-            case NOT_EMPTY -> actualObject instanceof Collection ?
-                    CollectionUtils.isNotEmpty((Collection<?>) actualObject) : StringUtils.isNotEmpty(actual);
+            case EMPTY -> actualObject instanceof Collection
+                    ? CollectionUtils.isEmpty((Collection<?>) actualObject)
+                    : StringUtils.isEmpty(actual);
+            case NOT_EMPTY -> actualObject instanceof Collection
+                    ? CollectionUtils.isNotEmpty((Collection<?>) actualObject)
+                    : StringUtils.isNotEmpty(actual);
             case PRESENTED -> actual != null;
             case NOT_PRESENTED -> actual == null;
             case CONTAINS_QUERY_PARAMS -> containsQueryParams(actual);

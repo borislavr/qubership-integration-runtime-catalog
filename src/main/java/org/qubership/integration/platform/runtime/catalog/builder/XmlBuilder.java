@@ -17,8 +17,9 @@
 package org.qubership.integration.platform.runtime.catalog.builder;
 
 import com.ctc.wstx.stax.WstxOutputFactory;
-import org.qubership.integration.platform.runtime.catalog.builder.templates.TemplateService;
-import org.qubership.integration.platform.runtime.catalog.model.ChainRoute;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.tuple.Pair;
+import org.codehaus.stax2.XMLStreamWriter2;
 import org.qubership.integration.platform.catalog.consul.ConfigurationPropertiesConstants;
 import org.qubership.integration.platform.catalog.model.constant.CamelNames;
 import org.qubership.integration.platform.catalog.model.library.ElementDescriptor;
@@ -28,17 +29,16 @@ import org.qubership.integration.platform.catalog.persistence.configs.entity.cha
 import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.element.ContainerChainElement;
 import org.qubership.integration.platform.catalog.service.library.LibraryElementsService;
 import org.qubership.integration.platform.catalog.util.ElementUtils;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.tuple.Pair;
-import org.codehaus.stax2.XMLStreamWriter2;
+import org.qubership.integration.platform.runtime.catalog.builder.templates.TemplateService;
+import org.qubership.integration.platform.runtime.catalog.model.ChainRoute;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.*;
 import java.util.stream.Collectors;
+import javax.xml.stream.XMLStreamException;
 
 import static org.qubership.integration.platform.catalog.model.constant.CamelNames.CONTAINER;
 
@@ -64,14 +64,14 @@ public class XmlBuilder {
         List<ChainElement> startElements = elements.stream()
                 .filter(chainElement -> {
                     ElementDescriptor descriptor = libraryService.getElementDescriptor(chainElement);
-                    boolean elementHasNoParent = chainElement.getParent() == null ||
-                            CONTAINER.equals(chainElement.getParent().getType());
-                    return descriptor != null &&
-                            (descriptor.getType() == ElementType.TRIGGER ||
-                                    descriptor.getType() == ElementType.REUSE ||
-                                    (descriptor.getType() == ElementType.COMPOSITE_TRIGGER &&
-                                            elementHasNoParent &&
-                                            chainElement.getInputDependencies().isEmpty()));
+                    boolean elementHasNoParent = chainElement.getParent() == null
+                            || CONTAINER.equals(chainElement.getParent().getType());
+                    return descriptor != null
+                            && (descriptor.getType() == ElementType.TRIGGER
+                                || descriptor.getType() == ElementType.REUSE
+                                || (descriptor.getType() == ElementType.COMPOSITE_TRIGGER
+                            && elementHasNoParent
+                            && chainElement.getInputDependencies().isEmpty()));
                 })
                 .collect(Collectors.toList());
 
@@ -137,8 +137,8 @@ public class XmlBuilder {
                 ContainerChainElement splitContainer = (ContainerChainElement) element;
                 for (ChainElement splitElement : splitContainer.getElements()) {
                     String splitElementName = libraryService.getElementDescriptor(splitElement).getName();
-                    if (ConfigurationPropertiesConstants.ASYNC_SPLIT_ELEMENT.equals(splitElementName) ||
-                            ConfigurationPropertiesConstants.ASYNC_SPLIT_ELEMENT_2.equals(splitElementName)
+                    if (ConfigurationPropertiesConstants.ASYNC_SPLIT_ELEMENT.equals(splitElementName)
+                            || ConfigurationPropertiesConstants.ASYNC_SPLIT_ELEMENT_2.equals(splitElementName)
                     ) {
                         streamWriter.writeStartElement(BuilderConstants.ROUTE);
 
@@ -209,9 +209,9 @@ public class XmlBuilder {
 
             //Condition that decide route need to be finished
             boolean completeRoute =
-                    elementType == ElementType.TRIGGER ||
-                            (elementType == ElementType.COMPOSITE_TRIGGER) ||
-                            current.getOutputDependencies().size() != 1;
+                    elementType == ElementType.TRIGGER
+                            || (elementType == ElementType.COMPOSITE_TRIGGER)
+                            || current.getOutputDependencies().size() != 1;
 
             for (Dependency dependency : current.getOutputDependencies()) {
                 ChainElement nextElement = dependency.getElementTo();
@@ -329,7 +329,7 @@ public class XmlBuilder {
             return true;
         }
         ChainElement routeStart = route.getElements().get(0);
-        return !routeStart.getInputDependencies().isEmpty() ||
-                (routeStart.getParent() != null && !CONTAINER.equals(routeStart.getParent().getType()));
+        return !routeStart.getInputDependencies().isEmpty()
+                || (routeStart.getParent() != null && !CONTAINER.equals(routeStart.getParent().getType()));
     }
 }

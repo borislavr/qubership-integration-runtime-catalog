@@ -26,9 +26,9 @@ import org.qubership.integration.platform.catalog.persistence.configs.entity.sys
 import org.qubership.integration.platform.catalog.persistence.configs.entity.system.IntegrationSystem;
 import org.qubership.integration.platform.catalog.persistence.configs.repository.system.IntegrationSystemLabelsRepository;
 import org.qubership.integration.platform.catalog.persistence.configs.repository.system.SystemRepository;
-import org.qubership.integration.platform.runtime.catalog.rest.v1.exception.exceptions.EnvironmentSetUpException;
 import org.qubership.integration.platform.catalog.service.ActionsLogService;
 import org.qubership.integration.platform.catalog.service.SystemBaseService;
+import org.qubership.integration.platform.runtime.catalog.rest.v1.exception.exceptions.EnvironmentSetUpException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -83,12 +83,11 @@ public class SystemService extends SystemBaseService {
     }
 
     private boolean shouldCallControlPlane(IntegrationSystem system) {
-        return StringUtils.isNotEmpty(system.getActiveEnvironmentId()) &&
-                IntegrationSystemType.EXTERNAL.equals(system.getIntegrationSystemType()) &&
-                (
-                        OperationProtocol.HTTP.equals(system.getProtocol()) ||
-                                OperationProtocol.SOAP.equals(system.getProtocol()) ||
-                                OperationProtocol.GRAPHQL.equals(system.getProtocol())
+        return StringUtils.isNotEmpty(system.getActiveEnvironmentId())
+                && IntegrationSystemType.EXTERNAL.equals(system.getIntegrationSystemType())
+                && (OperationProtocol.HTTP.equals(system.getProtocol())
+                        || OperationProtocol.SOAP.equals(system.getProtocol())
+                        || OperationProtocol.GRAPHQL.equals(system.getProtocol())
                 );
     }
 
