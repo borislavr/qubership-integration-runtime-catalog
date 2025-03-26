@@ -111,7 +111,7 @@ public class OperationElementPropertiesBuilder implements ElementPropertiesBuild
     private static String getGroupId(ChainElement element, ServiceEnvironment environment) {
         return Optional.ofNullable(element.getPropertyAsString(GROUP_ID))
             .or(() -> Optional.ofNullable(element.getProperty(CamelNames.OPERATION_ASYNC_PROPERTIES))
-                    .map(properties -> ((Map<String, String>)properties).get(GROUP_ID)))
+                    .map(properties -> ((Map<String, String>) properties).get(GROUP_ID)))
             .or(() -> Optional.ofNullable(environment.getProperties())
                     .map(properties -> properties.get(GROUP_ID))
                     .map(Object::toString))
