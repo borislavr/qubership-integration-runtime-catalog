@@ -26,6 +26,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
+
 @Slf4j
 @Component
 public class IdempotencyPropertiesBuilder implements ElementPropertiesBuilder {
