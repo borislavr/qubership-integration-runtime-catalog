@@ -16,19 +16,16 @@
 
 package org.qubership.integration.platform.runtime.catalog.service.deployment.properties.builders;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import lombok.extern.slf4j.Slf4j;
+import org.qubership.integration.platform.catalog.consul.ConfigurationPropertiesConstants;
+import org.qubership.integration.platform.catalog.model.constant.CamelNames;
+import org.qubership.integration.platform.catalog.model.constant.CamelOptions;
 import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.element.ChainElement;
 import org.qubership.integration.platform.runtime.catalog.service.deployment.properties.ElementPropertiesBuilder;
 import org.springframework.stereotype.Component;
 
-import lombok.extern.slf4j.Slf4j;
-
-import org.qubership.integration.platform.catalog.consul.ConfigurationPropertiesConstants;
-import org.qubership.integration.platform.catalog.model.constant.CamelNames;
-import org.qubership.integration.platform.catalog.model.constant.CamelOptions;
-
+import java.util.HashMap;
+import java.util.Map;
 @Slf4j
 @Component
 public class IdempotencyPropertiesBuilder implements ElementPropertiesBuilder {
