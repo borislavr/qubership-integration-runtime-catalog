@@ -24,6 +24,7 @@ import org.qubership.integration.platform.catalog.persistence.configs.entity.act
 import org.qubership.integration.platform.catalog.service.ActionsLogService;
 import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.engine.LiveExchangeDTO;
 import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.engine.LiveExchangeExtDTO;
+import org.qubership.integration.platform.runtime.catalog.service.helpers.ChainFinderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -41,19 +42,19 @@ public class LiveExchangesService {
     private final RestTemplate restTemplateMs;
     private final ActionsLogService actionLogger;
     private final DeploymentService deploymentService;
-    private final ChainService chainService;
+    private final ChainFinderService chainFinderService;
 
     @Autowired
     public LiveExchangesService(RuntimeDeploymentService runtimeDeploymentService,
                                 RestTemplate restTemplateMs,
                                 ActionsLogService actionLogger,
                                 DeploymentService deploymentService,
-                                ChainService chainService) {
+                                ChainFinderService chainFinderService) {
         this.runtimeDeploymentService = runtimeDeploymentService;
         this.restTemplateMs = restTemplateMs;
         this.actionLogger = actionLogger;
         this.deploymentService = deploymentService;
-        this.chainService = chainService;
+        this.chainFinderService = chainFinderService;
     }
 
     public List<LiveExchangeExtDTO> getTopLongLiveExchanges(int limit) {
@@ -76,7 +77,7 @@ public class LiveExchangesService {
     }
 
     private void enrichResultWithChainName(List<LiveExchangeExtDTO> result) {
-        Map<String, String> idNameChainMap = chainService.findAllById(result.stream().map(LiveExchangeExtDTO::getChainId).toList()).stream().collect(Collectors.toMap(AbstractEntity::getId, AbstractEntity::getName));
+        Map<String, String> idNameChainMap = chainFinderService.findAllById(result.stream().map(LiveExchangeExtDTO::getChainId).toList()).stream().collect(Collectors.toMap(AbstractEntity::getId, AbstractEntity::getName));
         result.forEach(r -> r.setChainName(idNameChainMap.get(r.getChainId())));
     }
 

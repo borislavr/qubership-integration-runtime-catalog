@@ -146,20 +146,19 @@ public class EnvironmentPropertiesHelper {
             throw new SnapshotCreationException("Couldn't find service or active service environment.", element);
         }
 
-        Map<String, Object> properties = Stream.of(
-                Optional.ofNullable(environment.getProperties())
-                .orElse(Collections.emptyMap()),
-                ElementUtils.extractGrpcProperties(element.getProperties())
-        )
+        return Stream.of(
+                        Optional.ofNullable(environment.getProperties())
+                                .orElse(Collections.emptyMap()),
+                        ElementUtils.extractGrpcProperties(element.getProperties())
+                )
                 .map(Map::entrySet)
                 .flatMap(Collection::stream)
                 .filter(grpcProperties())
                 .collect(Collectors.toMap(
-                        Map.Entry::getKey,
-                        Map.Entry::getValue,
+                        Entry::getKey,
+                        Entry::getValue,
                         (oldValue, newValue) -> newValue
                 ));
-        return properties;
     }
 
     private static Predicate<Entry<String, Object>> grpcProperties() {

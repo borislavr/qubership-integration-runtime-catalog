@@ -35,10 +35,10 @@ import org.qubership.integration.platform.runtime.catalog.model.deployment.Runti
 import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.deployment.DeploymentRequest;
 import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.deployment.EngineDeploymentResponse;
 import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.deployment.RuntimeDeploymentUpdate;
-import org.qubership.integration.platform.runtime.catalog.service.ChainService;
 import org.qubership.integration.platform.runtime.catalog.service.DeploymentService;
 import org.qubership.integration.platform.runtime.catalog.service.RuntimeDeploymentService;
 import org.qubership.integration.platform.runtime.catalog.service.SnapshotService;
+import org.qubership.integration.platform.runtime.catalog.service.helpers.ChainFinderService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Collection;
@@ -58,7 +58,7 @@ public abstract class DeploymentMapper {
     @Autowired
     private SnapshotService snapshotService;
     @Autowired
-    private ChainService chainService;
+    private ChainFinderService chainFinderService;
 
     @Mapping(source = "snapshot.id", target = "snapshotId")
     @Mapping(source = "chain.id", target = "chainId")
@@ -87,7 +87,6 @@ public abstract class DeploymentMapper {
     @Mapping(source = "errorMessage", target = "error")
     public abstract RuntimeDeploymentState toDTO(EngineDeployment state);
 
-
     @Mapping(source = "deployment.deploymentInfo.deploymentId", target = "id")
     @Mapping(source = "deployment.deploymentInfo.chainId", target = "chainId")
     @Mapping(source = "deployment.deploymentInfo.chainName", target = "chainName")
@@ -112,7 +111,7 @@ public abstract class DeploymentMapper {
 
     public EngineDeploymentResponse asEngineDeployment(EngineDeployment deployment) {
         DeploymentInfo deploymentInfo = deployment.getDeploymentInfo();
-        String chainName = chainService.tryFindById(deploymentInfo.getChainId())
+        String chainName = chainFinderService.tryFindById(deploymentInfo.getChainId())
                 .map(AbstractEntity::getName).orElse(null);
         String snapshotName = snapshotService.tryFindById(deploymentInfo.getSnapshotId())
                 .map(AbstractEntity::getName).orElse(null);

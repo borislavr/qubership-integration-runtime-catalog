@@ -38,19 +38,20 @@ import org.qubership.integration.platform.catalog.service.difference.ChainDiffer
 import org.qubership.integration.platform.catalog.service.difference.ChainDifferenceService;
 import org.qubership.integration.platform.catalog.service.difference.EntityDifferenceResult;
 import org.qubership.integration.platform.catalog.util.ChainUtils;
+import org.qubership.integration.platform.runtime.catalog.exception.exceptions.ChainImportException;
 import org.qubership.integration.platform.runtime.catalog.model.exportimport.chain.*;
 import org.qubership.integration.platform.runtime.catalog.model.exportimport.instructions.ChainsIgnoreOverrideResult;
 import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.exportimport.chain.ImportChainPreviewDTO;
 import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.exportimport.chain.ImportEntityStatus;
 import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.exportimport.remoteimport.ChainCommitRequest;
 import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.exportimport.remoteimport.ChainCommitRequestAction;
-import org.qubership.integration.platform.runtime.catalog.rest.v1.exception.exceptions.ChainImportException;
 import org.qubership.integration.platform.runtime.catalog.service.*;
 import org.qubership.integration.platform.runtime.catalog.service.exportimport.entity.ChainDeployPrepare;
 import org.qubership.integration.platform.runtime.catalog.service.exportimport.instructions.ImportInstructionsService;
 import org.qubership.integration.platform.runtime.catalog.service.exportimport.mapper.chain.ChainExternalEntityMapper;
 import org.qubership.integration.platform.runtime.catalog.service.exportimport.migrations.chain.ChainImportFileMigration;
 import org.qubership.integration.platform.runtime.catalog.service.exportimport.migrations.chain.ImportFileMigrationUtils;
+import org.qubership.integration.platform.runtime.catalog.service.helpers.ChainFinderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.NonNull;
@@ -80,6 +81,7 @@ public class ChainImportService {
     private final TransactionTemplate transactionTemplate;
     private final Map<Integer, ChainImportFileMigration> chainImportFileMigrations;
     private final ChainService chainService;
+    private final ChainFinderService chainFinderService;
     private final FolderService folderService;
     private final SnapshotService snapshotService;
     private final DeploymentService deploymentService;
@@ -102,6 +104,7 @@ public class ChainImportService {
             TransactionTemplate transactionTemplate,
             List<ChainImportFileMigration> chainImportFileMigrations,
             ChainService chainService,
+            ChainFinderService chainFinderService,
             FolderService folderService,
             SnapshotService snapshotService,
             DeploymentService deploymentService,
@@ -120,6 +123,7 @@ public class ChainImportService {
         this.chainImportFileMigrations = chainImportFileMigrations.stream()
                 .collect(Collectors.toMap(ChainImportFileMigration::getVersion, Function.identity()));
         this.chainService = chainService;
+        this.chainFinderService = chainFinderService;
         this.folderService = folderService;
         this.snapshotService = snapshotService;
         this.deploymentService = deploymentService;
@@ -180,7 +184,7 @@ public class ChainImportService {
 
         if (diffRequest.getLeftSnapshotId() == null) {
             return chainDifferenceService.findChainsDifferences(
-                    chainService.tryFindById(diffRequest.getLeftChainId())
+                    chainFinderService.tryFindById(diffRequest.getLeftChainId())
                             .orElseThrow(() -> new ComparisonEntityNotFoundException("Can't find chain with id: " + diffRequest.getLeftChainId())),
                     rightChain
             );
@@ -403,7 +407,7 @@ public class ChainImportService {
     }
 
     public ImportChainResult saveImportedChain(ChainExternalEntity chainExternalEntity, File chainFilesDir, Set<String> technicalLabels) {
-        Chain currentChainState = chainService.tryFindById(chainExternalEntity.getId()).orElse(null);
+        Chain currentChainState = chainFinderService.tryFindById(chainExternalEntity.getId()).orElse(null);
         ImportEntityStatus importStatus = currentChainState != null ? ImportEntityStatus.UPDATED : ImportEntityStatus.CREATED;
 
         Folder existingFolder = null;
@@ -683,7 +687,7 @@ public class ChainImportService {
      */
     @Deprecated(since = "2023.4")
     public void saveImportedChainBackward(Chain importedChain) {
-        Chain currentChainState = chainService.tryFindById(importedChain.getId()).orElse(null);
+        Chain currentChainState = chainFinderService.tryFindById(importedChain.getId()).orElse(null);
         Folder existingFolder = null;
         if (importedChain.getParentFolder() != null) {
             existingFolder = folderService.findEntityByIdOrNull(importedChain.getParentFolder().getId());

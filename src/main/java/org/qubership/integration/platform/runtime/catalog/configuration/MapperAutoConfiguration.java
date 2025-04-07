@@ -18,6 +18,7 @@ package org.qubership.integration.platform.runtime.catalog.configuration;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
@@ -27,6 +28,8 @@ import org.qubership.integration.platform.catalog.persistence.configs.entity.cha
 import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.Dependency;
 import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.MaskedField;
 import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.element.ChainElement;
+import org.qubership.integration.platform.runtime.catalog.service.codeview.deserializer.CodeviewChainElementDeserializer;
+import org.qubership.integration.platform.runtime.catalog.service.codeview.serializer.CodeviewChainElementSerializer;
 import org.qubership.integration.platform.runtime.catalog.service.exportimport.deserializer.ChainDeserializer;
 import org.qubership.integration.platform.runtime.catalog.service.exportimport.deserializer.ChainElementDeserializer;
 import org.qubership.integration.platform.runtime.catalog.service.exportimport.entity.ChainDeserializationResult;
@@ -85,6 +88,18 @@ public class MapperAutoConfiguration {
                 SimpleBeanPropertyFilter.serializeAllExcept(excludedFields));
         yamlMapper.setFilterProvider(simpleFilterProvider);
         yamlMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+        return yamlMapper;
+    }
+
+    @Bean("codeViewYamlMapper")
+    public YAMLMapper codeViewYamlMapper(ObjectMapper objectMapper) {
+        YAMLMapper yamlMapper = new YAMLMapper(createCustomYamlFactory());
+        SimpleModule serializeModule = new SimpleModule();
+        yamlMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        serializeModule.addSerializer(ChainElement.class, new CodeviewChainElementSerializer());
+        serializeModule.addDeserializer(ChainElement.class, new CodeviewChainElementDeserializer(objectMapper));
+        yamlMapper.registerModule(serializeModule);
 
         return yamlMapper;
     }

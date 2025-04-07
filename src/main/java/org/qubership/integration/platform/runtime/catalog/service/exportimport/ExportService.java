@@ -33,8 +33,9 @@ import org.qubership.integration.platform.catalog.persistence.configs.entity.cha
 import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.element.ChainElement;
 import org.qubership.integration.platform.catalog.service.ActionsLogService;
 import org.qubership.integration.platform.catalog.service.exportimport.ExportImportUtils;
-import org.qubership.integration.platform.runtime.catalog.rest.v1.exception.exceptions.ChainExportException;
+import org.qubership.integration.platform.runtime.catalog.exception.exceptions.ChainExportException;
 import org.qubership.integration.platform.runtime.catalog.service.ChainService;
+import org.qubership.integration.platform.runtime.catalog.service.helpers.ChainFinderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.util.Pair;
@@ -61,21 +62,24 @@ public class ExportService {
     private final YAMLMapper yamlMapper;
     private final ObjectMapper objectMapper;
     private final ChainService chainService;
+    private final ChainFinderService chainFinderService;
     private final ActionsLogService actionLogger;
 
     @Autowired
     public ExportService(YAMLMapper yamlMapper,
                          @Qualifier("primaryObjectMapper") ObjectMapper objectMapper,
                          ChainService chainService,
+                         ChainFinderService chainFinderService,
                          ActionsLogService actionLogger) {
         this.yamlMapper = yamlMapper;
         this.objectMapper = objectMapper;
         this.chainService = chainService;
+        this.chainFinderService = chainFinderService;
         this.actionLogger = actionLogger;
     }
 
     public Pair<String, byte[]> exportAllChains() {
-        List<Chain> allChains = chainService.findAll();
+        List<Chain> allChains = chainFinderService.findAll();
         return exportChain(allChains);
     }
 
@@ -83,12 +87,12 @@ public class ExportService {
         if (exportWithSubChains) {
             chainIds = chainService.getSubChainsIds(chainIds, new ArrayList<String>());
         }
-        List<Chain> chains = chainService.findAllById(chainIds);
+        List<Chain> chains = chainFinderService.findAllById(chainIds);
         return exportChain(chains);
     }
 
     public Pair<String, byte[]> exportSingleChain(String chainId) {
-        Chain chain = chainService.findById(chainId);
+        Chain chain = chainFinderService.findById(chainId);
         return exportChain(List.of(chain));
     }
 

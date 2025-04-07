@@ -32,12 +32,13 @@ import org.qubership.integration.platform.catalog.persistence.configs.entity.cha
 import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.element.ChainElement;
 import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.element.ContainerChainElement;
 import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.element.SwimlaneChainElement;
+import org.qubership.integration.platform.catalog.persistence.configs.repository.chain.ChainRepository;
 import org.qubership.integration.platform.catalog.persistence.configs.repository.chain.DependencyRepository;
 import org.qubership.integration.platform.catalog.persistence.configs.repository.chain.ElementRepository;
-import org.qubership.integration.platform.catalog.persistence.configs.repository.chain.SnapshotLabelsRepository;
 import org.qubership.integration.platform.catalog.service.ActionsLogService;
 import org.qubership.integration.platform.runtime.catalog.builder.XmlBuilder;
 import org.qubership.integration.platform.runtime.catalog.persistence.configs.repository.SnapshotRepository;
+import org.qubership.integration.platform.runtime.catalog.service.helpers.ChainFinderService;
 import org.qubership.integration.platform.runtime.catalog.service.verification.ElementPropertiesVerificationService;
 import org.qubership.integration.platform.runtime.catalog.service.verification.properties.VerificationError;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,9 +67,10 @@ public class SnapshotService {
 
     private final SnapshotRepository snapshotRepository;
     private final ElementRepository elementRepository;
+    private final ChainRepository chainRepository;
     private final ElementService elementService;
     private final XmlBuilder xmlBuilder;
-    private final ChainService chainService;
+    private final ChainFinderService chainFinderService;
     private final DependencyRepository dependencyRepository;
     private final DeploymentService deploymentService;
     private final ActionsLogService actionLogger;
@@ -76,27 +78,27 @@ public class SnapshotService {
     private final MaskedFieldsService maskedFieldsService;
     private final TransactionHandler transactionHandler;
     private final SnapshotService self;
-    private final SnapshotLabelsRepository snapshotLabelsRepository;
 
     @Autowired
     public SnapshotService(SnapshotRepository snapshotRepository,
                            ElementRepository elementRepository,
+                           ChainRepository chainRepository,
                            ElementService elementService,
                            XmlBuilder xmlBuilder,
-                           ChainService chainService,
+                           ChainFinderService chainFinderService,
                            DependencyRepository dependencyRepository,
                            @Lazy DeploymentService deploymentService,
                            @Lazy SnapshotService self,
                            ActionsLogService actionLogger,
                            ElementPropertiesVerificationService elementPropertiesVerificationService,
                            MaskedFieldsService maskedFieldsService,
-                           TransactionHandler  transactionHandler,
-                           SnapshotLabelsRepository snapshotLabelsRepository) {
+                           TransactionHandler  transactionHandler) {
         this.snapshotRepository = snapshotRepository;
         this.elementRepository = elementRepository;
+        this.chainRepository = chainRepository;
         this.elementService = elementService;
         this.xmlBuilder = xmlBuilder;
-        this.chainService = chainService;
+        this.chainFinderService = chainFinderService;
         this.dependencyRepository = dependencyRepository;
         this.deploymentService = deploymentService;
         this.actionLogger = actionLogger;
@@ -104,7 +106,6 @@ public class SnapshotService {
         this.maskedFieldsService = maskedFieldsService;
         this.transactionHandler = transactionHandler;
         this.self = self;
-        this.snapshotLabelsRepository = snapshotLabelsRepository;
     }
 
     public Snapshot findById(String snapshotId) {
@@ -154,7 +155,7 @@ public class SnapshotService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public Snapshot build(String chainId, Set<String> technicalLabels) {
-        Chain chain = chainService.findById(chainId);
+        Chain chain = chainFinderService.findById(chainId);
         verifyElementProperties(chain);
 
         String name = snapshotRepository.getNextAvailableName(chainId);
@@ -182,7 +183,8 @@ public class SnapshotService {
                     ? (RuntimeException) e
                     : new RuntimeException("Failed to build xml configuration", e);
         }
-        chainService.setCurrentSnapshot(chain.getId(), snapshot);
+        chainRepository.updateCurrentSnapshot(chainId, snapshot);
+        chainRepository.updateUnsavedChanges(chainId, false);
 
         logSnapshotAction(snapshot, chain, LogOperation.CREATE);
 
@@ -220,7 +222,7 @@ public class SnapshotService {
     public Snapshot revert(String chainId, String snapshotId) {
         elementService.deleteAllByChainIdAndFlush(chainId);
         maskedFieldsService.deleteAllByChainIdAndFlush(chainId);
-        Chain chain = chainService.findById(chainId);
+        Chain chain = chainFinderService.findById(chainId);
         Snapshot snapshot = findById(snapshotId);
         revertElements(snapshot, chain);
         revertMaskedFields(snapshot.getMaskedFields(), chain);
@@ -353,7 +355,8 @@ public class SnapshotService {
     public void deleteAllByChainId(String chainId) {
         List<Snapshot>  snapshots = findByChainIdLight(chainId);
         deploymentService.deleteAllByChainId(chainId);
-        chainService.clearCurrentSnapshot(chainId);
+        chainRepository.updateCurrentSnapshot(chainId, null);
+        chainRepository.updateUnsavedChanges(chainId, true);
         snapshotRepository.deleteAllByChainId(chainId);
         snapshots.forEach(snapshot -> logSnapshotAction(snapshot, snapshot.getChain(), LogOperation.DELETE));
     }
@@ -449,7 +452,7 @@ public class SnapshotService {
                 List<Map<String, String>> result = snapshotRepository.pruneByCreatedWhen(deletionDate, chunk);
                 result.forEach(s -> logSnapshotAction(
                         s.get(AbstractEntity.Fields.id), s.get(AbstractEntity.Fields.name), s.get(Snapshot.Fields.chain),
-                        chainService.tryFindById(s.get(Snapshot.Fields.chain)).map(Chain::getName).orElse(null), // XXX Potential performance improvement
+                        chainFinderService.tryFindById(s.get(Snapshot.Fields.chain)).map(Chain::getName).orElse(null), // XXX Potential performance improvement
                         LogOperation.DELETE));
                 return result.size();
             });

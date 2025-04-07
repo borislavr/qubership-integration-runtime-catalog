@@ -36,6 +36,7 @@ import org.qubership.integration.platform.catalog.persistence.configs.entity.cha
 import org.qubership.integration.platform.catalog.persistence.configs.repository.chain.ChainRepository;
 import org.qubership.integration.platform.catalog.service.ActionsLogService;
 import org.qubership.integration.platform.catalog.service.exportimport.ExportImportUtils;
+import org.qubership.integration.platform.runtime.catalog.exception.exceptions.ChainImportException;
 import org.qubership.integration.platform.runtime.catalog.model.exportimport.ImportResult;
 import org.qubership.integration.platform.runtime.catalog.model.exportimport.chain.ChainExternalEntity;
 import org.qubership.integration.platform.runtime.catalog.model.exportimport.chain.ChainExternalMapperEntity;
@@ -48,7 +49,6 @@ import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.exportimpo
 import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.exportimport.chain.ImportPreviewDTO;
 import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.exportimport.engine.ImportDomainDTO;
 import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.exportimport.remoteimport.*;
-import org.qubership.integration.platform.runtime.catalog.rest.v1.exception.exceptions.ChainImportException;
 import org.qubership.integration.platform.runtime.catalog.service.*;
 import org.qubership.integration.platform.runtime.catalog.service.exportimport.entity.ChainDeployPrepare;
 import org.qubership.integration.platform.runtime.catalog.service.exportimport.entity.ChainDeserializationResult;
@@ -56,6 +56,7 @@ import org.qubership.integration.platform.runtime.catalog.service.exportimport.m
 import org.qubership.integration.platform.runtime.catalog.service.exportimport.migrations.ImportFileMigration;
 import org.qubership.integration.platform.runtime.catalog.service.exportimport.migrations.chain.ChainImportFileMigration;
 import org.qubership.integration.platform.runtime.catalog.service.exportimport.migrations.chain.ImportFileMigrationUtils;
+import org.qubership.integration.platform.runtime.catalog.service.helpers.ChainFinderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -94,7 +95,7 @@ public class ImportService {
     private final DeploymentService deploymentService;
     protected final SnapshotService snapshotService;
     private final EngineService engineService;
-    private final ChainService chainService;
+    private final ChainFinderService chainFinderService;
     private final FolderService folderService;
     private final ImportSessionService importProgressService;
     private final ChainImportService chainImportService;
@@ -113,7 +114,7 @@ public class ImportService {
                          DeploymentService deploymentService,
                          SnapshotService snapshotService,
                          EngineService engineService,
-                         ChainService chainService,
+                         ChainFinderService chainFinderService,
                          FolderService folderService,
                          ChainRepository chainRepository,
                          ImportSessionService importProgressService,
@@ -129,7 +130,7 @@ public class ImportService {
         this.deploymentService = deploymentService;
         this.snapshotService = snapshotService;
         this.engineService = engineService;
-        this.chainService = chainService;
+        this.chainFinderService = chainFinderService;
         this.folderService = folderService;
         this.chainRepository = chainRepository;
         this.importProgressService = importProgressService;
@@ -450,7 +451,7 @@ public class ImportService {
                             .anyMatch(request -> request.getId().equals(finalBasicChainInfo.getId()))) {
 
                 ChainExternalEntity chainExternalEntity = yamlMapper.readValue(migratedYaml, ChainExternalEntity.class);
-                Chain currentChainState = chainService.tryFindById(chainExternalEntity.getId()).orElse(null);
+                Chain currentChainState = chainFinderService.tryFindById(chainExternalEntity.getId()).orElse(null);
                 ImportEntityStatus importStatus = currentChainState != null ? ImportEntityStatus.UPDATED : ImportEntityStatus.CREATED;
                 Folder existingFolder = null;
                 if (chainExternalEntity.getFolder() != null) {

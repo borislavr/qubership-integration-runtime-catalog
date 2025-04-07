@@ -35,13 +35,14 @@ import org.qubership.integration.platform.catalog.persistence.configs.entity.cha
 import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.element.ChainElementSearchCriteria;
 import org.qubership.integration.platform.catalog.persistence.configs.repository.chain.ElementRepository;
 import org.qubership.integration.platform.catalog.service.ActionsLogService;
+import org.qubership.integration.platform.runtime.catalog.exception.exceptions.DeploymentProcessingException;
 import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.chain.ChainRolesDTO;
 import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.chain.ChainRolesResponse;
 import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.chain.UpdateRolesRequest;
 import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.deployment.DeploymentRequest;
-import org.qubership.integration.platform.runtime.catalog.rest.v1.exception.exceptions.DeploymentProcessingException;
 import org.qubership.integration.platform.runtime.catalog.rest.v1.mapper.ChainRolesMapper;
 import org.qubership.integration.platform.runtime.catalog.rest.v1.mapper.DeploymentMapper;
+import org.qubership.integration.platform.runtime.catalog.service.helpers.ChainFinderService;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -58,6 +59,7 @@ public class ChainRolesService {
     private final RuntimeDeploymentService runtimeDeploymentService;
     private final ChainRolesMapper chainRolesMapper;
     private final ChainService chainService;
+    private final ChainFinderService chainFinderService;
     private final ElementRepository elementRepository;
     private final DeploymentMapper deploymentMapper;
     private final SnapshotService snapshotService;
@@ -69,6 +71,7 @@ public class ChainRolesService {
                              DeploymentService deploymentService,
                              RuntimeDeploymentService runtimeDeploymentService,
                              ChainRolesMapper chainRolesMapper, ChainService chainService,
+                             ChainFinderService chainFinderService,
                              ElementRepository elementRepository,
                              DeploymentMapper deploymentMapper,
                              SnapshotService snapshotService, ActionsLogService actionLogger) {
@@ -77,6 +80,7 @@ public class ChainRolesService {
         this.runtimeDeploymentService = runtimeDeploymentService;
         this.chainRolesMapper = chainRolesMapper;
         this.chainService = chainService;
+        this.chainFinderService = chainFinderService;
         this.elementRepository = elementRepository;
         this.deploymentMapper = deploymentMapper;
         this.snapshotService = snapshotService;
@@ -143,7 +147,7 @@ public class ChainRolesService {
                 .filter(UpdateRolesRequest::getUnsavedChanges)
                 .map(UpdateRolesRequest::getChainId)
                 .collect(Collectors.toSet()).forEach(chainId -> {
-                    Chain chain = chainService.findById(chainId);
+                    Chain chain = chainFinderService.findById(chainId);
                     try {
                         List<Deployment> deployments = chain.getDeployments();
                         List<DeploymentRequest> deploymentRequestLst = new ArrayList<>();

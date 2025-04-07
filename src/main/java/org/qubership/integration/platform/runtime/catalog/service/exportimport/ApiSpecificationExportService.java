@@ -49,9 +49,9 @@ import org.qubership.integration.platform.catalog.persistence.configs.entity.cha
 import org.qubership.integration.platform.catalog.persistence.configs.repository.chain.ElementRepository;
 import org.qubership.integration.platform.catalog.persistence.configs.repository.operations.OperationRepository;
 import org.qubership.integration.platform.catalog.util.TriggerUtils;
-import org.qubership.integration.platform.runtime.catalog.rest.v1.exception.exceptions.ApiSpecificationExportException;
-import org.qubership.integration.platform.runtime.catalog.rest.v1.exception.exceptions.HttpTriggerMethodsNotSpecified;
-import org.qubership.integration.platform.runtime.catalog.rest.v1.exception.exceptions.WrongChainElementTypeException;
+import org.qubership.integration.platform.runtime.catalog.exception.exceptions.ApiSpecificationExportException;
+import org.qubership.integration.platform.runtime.catalog.exception.exceptions.HttpTriggerMethodsNotSpecified;
+import org.qubership.integration.platform.runtime.catalog.exception.exceptions.WrongChainElementTypeException;
 import org.qubership.integration.platform.runtime.catalog.service.SystemModelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

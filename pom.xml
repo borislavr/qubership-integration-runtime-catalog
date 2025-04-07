@@ -44,6 +44,8 @@
         <wire.version>4.9.3</wire.version>
         <okio.version>3.6.0</okio.version>
         <dhatim.fastexcel.version>0.16.4</dhatim.fastexcel.version>
+        <freemarker.version>2.3.33</freemarker.version>
+        <flexmark.version>0.64.8</flexmark.version>
 
         <!-- Plugins -->
 
@@ -222,6 +224,21 @@
                 <artifactId>fastexcel</artifactId>
                 <version>${dhatim.fastexcel.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.freemarker</groupId>
+                <artifactId>freemarker</artifactId>
+                <version>${freemarker.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.vladsch.flexmark</groupId>
+                <artifactId>flexmark</artifactId>
+                <version>${flexmark.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.vladsch.flexmark</groupId>
+                <artifactId>flexmark-ext-tables</artifactId>
+                <version>${flexmark.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -241,6 +258,19 @@
         <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-database-postgresql</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.freemarker</groupId>
+            <artifactId>freemarker</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.vladsch.flexmark</groupId>
+            <artifactId>flexmark</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.vladsch.flexmark</groupId>
+            <artifactId>flexmark-ext-tables</artifactId>
         </dependency>
 
         <!-- Spring dependencies -->

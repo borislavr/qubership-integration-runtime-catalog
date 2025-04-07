@@ -40,6 +40,7 @@ import org.qubership.integration.platform.runtime.catalog.model.deployment.updat
 import org.qubership.integration.platform.runtime.catalog.rest.v1.mapper.DeploymentRouteMapper;
 import org.qubership.integration.platform.runtime.catalog.service.*;
 import org.qubership.integration.platform.runtime.catalog.service.deployment.properties.ElementPropertiesBuilderFactory;
+import org.qubership.integration.platform.runtime.catalog.service.helpers.ChainFinderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
@@ -63,7 +64,7 @@ public class DeploymentBuilderService {
     private static final Pattern DEPLOYMENT_ID_PLACEHOLDER_PATTERN = Pattern.compile("%%\\{deployment-id-placeholder}");
     private static final String DOMAIN_PLACEHOLDER = "%%{domain-placeholder}";
 
-    private final ChainService chainService;
+    private final ChainFinderService chainFinderService;
     private final SnapshotService snapshotService;
     private final ElementUtils elementUtils;
     private final ElementPropertiesBuilderFactory elementPropertiesBuilderFactory;
@@ -74,7 +75,7 @@ public class DeploymentBuilderService {
 
     @Autowired
     public DeploymentBuilderService(
-            @Lazy ChainService chainService,
+            ChainFinderService chainFinderService,
             @Lazy SnapshotService snapshotService,
             ElementUtils elementUtils,
             ElementPropertiesBuilderFactory elementPropertiesBuilderFactory,
@@ -82,7 +83,7 @@ public class DeploymentBuilderService {
             DeploymentRouteMapper deploymentRouteMapper,
             SystemService systemService,
             EnvironmentService environmentService) {
-        this.chainService = chainService;
+        this.chainFinderService = chainFinderService;
         this.snapshotService = snapshotService;
         this.elementUtils = elementUtils;
         this.elementPropertiesBuilderFactory = elementPropertiesBuilderFactory;
@@ -95,7 +96,7 @@ public class DeploymentBuilderService {
     public List<DeploymentUpdate> buildDeploymentsUpdate(List<Deployment> deployments) {
         List<DeploymentUpdate> result = new ArrayList<>();
         for (Deployment deployment : deployments) {
-            Chain chain = chainService.findById(deployment.getChain().getId());
+            Chain chain = chainFinderService.findById(deployment.getChain().getId());
             Snapshot snapshot = snapshotService.findById(deployment.getSnapshot().getId());
 
             DeploymentConfiguration config = createUpdateDeploymentConfiguration(deployment);
