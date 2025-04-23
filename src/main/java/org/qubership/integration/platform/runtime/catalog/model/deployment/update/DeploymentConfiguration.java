@@ -19,6 +19,7 @@ package org.qubership.integration.platform.runtime.catalog.model.deployment.upda
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -34,4 +35,6 @@ public class DeploymentConfiguration {
     private List<ElementProperties> properties;
     @Schema(description = "List of routes to register on control-plane")
     private List<DeploymentRouteUpdate> routes;
+    @Schema(description = "List of kamelets used by chain")
+    private List<String> kamelets = new ArrayList<>(0);
 }

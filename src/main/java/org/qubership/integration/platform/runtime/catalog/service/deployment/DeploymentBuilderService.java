@@ -31,6 +31,7 @@ import org.qubership.integration.platform.catalog.persistence.configs.entity.cha
 import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.element.ChainElement;
 import org.qubership.integration.platform.catalog.persistence.configs.entity.system.Environment;
 import org.qubership.integration.platform.catalog.persistence.configs.entity.system.IntegrationSystem;
+import org.qubership.integration.platform.catalog.service.KameletStorageService;
 import org.qubership.integration.platform.catalog.service.library.LibraryElementsService;
 import org.qubership.integration.platform.catalog.util.ElementUtils;
 import org.qubership.integration.platform.runtime.catalog.builder.BuilderConstants;
@@ -71,6 +72,7 @@ public class DeploymentBuilderService {
     private final DeploymentRouteMapper deploymentRouteMapper;
     private final SystemService systemService;
     private final EnvironmentService environmentService;
+    private final KameletStorageService kameletStorageService;
 
     @Autowired
     public DeploymentBuilderService(
@@ -81,7 +83,8 @@ public class DeploymentBuilderService {
             LibraryElementsService libraryService,
             DeploymentRouteMapper deploymentRouteMapper,
             SystemService systemService,
-            EnvironmentService environmentService) {
+            EnvironmentService environmentService,
+            KameletStorageService kameletStorageService) {
         this.chainService = chainService;
         this.snapshotService = snapshotService;
         this.elementUtils = elementUtils;
@@ -90,6 +93,7 @@ public class DeploymentBuilderService {
         this.deploymentRouteMapper = deploymentRouteMapper;
         this.systemService = systemService;
         this.environmentService = environmentService;
+        this.kameletStorageService = kameletStorageService;
     }
 
     public List<DeploymentUpdate> buildDeploymentsUpdate(List<Deployment> deployments) {
@@ -152,6 +156,7 @@ public class DeploymentBuilderService {
         filteredElements = elementUtils.splitCompositeTriggers(filteredElements);
 
         List<ElementProperties> elementProperties = new ArrayList<>();
+        List<String> kamelets = new ArrayList<>();
         filteredElements.stream()
                 .map(element -> {
                     Map<String, String> properties = new HashMap<>(elementPropertiesBuilderFactory
@@ -183,6 +188,13 @@ public class DeploymentBuilderService {
                             }
                         }
                     }
+                    if (KAMELET_ELEMENT.equals(element.getType())) {
+                        String kameletSpecification = kameletStorageService.getKameletByName((String) element.getProperty(KAMELET_NAME_PROPERTY));
+                        if (StringUtils.isNotEmpty(kameletSpecification)) {
+                            kamelets.add(kameletSpecification);
+                        }
+                    }
+
                     return ElementProperties.builder().elementId(element.getId()).properties(properties).build();
                 })
                 .forEach(elementProperties::add);
@@ -192,6 +204,7 @@ public class DeploymentBuilderService {
                 .xml(xml)
                 .properties(elementProperties)
                 .routes(deploymentRouteMapper.asUpdates(deployment.getDeploymentRoutes()))
+                .kamelets(kamelets)
                 .build();
     }
 

@@ -179,6 +179,20 @@ public class EnvironmentPropertiesHelper {
         }
     }
 
+    /**
+     * Handlebars helper, that returns kamelet properties in json format
+     */
+    @SuppressWarnings("unused")
+    public CharSequence kameletPropertiesJson(ChainElement element) {
+        try {
+            Map<String, Object> kameletProperties = ElementUtils.extractKameletProperties(element.getProperties());
+            return OBJECT_MAPPER.writeValueAsString(kameletProperties);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(
+                    "Error processing json in kameletPropertiesJson helper", e);
+        }
+    }
+
     private static Predicate<Entry<String, Object>> filterAsyncProperties() {
         return prop -> prop.getValue() != null && !(prop.getKey().startsWith(MAAS_ENV_PROP_PREFIX));
     }
