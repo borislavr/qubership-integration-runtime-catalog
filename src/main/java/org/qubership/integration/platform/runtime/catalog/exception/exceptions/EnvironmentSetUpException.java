@@ -16,8 +16,6 @@
 
 package org.qubership.integration.platform.runtime.catalog.exception.exceptions;
 
-import org.qubership.integration.platform.catalog.exception.CatalogRuntimeException;
-
 public class EnvironmentSetUpException extends CatalogRuntimeException {
 
     private static final String ERROR_MESSAGE = "Unable set up environment, invalid address";

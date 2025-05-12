@@ -24,8 +24,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
-import org.qubership.integration.platform.catalog.validation.constraint.ChainNotOverrideItself;
-import org.qubership.integration.platform.catalog.validation.constraint.NotStartOrEndWithSpace;
+import org.qubership.integration.platform.runtime.catalog.validation.constraint.ChainNotOverrideItself;
+import org.qubership.integration.platform.runtime.catalog.validation.constraint.NotStartOrEndWithSpace;
 
 @Getter
 @Setter

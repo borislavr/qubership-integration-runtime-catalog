@@ -19,19 +19,17 @@ package org.qubership.integration.platform.runtime.catalog.service;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.qubership.integration.platform.catalog.model.system.IntegrationSystemType;
-import org.qubership.integration.platform.catalog.model.system.OperationProtocol;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.AbstractLabel;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.actionlog.LogOperation;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.system.Environment;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.system.IntegrationSystem;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.system.IntegrationSystemLabel;
-import org.qubership.integration.platform.catalog.persistence.configs.repository.system.IntegrationSystemLabelsRepository;
-import org.qubership.integration.platform.catalog.persistence.configs.repository.system.SystemRepository;
-import org.qubership.integration.platform.catalog.service.ActionsLogService;
-import org.qubership.integration.platform.catalog.service.SystemBaseService;
 import org.qubership.integration.platform.runtime.catalog.exception.exceptions.EnvironmentSetUpException;
 import org.qubership.integration.platform.runtime.catalog.exception.exceptions.SystemDeleteException;
+import org.qubership.integration.platform.runtime.catalog.model.system.IntegrationSystemType;
+import org.qubership.integration.platform.runtime.catalog.model.system.OperationProtocol;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.AbstractLabel;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.actionlog.LogOperation;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.system.Environment;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.system.IntegrationSystem;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.system.IntegrationSystemLabel;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.repository.system.IntegrationSystemLabelsRepository;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.repository.system.SystemRepository;
 import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.FilterRequestDTO;
 import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.system.SystemSearchRequestDTO;
 import org.qubership.integration.platform.runtime.catalog.service.filter.SystemFilterSpecificationBuilder;
@@ -47,7 +45,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static org.qubership.integration.platform.catalog.model.constant.CamelOptions.CONNECT_TIMEOUT;
+import static org.qubership.integration.platform.runtime.catalog.model.constant.CamelOptions.CONNECT_TIMEOUT;
 
 @Slf4j
 @Service

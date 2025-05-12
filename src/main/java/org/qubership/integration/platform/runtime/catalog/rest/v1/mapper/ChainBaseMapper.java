@@ -18,10 +18,10 @@ package org.qubership.integration.platform.runtime.catalog.rest.v1.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.NullValuePropertyMappingStrategy;
-import org.qubership.integration.platform.catalog.mapping.UserMapper;
-import org.qubership.integration.platform.catalog.model.dto.BaseResponse;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.Chain;
-import org.qubership.integration.platform.catalog.util.MapperUtils;
+import org.qubership.integration.platform.runtime.catalog.model.dto.BaseResponse;
+import org.qubership.integration.platform.runtime.catalog.model.mapper.mapping.UserMapper;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.chain.Chain;
+import org.qubership.integration.platform.runtime.catalog.util.MapperUtils;
 
 import java.util.List;
 

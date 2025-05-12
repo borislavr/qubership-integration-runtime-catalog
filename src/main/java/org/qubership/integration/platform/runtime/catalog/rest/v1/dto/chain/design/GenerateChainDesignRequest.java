@@ -19,7 +19,7 @@ package org.qubership.integration.platform.runtime.catalog.rest.v1.dto.chain.des
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
-import org.qubership.integration.platform.catalog.model.designgenerator.DiagramMode;
+import org.qubership.integration.platform.runtime.catalog.model.designgenerator.DiagramMode;
 
 import java.util.List;
 

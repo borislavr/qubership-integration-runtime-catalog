@@ -16,10 +16,10 @@
 
 package org.qubership.integration.platform.runtime.catalog.service.filter.complex;
 
-import org.qubership.integration.platform.catalog.model.chain.SessionsLoggingLevel;
-import org.qubership.integration.platform.catalog.model.deployment.properties.DeploymentRuntimeProperties;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.Chain;
+import org.qubership.integration.platform.runtime.catalog.model.chain.SessionsLoggingLevel;
+import org.qubership.integration.platform.runtime.catalog.model.deployment.properties.DeploymentRuntimeProperties;
 import org.qubership.integration.platform.runtime.catalog.model.filter.FilterFeature;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.chain.Chain;
 import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.FilterRequestDTO;
 import org.qubership.integration.platform.runtime.catalog.service.ChainRuntimePropertiesService;
 

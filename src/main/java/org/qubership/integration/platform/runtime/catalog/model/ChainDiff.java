@@ -17,9 +17,10 @@
 package org.qubership.integration.platform.runtime.catalog.model;
 
 import lombok.Getter;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.Dependency;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.element.ChainElement;
-import org.qubership.integration.platform.catalog.util.DistinctByKey;
+import lombok.Setter;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.chain.Dependency;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.chain.element.ChainElement;
+import org.qubership.integration.platform.runtime.catalog.util.DistinctByKey;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +33,9 @@ public class ChainDiff {
     private List<ChainElement> createdElements;
     private List<ChainElement> updatedElements;
     private List<ChainElement> removedElements;
+    @Setter
     private String createdDefaultSwimlaneId;
+    @Setter
     private String createdReuseSwimlaneId;
     private List<Dependency> createdDependencies;
     private List<Dependency> removedDependencies;
@@ -67,14 +70,6 @@ public class ChainDiff {
 
     public void addRemovedElements(List<ChainElement> chainElements) {
         chainElements.forEach(element -> addIfNotPresent(removedElements, element));
-    }
-
-    public void setCreatedDefaultSwimlaneId(String createdDefaultSwimlaneId) {
-        this.createdDefaultSwimlaneId = createdDefaultSwimlaneId;
-    }
-
-    public void setCreatedReuseSwimlaneId(String createdReuseGroupId) {
-        this.createdReuseSwimlaneId = createdReuseGroupId;
     }
 
     public void addCreatedDependency(Dependency dependency) {

@@ -17,16 +17,15 @@
 package org.qubership.integration.platform.runtime.catalog.service;
 
 import jakarta.persistence.EntityNotFoundException;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.actionlog.ActionLog;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.actionlog.EntityType;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.actionlog.LogOperation;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.Chain;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.FoldableEntity;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.Folder;
-import org.qubership.integration.platform.catalog.persistence.configs.repository.chain.ChainRepository;
-import org.qubership.integration.platform.catalog.persistence.configs.repository.chain.FolderRepository;
-import org.qubership.integration.platform.catalog.service.ActionsLogService;
 import org.qubership.integration.platform.runtime.catalog.exception.exceptions.FolderMoveException;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.actionlog.ActionLog;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.actionlog.EntityType;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.actionlog.LogOperation;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.chain.Chain;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.chain.FoldableEntity;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.chain.Folder;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.repository.chain.ChainRepository;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.repository.chain.FolderRepository;
 import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.folder.FolderContentFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.auditing.AuditingHandler;

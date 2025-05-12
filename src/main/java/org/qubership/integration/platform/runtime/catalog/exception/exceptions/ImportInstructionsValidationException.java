@@ -16,8 +16,6 @@
 
 package org.qubership.integration.platform.runtime.catalog.exception.exceptions;
 
-import org.qubership.integration.platform.catalog.exception.ImportInstructionsExternalException;
-
 public class ImportInstructionsValidationException extends ImportInstructionsExternalException {
 
     public ImportInstructionsValidationException(String errorMessage) {

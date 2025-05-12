@@ -1,9 +1,9 @@
 package org.qubership.integration.platform.runtime.catalog.service;
 
 import org.apache.commons.lang3.StringUtils;
-import org.qubership.integration.platform.catalog.model.system.ServiceEnvironment;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.system.Environment;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.system.IntegrationSystem;
+import org.qubership.integration.platform.runtime.catalog.model.system.ServiceEnvironment;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.system.Environment;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.system.IntegrationSystem;
 import org.qubership.integration.platform.runtime.catalog.service.mapping.ServiceEnvironmentMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,6 +12,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+
+import static org.qubership.integration.platform.runtime.catalog.model.system.IntegrationSystemType.*;
 
 @Service
 public class SystemEnvironmentsGenerator {

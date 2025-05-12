@@ -16,11 +16,13 @@
 
 package org.qubership.integration.platform.runtime.catalog.exception.exceptions;
 
-import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.Chain;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.element.ChainElement;
+import lombok.Getter;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.chain.Chain;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.chain.element.ChainElement;
 
 import java.util.Optional;
 
+@Getter
 public class ChainElementVerificationException extends ApiSpecificationExportException {
     private final String chainId;
     private final String elementId;
@@ -44,11 +46,4 @@ public class ChainElementVerificationException extends ApiSpecificationExportExc
         return Optional.ofNullable(element).map(ChainElement::getId).orElse(null);
     }
 
-    public String getChainId() {
-        return chainId;
-    }
-
-    public String getElementId() {
-        return elementId;
-    }
 }

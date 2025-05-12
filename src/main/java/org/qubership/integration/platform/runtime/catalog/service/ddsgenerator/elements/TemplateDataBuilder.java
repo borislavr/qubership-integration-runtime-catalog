@@ -17,14 +17,14 @@
 package org.qubership.integration.platform.runtime.catalog.service.ddsgenerator.elements;
 
 import lombok.extern.slf4j.Slf4j;
-import org.qubership.integration.platform.catalog.model.designgenerator.DiagramLangType;
-import org.qubership.integration.platform.catalog.model.designgenerator.DiagramMode;
-import org.qubership.integration.platform.catalog.model.system.IntegrationSystemType;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.Chain;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.element.ChainElement;
 import org.qubership.integration.platform.runtime.catalog.exception.exceptions.ddsgenerator.TemplateDataBuilderException;
 import org.qubership.integration.platform.runtime.catalog.exception.exceptions.ddsgenerator.TemplateDataEscapingException;
 import org.qubership.integration.platform.runtime.catalog.model.dds.*;
+import org.qubership.integration.platform.runtime.catalog.model.designgenerator.DiagramLangType;
+import org.qubership.integration.platform.runtime.catalog.model.designgenerator.DiagramMode;
+import org.qubership.integration.platform.runtime.catalog.model.system.IntegrationSystemType;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.chain.Chain;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.chain.element.ChainElement;
 import org.qubership.integration.platform.runtime.catalog.service.ddsgenerator.elements.converter.ElementDDSConverter;
 import org.qubership.integration.platform.runtime.catalog.service.designgenerator.DesignGeneratorService;
 import org.qubership.integration.platform.runtime.catalog.util.escaping.EscapeUtils;

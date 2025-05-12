@@ -16,11 +16,11 @@
 
 package org.qubership.integration.platform.runtime.catalog.service;
 
-import org.qubership.integration.platform.catalog.model.library.ElementDescriptor;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.element.ChainElement;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.element.ContainerChainElement;
-import org.qubership.integration.platform.catalog.service.library.LibraryElementsService;
 import org.qubership.integration.platform.runtime.catalog.model.ChainDiff;
+import org.qubership.integration.platform.runtime.catalog.model.library.ElementDescriptor;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.chain.element.ChainElement;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.chain.element.ContainerChainElement;
+import org.qubership.integration.platform.runtime.catalog.service.library.LibraryElementsService;
 import org.qubership.integration.platform.runtime.catalog.util.OrderedElementUtils;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;

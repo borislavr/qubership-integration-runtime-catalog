@@ -16,12 +16,12 @@
 
 package org.qubership.integration.platform.runtime.catalog.service.designgenerator.processors;
 
-import org.qubership.integration.platform.catalog.model.designgenerator.DiagramOperationType;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.element.ChainElement;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.element.ContainerChainElement;
-import org.qubership.integration.platform.catalog.util.DiagramBuilderEscapeUtil;
+import org.qubership.integration.platform.runtime.catalog.model.designgenerator.DiagramOperationType;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.chain.element.ChainElement;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.chain.element.ContainerChainElement;
 import org.qubership.integration.platform.runtime.catalog.service.designgenerator.SequenceDiagramBuilder;
 import org.qubership.integration.platform.runtime.catalog.service.designgenerator.processors.interfaces.ContainerDesignProcessor;
+import org.qubership.integration.platform.runtime.catalog.util.DiagramBuilderEscapeUtil;
 import org.springframework.stereotype.Component;
 import org.springframework.util.comparator.Comparators;
 

@@ -16,21 +16,20 @@
 
 package org.qubership.integration.platform.runtime.catalog.service;
 
-import org.qubership.integration.platform.catalog.model.library.ElementDescriptor;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.Dependency;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.element.ChainElement;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.element.ContainerChainElement;
-import org.qubership.integration.platform.catalog.persistence.configs.repository.chain.ElementRepository;
-import org.qubership.integration.platform.catalog.service.ActionsLogService;
-import org.qubership.integration.platform.catalog.service.library.LibraryElementsService;
-import org.qubership.integration.platform.catalog.util.ElementUtils;
 import org.qubership.integration.platform.runtime.catalog.configuration.aspect.ChainModification;
 import org.qubership.integration.platform.runtime.catalog.exception.exceptions.ElementCreationException;
 import org.qubership.integration.platform.runtime.catalog.exception.exceptions.ElementTransferException;
 import org.qubership.integration.platform.runtime.catalog.model.ChainDiff;
+import org.qubership.integration.platform.runtime.catalog.model.library.ElementDescriptor;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.chain.Dependency;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.chain.element.ChainElement;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.chain.element.ContainerChainElement;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.repository.chain.ElementRepository;
 import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.element.CreateElementRequest;
 import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.element.TransferElementRequest;
 import org.qubership.integration.platform.runtime.catalog.service.helpers.ChainFinderService;
+import org.qubership.integration.platform.runtime.catalog.service.library.LibraryElementsService;
+import org.qubership.integration.platform.runtime.catalog.util.ElementUtils;
 import org.qubership.integration.platform.runtime.catalog.util.OldContainerUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.auditing.AuditingHandler;

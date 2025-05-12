@@ -16,8 +16,6 @@
 
 package org.qubership.integration.platform.runtime.catalog.exception.exceptions;
 
-import org.qubership.integration.platform.catalog.exception.CatalogRuntimeException;
-
 public class KubeApiException extends CatalogRuntimeException {
 
     public KubeApiException(String message) {

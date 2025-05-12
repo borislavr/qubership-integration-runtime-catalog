@@ -20,9 +20,9 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import lombok.extern.slf4j.Slf4j;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.*;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.element.ChainElement;
 import org.qubership.integration.platform.runtime.catalog.model.exportimport.chain.DeploymentExternalEntity;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.chain.*;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.chain.element.ChainElement;
 import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.exportimport.remoteimport.ChainCommitRequestAction;
 import org.qubership.integration.platform.runtime.catalog.service.exportimport.entity.FolderSerializeEntity;
 import org.qubership.integration.platform.runtime.catalog.service.exportimport.migrations.ImportFileMigration;
@@ -36,7 +36,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static org.qubership.integration.platform.catalog.service.exportimport.ExportImportConstants.*;
+import static org.qubership.integration.platform.runtime.catalog.service.exportimport.ExportImportConstants.*;
 
 @Slf4j
 @Deprecated(since = "2023.4")

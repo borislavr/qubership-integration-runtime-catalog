@@ -20,14 +20,14 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
-import org.qubership.integration.platform.catalog.mapping.EnvironmentMapper;
-import org.qubership.integration.platform.catalog.model.dto.system.EnvironmentDTO;
-import org.qubership.integration.platform.catalog.model.dto.system.EnvironmentRequestDTO;
-import org.qubership.integration.platform.catalog.model.system.EnvironmentLabel;
-import org.qubership.integration.platform.catalog.model.system.IntegrationSystemType;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.system.Environment;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.system.IntegrationSystem;
 import org.qubership.integration.platform.runtime.catalog.exception.exceptions.BadRequestException;
+import org.qubership.integration.platform.runtime.catalog.model.dto.system.EnvironmentDTO;
+import org.qubership.integration.platform.runtime.catalog.model.dto.system.EnvironmentRequestDTO;
+import org.qubership.integration.platform.runtime.catalog.model.mapper.mapping.EnvironmentMapper;
+import org.qubership.integration.platform.runtime.catalog.model.system.EnvironmentLabel;
+import org.qubership.integration.platform.runtime.catalog.model.system.IntegrationSystemType;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.system.Environment;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.system.IntegrationSystem;
 import org.qubership.integration.platform.runtime.catalog.service.EnvironmentService;
 import org.qubership.integration.platform.runtime.catalog.service.SystemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,7 +92,7 @@ public class EnvironmentController {
         Environment environment = environmentMapper.toEnvironment(environmentRequestDTO);
         IntegrationSystem system = systemService.getByIdOrNull(systemId);
         if (IntegrationSystemType.INTERNAL.equals(system.getIntegrationSystemType())) {
-            if (system.getEnvironments().size() > 0) {
+            if (!system.getEnvironments().isEmpty()) {
                 throw new BadRequestException(INTERNAL_SYSTEM_ENVIRONMENT_UNIQUE_MESSAGE);
             }
         }

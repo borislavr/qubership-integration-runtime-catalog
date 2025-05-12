@@ -19,22 +19,22 @@ package org.qubership.integration.platform.runtime.catalog.service.migration;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.tuple.Pair;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.actionlog.ActionLog;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.actionlog.EntityType;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.actionlog.LogOperation;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.Chain;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.Dependency;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.element.ChainElement;
-import org.qubership.integration.platform.catalog.persistence.configs.repository.chain.ChainRepository;
-import org.qubership.integration.platform.catalog.persistence.configs.repository.chain.DependencyRepository;
-import org.qubership.integration.platform.catalog.persistence.configs.repository.chain.ElementRepository;
-import org.qubership.integration.platform.catalog.service.ActionsLogService;
-import org.qubership.integration.platform.catalog.util.DistinctByKey;
 import org.qubership.integration.platform.runtime.catalog.configuration.aspect.ChainModification;
 import org.qubership.integration.platform.runtime.catalog.exception.exceptions.ChainMigrationException;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.actionlog.ActionLog;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.actionlog.EntityType;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.actionlog.LogOperation;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.chain.Chain;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.chain.Dependency;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.chain.element.ChainElement;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.repository.chain.ChainRepository;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.repository.chain.DependencyRepository;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.repository.chain.ElementRepository;
+import org.qubership.integration.platform.runtime.catalog.service.ActionsLogService;
 import org.qubership.integration.platform.runtime.catalog.service.migration.element.ElementMigration;
 import org.qubership.integration.platform.runtime.catalog.service.migration.element.MigrationContext;
 import org.qubership.integration.platform.runtime.catalog.service.migration.element.RestrictedContainerMigration;
+import org.qubership.integration.platform.runtime.catalog.util.DistinctByKey;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.auditing.AuditingHandler;
 import org.springframework.stereotype.Service;
@@ -48,7 +48,8 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static org.qubership.integration.platform.catalog.model.constant.CamelNames.CONTAINER;
+import static org.qubership.integration.platform.runtime.catalog.model.constant.CamelNames.CONTAINER;
+
 
 @Slf4j
 @Service

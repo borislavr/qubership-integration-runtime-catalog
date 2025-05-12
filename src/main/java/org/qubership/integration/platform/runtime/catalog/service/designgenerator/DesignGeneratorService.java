@@ -18,26 +18,26 @@ package org.qubership.integration.platform.runtime.catalog.service.designgenerat
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.qubership.integration.platform.catalog.model.designgenerator.DiagramLangType;
-import org.qubership.integration.platform.catalog.model.designgenerator.DiagramMode;
-import org.qubership.integration.platform.catalog.model.designgenerator.ElementsSequenceDiagram;
-import org.qubership.integration.platform.catalog.model.library.ElementDescriptor;
-import org.qubership.integration.platform.catalog.model.library.ElementType;
-import org.qubership.integration.platform.catalog.model.library.chaindesign.ContainerChildrenParameters;
-import org.qubership.integration.platform.catalog.model.library.chaindesign.ElementContainerDesignParameters;
-import org.qubership.integration.platform.catalog.model.library.chaindesign.ElementDesignParameters;
-import org.qubership.integration.platform.catalog.model.library.chaindesign.ElementDiagramOperation;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.AbstractEntity;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.Dependency;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.element.ChainElement;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.element.ContainerChainElement;
-import org.qubership.integration.platform.catalog.service.library.LibraryElementsService;
-import org.qubership.integration.platform.catalog.util.DiagramBuilderEscapeUtil;
+import org.qubership.integration.platform.runtime.catalog.model.designgenerator.DiagramLangType;
+import org.qubership.integration.platform.runtime.catalog.model.designgenerator.DiagramMode;
+import org.qubership.integration.platform.runtime.catalog.model.designgenerator.ElementsSequenceDiagram;
+import org.qubership.integration.platform.runtime.catalog.model.library.ElementDescriptor;
+import org.qubership.integration.platform.runtime.catalog.model.library.ElementType;
+import org.qubership.integration.platform.runtime.catalog.model.library.chaindesign.ContainerChildrenParameters;
+import org.qubership.integration.platform.runtime.catalog.model.library.chaindesign.ElementContainerDesignParameters;
+import org.qubership.integration.platform.runtime.catalog.model.library.chaindesign.ElementDesignParameters;
+import org.qubership.integration.platform.runtime.catalog.model.library.chaindesign.ElementDiagramOperation;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.AbstractEntity;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.chain.Dependency;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.chain.element.ChainElement;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.chain.element.ContainerChainElement;
 import org.qubership.integration.platform.runtime.catalog.service.DependencyService;
 import org.qubership.integration.platform.runtime.catalog.service.ElementService;
 import org.qubership.integration.platform.runtime.catalog.service.designgenerator.processors.interfaces.ContainerDesignProcessor;
 import org.qubership.integration.platform.runtime.catalog.service.designgenerator.processors.interfaces.DesignProcessor;
 import org.qubership.integration.platform.runtime.catalog.service.helpers.ChainFinderService;
+import org.qubership.integration.platform.runtime.catalog.service.library.LibraryElementsService;
+import org.qubership.integration.platform.runtime.catalog.util.DiagramBuilderEscapeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -45,9 +45,9 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static org.qubership.integration.platform.catalog.model.designgenerator.DiagramConstants.DEFAULT_RESPONSE_TITLE;
-import static org.qubership.integration.platform.catalog.model.designgenerator.DiagramConstants.GROUP_BG_RGB;
-import static org.qubership.integration.platform.catalog.model.designgenerator.DiagramOperationType.*;
+import static org.qubership.integration.platform.runtime.catalog.model.designgenerator.DiagramConstants.DEFAULT_RESPONSE_TITLE;
+import static org.qubership.integration.platform.runtime.catalog.model.designgenerator.DiagramConstants.GROUP_BG_RGB;
+import static org.qubership.integration.platform.runtime.catalog.model.designgenerator.DiagramOperationType.*;
 
 @Slf4j
 @Service

@@ -19,11 +19,11 @@ package org.qubership.integration.platform.runtime.catalog.rest.v1.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.system.SystemModel;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.system.SystemModelLabel;
-import org.qubership.integration.platform.catalog.util.MapperUtils;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.system.SystemModel;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.system.SystemModelLabel;
 import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.SystemModelDTO;
 import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.SystemModelLabelDTO;
+import org.qubership.integration.platform.runtime.catalog.util.MapperUtils;
 
 import java.util.List;
 

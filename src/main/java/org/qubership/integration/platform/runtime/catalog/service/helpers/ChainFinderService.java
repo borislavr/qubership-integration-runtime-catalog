@@ -1,8 +1,8 @@
 package org.qubership.integration.platform.runtime.catalog.service.helpers;
 
 import jakarta.persistence.EntityNotFoundException;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.Chain;
-import org.qubership.integration.platform.catalog.persistence.configs.repository.chain.ChainRepository;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.chain.Chain;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.repository.chain.ChainRepository;
 import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.folder.FolderContentFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;

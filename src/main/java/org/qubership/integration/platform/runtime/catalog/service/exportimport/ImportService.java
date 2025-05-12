@@ -23,19 +23,7 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.qubership.integration.platform.catalog.context.RequestIdContext;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.actionlog.ActionLog;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.actionlog.ActionLog.ActionLogBuilder;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.actionlog.EntityType;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.actionlog.LogOperation;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.Chain;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.Deployment;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.Folder;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.Snapshot;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.element.ChainElement;
-import org.qubership.integration.platform.catalog.persistence.configs.repository.chain.ChainRepository;
-import org.qubership.integration.platform.catalog.service.ActionsLogService;
-import org.qubership.integration.platform.catalog.service.exportimport.ExportImportUtils;
+import org.qubership.integration.platform.runtime.catalog.context.RequestIdContext;
 import org.qubership.integration.platform.runtime.catalog.exception.exceptions.ChainImportException;
 import org.qubership.integration.platform.runtime.catalog.model.exportimport.ImportResult;
 import org.qubership.integration.platform.runtime.catalog.model.exportimport.chain.ChainExternalEntity;
@@ -43,6 +31,15 @@ import org.qubership.integration.platform.runtime.catalog.model.exportimport.cha
 import org.qubership.integration.platform.runtime.catalog.model.exportimport.chain.DeploymentExternalEntity;
 import org.qubership.integration.platform.runtime.catalog.model.exportimport.chain.ImportChainResult;
 import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.ImportSession;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.actionlog.ActionLog;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.actionlog.EntityType;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.actionlog.LogOperation;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.chain.Chain;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.chain.Deployment;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.chain.Folder;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.chain.Snapshot;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.chain.element.ChainElement;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.repository.chain.ChainRepository;
 import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.exportimport.chain.ImportChainPreviewDTO;
 import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.exportimport.chain.ImportDTO;
 import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.exportimport.chain.ImportEntityStatus;
@@ -76,8 +73,9 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import javax.annotation.Nullable;
 
-import static org.qubership.integration.platform.catalog.model.constant.CamelOptions.SYSTEM_ID;
-import static org.qubership.integration.platform.catalog.service.exportimport.ExportImportConstants.*;
+import static org.qubership.integration.platform.runtime.catalog.model.constant.CamelOptions.SYSTEM_ID;
+import static org.qubership.integration.platform.runtime.catalog.service.exportimport.ExportImportConstants.*;
+
 
 /**
  * @deprecated 23.4 use {@link GeneralImportService} instead
@@ -251,7 +249,7 @@ public class ImportService {
             throw new RuntimeException("Exception while extract files from zip", e);
         }
 
-        logImportAction(null, file.getOriginalFilename(), LogOperation.IMPORT);
+        logImportAction(file.getOriginalFilename());
         String requestId = RequestIdContext.get();
         File finalUnpackDirectory = unpackDirectory;
         CompletableFuture.supplyAsync(() -> {
@@ -321,7 +319,7 @@ public class ImportService {
             File unpackDirectory = null;
             try (InputStream is = file.getInputStream()) {
                 unpackDirectory = unpackZIP(is);
-                logImportAction(null, file.getOriginalFilename(), LogOperation.IMPORT);
+                logImportAction(file.getOriginalFilename());
                 response.setChains(chainImportService.restoreChainsFromDirBackward(unpackDirectory, commitRequests, null, technicalLabels));
                 makeDeployActions(response.getChains(), commitRequests, null, technicalLabels);
             } catch (Exception e) {
@@ -333,7 +331,7 @@ public class ImportService {
             }
         } else if (YAML_EXTENSION.equals(fileExtension)) {
             try {
-                logImportAction(null, file.getOriginalFilename(), LogOperation.IMPORT);
+                logImportAction(file.getOriginalFilename());
                 ImportChainResult importChainDTO = restoreChainFromYaml(getFileContent(file), null,
                         null, technicalLabels);
                 response.setChains(makeDeployActions(importChainDTO, commitRequests, technicalLabels));
@@ -481,7 +479,7 @@ public class ImportService {
                 chain.setModifiedWhen(modificationTimestamp);
                 chainImportService.saveImportedChainBackward(chain);
 
-                logImportAction(chain, null, LogOperation.CREATE_OR_UPDATE);
+                logCreateOrUpdateAction(chain);
             }
         } catch (ChainImportException e) {
             log.warn("Exception while importing {} ({}) chain: ", e.getChainName(), e.getChainId(), e);
@@ -503,19 +501,26 @@ public class ImportService {
         return resultImportChainDTO;
     }
 
-    private void logImportAction(Chain chain, String archiveName, LogOperation operation) {
-        ActionLogBuilder builder = ActionLog.builder()
-                .entityType(chain != null ? EntityType.CHAIN : EntityType.CHAINS)
-                .entityName(chain != null ? chain.getName() : archiveName)
-                .operation(operation);
+    private void logImportAction(String archiveName) {
+        actionLogger.logAction(ActionLog.builder()
+                .entityType(EntityType.CHAINS)
+                .entityName(archiveName)
+                .operation(LogOperation.IMPORT)
+                .build());
+    }
+
+    private void logCreateOrUpdateAction(Chain chain) {
         if (chain != null) {
-            builder
+            actionLogger.logAction(ActionLog.builder()
+                    .entityType(EntityType.CHAIN)
+                    .entityName(chain.getName())
+                    .operation(LogOperation.CREATE_OR_UPDATE)
                     .entityId(chain.getId())
                     .parentType(chain.getParentFolder() == null ? null : EntityType.FOLDER)
                     .parentId(chain.getParentFolder() == null ? null : chain.getParentFolder().getId())
-                    .parentName(chain.getParentFolder() == null ? null : chain.getParentFolder().getName());
+                    .parentName(chain.getParentFolder() == null ? null : chain.getParentFolder().getName())
+                    .build());
         }
-        actionLogger.logAction(builder.build());
     }
 
     private synchronized ChainDeserializationResult deserializeChain(String yaml, File chainFilesDir)

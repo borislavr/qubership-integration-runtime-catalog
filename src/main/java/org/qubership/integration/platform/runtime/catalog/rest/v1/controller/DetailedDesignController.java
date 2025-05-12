@@ -19,7 +19,7 @@ package org.qubership.integration.platform.runtime.catalog.rest.v1.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.DetailedDesignTemplate;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.chain.DetailedDesignTemplate;
 import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.dds.DDSResponse;
 import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.dds.DDSTemplateCreateRequest;
 import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.dds.DDSTemplateResponse;

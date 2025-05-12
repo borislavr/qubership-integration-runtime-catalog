@@ -16,16 +16,17 @@
 
 package org.qubership.integration.platform.runtime.catalog.service.designgenerator.processors;
 
-import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.element.ChainElement;
-import org.qubership.integration.platform.catalog.util.DiagramBuilderEscapeUtil;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.chain.element.ChainElement;
 import org.qubership.integration.platform.runtime.catalog.service.designgenerator.SequenceDiagramBuilder;
 import org.qubership.integration.platform.runtime.catalog.service.designgenerator.processors.interfaces.DesignProcessor;
+import org.qubership.integration.platform.runtime.catalog.util.DiagramBuilderEscapeUtil;
 import org.springframework.stereotype.Component;
 
 import java.util.Set;
 
-import static org.qubership.integration.platform.catalog.model.designgenerator.DiagramConstants.GROUP_BG_RGB;
-import static org.qubership.integration.platform.catalog.model.designgenerator.DiagramOperationType.*;
+import static org.qubership.integration.platform.runtime.catalog.model.designgenerator.DiagramConstants.GROUP_BG_RGB;
+import static org.qubership.integration.platform.runtime.catalog.model.designgenerator.DiagramOperationType.*;
+
 
 @Component
 public class CheckpointDesignProcessor implements DesignProcessor {

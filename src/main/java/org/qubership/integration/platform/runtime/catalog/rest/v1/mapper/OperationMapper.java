@@ -18,7 +18,7 @@ package org.qubership.integration.platform.runtime.catalog.rest.v1.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.system.Operation;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.system.Operation;
 import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.OperationDTO;
 import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.OperationInfoDTO;
 

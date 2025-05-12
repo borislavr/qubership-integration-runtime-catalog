@@ -17,15 +17,15 @@
 package org.qubership.integration.platform.runtime.catalog.rest.v1.mapper;
 
 import org.mapstruct.*;
-import org.qubership.integration.platform.catalog.mapping.UserMapper;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.Chain;
-import org.qubership.integration.platform.catalog.util.MapperUtils;
-import org.qubership.integration.platform.catalog.util.StringTrimmer;
+import org.qubership.integration.platform.runtime.catalog.model.mapper.mapping.UserMapper;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.chain.Chain;
 import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.chain.ChainDTO;
 import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.chain.ChainRequest;
 import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.chain.ChainResponse;
 import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.chain.ChainsBySpecificationGroup;
 import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.folder.FolderItemResponse;
+import org.qubership.integration.platform.runtime.catalog.util.MapperUtils;
+import org.qubership.integration.platform.runtime.catalog.util.StringTrimmer;
 
 import java.util.List;
 import java.util.Map;

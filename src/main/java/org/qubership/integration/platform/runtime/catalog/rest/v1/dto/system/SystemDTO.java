@@ -18,8 +18,8 @@ package org.qubership.integration.platform.runtime.catalog.rest.v1.dto.system;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-import org.qubership.integration.platform.catalog.model.dto.user.UserDTO;
-import org.qubership.integration.platform.catalog.model.system.IntegrationSystemType;
+import org.qubership.integration.platform.runtime.catalog.model.dto.user.UserDTO;
+import org.qubership.integration.platform.runtime.catalog.model.system.IntegrationSystemType;
 
 import java.util.List;
 

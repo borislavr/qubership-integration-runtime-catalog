@@ -16,7 +16,7 @@
 
 package org.qubership.integration.platform.runtime.catalog.service.migration;
 
-import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.Chain;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.chain.Chain;
 
 public record MigratedChain(Chain chain, boolean groupsRemoved) {
 

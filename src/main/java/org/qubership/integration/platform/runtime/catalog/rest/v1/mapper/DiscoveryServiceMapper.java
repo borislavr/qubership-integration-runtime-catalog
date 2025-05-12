@@ -20,13 +20,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.system.IntegrationSystem;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.system.SpecificationGroup;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.system.SystemModel;
-import org.qubership.integration.platform.catalog.util.MapperUtils;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.system.IntegrationSystem;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.system.SpecificationGroup;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.system.SystemModel;
 import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.discovery.DiscoveredServiceDTO;
 import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.discovery.DiscoveredServiceGroupDTO;
 import org.qubership.integration.platform.runtime.catalog.service.SystemModelService;
+import org.qubership.integration.platform.runtime.catalog.util.MapperUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 

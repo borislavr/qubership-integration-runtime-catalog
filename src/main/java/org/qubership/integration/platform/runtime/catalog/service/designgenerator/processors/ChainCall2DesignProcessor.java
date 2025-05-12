@@ -16,22 +16,23 @@
 
 package org.qubership.integration.platform.runtime.catalog.service.designgenerator.processors;
 
-import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.Chain;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.Snapshot;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.element.ChainElement;
-import org.qubership.integration.platform.catalog.util.DiagramBuilderEscapeUtil;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.chain.Chain;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.chain.Snapshot;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.chain.element.ChainElement;
 import org.qubership.integration.platform.runtime.catalog.service.ElementService;
 import org.qubership.integration.platform.runtime.catalog.service.designgenerator.SequenceDiagramBuilder;
 import org.qubership.integration.platform.runtime.catalog.service.designgenerator.processors.interfaces.DesignProcessor;
+import org.qubership.integration.platform.runtime.catalog.util.DiagramBuilderEscapeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 import java.util.Set;
 
-import static org.qubership.integration.platform.catalog.model.constant.CamelNames.CHAIN_CALL_ELEMENT_ID;
-import static org.qubership.integration.platform.catalog.model.designgenerator.DiagramConstants.DEFAULT_RESPONSE_TITLE;
-import static org.qubership.integration.platform.catalog.model.designgenerator.DiagramOperationType.*;
+import static org.qubership.integration.platform.runtime.catalog.model.constant.CamelNames.CHAIN_CALL_ELEMENT_ID;
+import static org.qubership.integration.platform.runtime.catalog.model.designgenerator.DiagramConstants.DEFAULT_RESPONSE_TITLE;
+import static org.qubership.integration.platform.runtime.catalog.model.designgenerator.DiagramOperationType.*;
+
 
 @Component
 public class ChainCall2DesignProcessor implements DesignProcessor {

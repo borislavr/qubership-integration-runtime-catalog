@@ -29,33 +29,33 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
-import org.qubership.integration.platform.catalog.model.constant.CamelNames;
-import org.qubership.integration.platform.catalog.model.constant.CamelOptions;
-import org.qubership.integration.platform.catalog.model.system.IntegrationSystemType;
-import org.qubership.integration.platform.catalog.persistence.TransactionHandler;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.actionlog.ActionLog;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.actionlog.EntityType;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.actionlog.LogOperation;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.Chain;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.DetailedDesignTemplate;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.element.ChainElement;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.system.Operation;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.system.SpecificationSource;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.system.SystemModel;
-import org.qubership.integration.platform.catalog.persistence.configs.repository.DetailedDesignTemplateRepository;
-import org.qubership.integration.platform.catalog.service.ActionsLogService;
-import org.qubership.integration.platform.catalog.util.ResourceLoaderUtils;
 import org.qubership.integration.platform.runtime.catalog.exception.exceptions.ddsgenerator.DetailedDesignInternalException;
 import org.qubership.integration.platform.runtime.catalog.exception.exceptions.ddsgenerator.TemplateDataBuilderException;
 import org.qubership.integration.platform.runtime.catalog.exception.exceptions.ddsgenerator.TemplateDataEscapingException;
 import org.qubership.integration.platform.runtime.catalog.exception.exceptions.ddsgenerator.TemplateProcessingException;
+import org.qubership.integration.platform.runtime.catalog.model.constant.CamelNames;
+import org.qubership.integration.platform.runtime.catalog.model.constant.CamelOptions;
 import org.qubership.integration.platform.runtime.catalog.model.dds.TemplateData;
 import org.qubership.integration.platform.runtime.catalog.model.dds.TemplateSequenceDiagram;
+import org.qubership.integration.platform.runtime.catalog.model.system.IntegrationSystemType;
+import org.qubership.integration.platform.runtime.catalog.persistence.TransactionHandler;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.actionlog.ActionLog;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.actionlog.EntityType;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.actionlog.LogOperation;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.chain.Chain;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.chain.DetailedDesignTemplate;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.chain.element.ChainElement;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.system.Operation;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.system.SpecificationSource;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.system.SystemModel;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.repository.DetailedDesignTemplateRepository;
 import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.dds.DDSResponse;
 import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.dds.DDSSpecificationSource;
+import org.qubership.integration.platform.runtime.catalog.service.ActionsLogService;
 import org.qubership.integration.platform.runtime.catalog.service.OperationService;
 import org.qubership.integration.platform.runtime.catalog.service.SystemModelService;
 import org.qubership.integration.platform.runtime.catalog.service.helpers.ChainFinderService;
+import org.qubership.integration.platform.runtime.catalog.util.ResourceLoaderUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
@@ -270,7 +270,7 @@ public class DetailedDesignService {
 
         for (ChainElement element : elements) {
             if (CamelNames.HTTP_TRIGGER_COMPONENT.equals(element.getType())
-                    && IntegrationSystemType.IMPLEMENTED.toString().equals(element.getPropertyAsString(CamelOptions.SYSTEM_TYPE))) {
+                && IntegrationSystemType.IMPLEMENTED.toString().equals(element.getPropertyAsString(CamelOptions.SYSTEM_TYPE))) {
                 String operationId = element.getPropertyAsString(CamelOptions.OPERATION_ID);
                 if (StringUtils.isNotEmpty(operationId)) {
                     Operation operation = operationService.getOperation(operationId);

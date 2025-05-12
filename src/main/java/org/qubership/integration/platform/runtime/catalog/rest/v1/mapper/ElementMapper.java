@@ -18,17 +18,17 @@ package org.qubership.integration.platform.runtime.catalog.rest.v1.mapper;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.mapstruct.*;
-import org.qubership.integration.platform.catalog.mapping.UserMapper;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.Chain;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.element.ChainElement;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.element.ContainerChainElement;
-import org.qubership.integration.platform.catalog.util.ElementUtils;
-import org.qubership.integration.platform.catalog.util.MapperUtils;
-import org.qubership.integration.platform.catalog.util.StringTrimmer;
+import org.qubership.integration.platform.runtime.catalog.model.mapper.mapping.UserMapper;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.chain.Chain;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.chain.element.ChainElement;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.chain.element.ContainerChainElement;
 import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.element.ElementResponse;
 import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.element.ElementWithChainNameResponse;
 import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.element.ElementsCodeDTO;
 import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.element.PatchElementRequest;
+import org.qubership.integration.platform.runtime.catalog.util.ElementUtils;
+import org.qubership.integration.platform.runtime.catalog.util.MapperUtils;
+import org.qubership.integration.platform.runtime.catalog.util.StringTrimmer;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;

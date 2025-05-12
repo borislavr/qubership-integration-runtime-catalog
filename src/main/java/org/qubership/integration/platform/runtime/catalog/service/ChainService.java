@@ -17,23 +17,22 @@
 package org.qubership.integration.platform.runtime.catalog.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.qubership.integration.platform.catalog.model.dto.system.UsedSystem;
-import org.qubership.integration.platform.catalog.model.filter.FilterCondition;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.AbstractEntity;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.AbstractLabel;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.actionlog.ActionLog;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.actionlog.EntityType;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.actionlog.LogOperation;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.*;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.element.ChainElement;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.element.ContainerChainElement;
-import org.qubership.integration.platform.catalog.persistence.configs.repository.chain.*;
-import org.qubership.integration.platform.catalog.service.ActionsLogService;
-import org.qubership.integration.platform.catalog.service.ChainBaseService;
-import org.qubership.integration.platform.catalog.util.ChainUtils;
-import org.qubership.integration.platform.catalog.util.ElementUtils;
 import org.qubership.integration.platform.runtime.catalog.configuration.aspect.ChainModification;
+import org.qubership.integration.platform.runtime.catalog.model.dto.system.UsedSystem;
+import org.qubership.integration.platform.runtime.catalog.model.filter.FilterCondition;
 import org.qubership.integration.platform.runtime.catalog.model.filter.FilterFeature;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.AbstractEntity;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.AbstractLabel;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.actionlog.ActionLog;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.actionlog.EntityType;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.actionlog.LogOperation;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.chain.Chain;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.chain.ChainLabel;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.chain.Dependency;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.chain.Folder;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.chain.element.ChainElement;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.chain.element.ContainerChainElement;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.repository.chain.*;
 import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.FilterRequestDTO;
 import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.chain.ChainSearchRequestDTO;
 import org.qubership.integration.platform.runtime.catalog.service.filter.ChainFilterSpecificationBuilder;
@@ -41,6 +40,8 @@ import org.qubership.integration.platform.runtime.catalog.service.filter.complex
 import org.qubership.integration.platform.runtime.catalog.service.filter.complex.ElementFilter;
 import org.qubership.integration.platform.runtime.catalog.service.filter.complex.LoggingFilter;
 import org.qubership.integration.platform.runtime.catalog.service.helpers.ChainFinderService;
+import org.qubership.integration.platform.runtime.catalog.util.ChainUtils;
+import org.qubership.integration.platform.runtime.catalog.util.ElementUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.auditing.AuditingHandler;
@@ -54,8 +55,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static org.qubership.integration.platform.catalog.service.exportimport.ExportImportConstants.OVERRIDDEN_LABEL_NAME;
-import static org.qubership.integration.platform.catalog.service.exportimport.ExportImportConstants.OVERRIDES_LABEL_NAME;
+import static org.qubership.integration.platform.runtime.catalog.service.exportimport.ExportImportConstants.OVERRIDDEN_LABEL_NAME;
+import static org.qubership.integration.platform.runtime.catalog.service.exportimport.ExportImportConstants.OVERRIDES_LABEL_NAME;
 
 @Slf4j
 @Service

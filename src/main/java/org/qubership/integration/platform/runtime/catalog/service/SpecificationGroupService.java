@@ -18,25 +18,23 @@ package org.qubership.integration.platform.runtime.catalog.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.qubership.integration.platform.catalog.exception.SpecificationImportException;
-import org.qubership.integration.platform.catalog.model.constant.CamelOptions;
-import org.qubership.integration.platform.catalog.model.system.OperationProtocol;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.AbstractLabel;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.actionlog.LogOperation;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.Chain;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.element.ChainElement;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.system.IntegrationSystem;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.system.SpecificationGroup;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.system.SpecificationGroupLabel;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.system.SystemModel;
-import org.qubership.integration.platform.catalog.persistence.configs.repository.system.SpecificationGroupLabelsRepository;
-import org.qubership.integration.platform.catalog.persistence.configs.repository.system.SpecificationGroupRepository;
-import org.qubership.integration.platform.catalog.service.AbstractSpecificationGroupService;
-import org.qubership.integration.platform.catalog.service.ActionsLogService;
-import org.qubership.integration.platform.catalog.service.exportimport.ProtocolExtractionService;
-import org.qubership.integration.platform.catalog.util.MultipartFileUtils;
 import org.qubership.integration.platform.runtime.catalog.exception.exceptions.SpecificationDeleteException;
+import org.qubership.integration.platform.runtime.catalog.exception.exceptions.SpecificationImportException;
+import org.qubership.integration.platform.runtime.catalog.model.constant.CamelOptions;
+import org.qubership.integration.platform.runtime.catalog.model.system.OperationProtocol;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.AbstractLabel;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.actionlog.LogOperation;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.chain.Chain;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.chain.element.ChainElement;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.system.IntegrationSystem;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.system.SpecificationGroup;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.system.SpecificationGroupLabel;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.system.SystemModel;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.repository.system.SpecificationGroupLabelsRepository;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.repository.system.SpecificationGroupRepository;
+import org.qubership.integration.platform.runtime.catalog.service.exportimport.ProtocolExtractionService;
 import org.qubership.integration.platform.runtime.catalog.service.helpers.ElementHelperService;
+import org.qubership.integration.platform.runtime.catalog.util.MultipartFileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
@@ -49,8 +47,8 @@ import java.util.stream.Collectors;
 
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
-import static org.qubership.integration.platform.catalog.service.exportimport.ExportImportConstants.DIFFERENT_PROTOCOL_ERROR_MESSAGE;
-import static org.qubership.integration.platform.catalog.service.exportimport.ExportImportConstants.INVALID_INPUT_FILE_ERROR_MESSAGE;
+import static org.qubership.integration.platform.runtime.catalog.service.exportimport.ExportImportConstants.DIFFERENT_PROTOCOL_ERROR_MESSAGE;
+import static org.qubership.integration.platform.runtime.catalog.service.exportimport.ExportImportConstants.INVALID_INPUT_FILE_ERROR_MESSAGE;
 
 @Slf4j
 @Service

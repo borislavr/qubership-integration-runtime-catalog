@@ -18,10 +18,10 @@ package org.qubership.integration.platform.runtime.catalog.rest.v1.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.qubership.integration.platform.catalog.model.dto.dependency.DependencyResponse;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.Dependency;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.element.ChainElement;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.element.ContainerChainElement;
+import org.qubership.integration.platform.runtime.catalog.model.dto.dependency.DependencyResponse;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.chain.Dependency;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.chain.element.ChainElement;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.chain.element.ContainerChainElement;
 import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.dependency.DependencyRequest;
 
 import java.util.ArrayList;
@@ -63,8 +63,7 @@ public interface DependencyMapper {
             var dependenciesSet = new HashSet<>(inputDependencies);
             dependenciesSet.addAll(outputDependencies);
 
-            if (chainElement instanceof ContainerChainElement) {
-                var container = (ContainerChainElement) chainElement;
+            if (chainElement instanceof ContainerChainElement container) {
                 var children = container.getElements();
                 if (children != null) {
                     var containerDependencies = children.stream()

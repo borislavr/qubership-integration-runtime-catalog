@@ -18,11 +18,11 @@ package org.qubership.integration.platform.runtime.catalog.scheduler;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.tuple.Pair;
-import org.qubership.integration.platform.catalog.consul.ConsulService;
-import org.qubership.integration.platform.catalog.consul.exception.KVNotFoundException;
-import org.qubership.integration.platform.catalog.model.deployment.engine.EngineState;
-import org.qubership.integration.platform.catalog.model.deployment.properties.DeploymentRuntimeProperties;
-import org.qubership.integration.platform.catalog.service.ActionsLogService;
+import org.qubership.integration.platform.runtime.catalog.consul.ConsulService;
+import org.qubership.integration.platform.runtime.catalog.consul.exception.KVNotFoundException;
+import org.qubership.integration.platform.runtime.catalog.model.deployment.engine.EngineState;
+import org.qubership.integration.platform.runtime.catalog.model.deployment.properties.DeploymentRuntimeProperties;
+import org.qubership.integration.platform.runtime.catalog.service.ActionsLogService;
 import org.qubership.integration.platform.runtime.catalog.service.ChainRuntimePropertiesService;
 import org.qubership.integration.platform.runtime.catalog.service.DeploymentService;
 import org.qubership.integration.platform.runtime.catalog.service.RuntimeDeploymentService;

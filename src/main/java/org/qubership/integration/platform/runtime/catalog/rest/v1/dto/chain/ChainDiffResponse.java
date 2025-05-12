@@ -20,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
-import org.qubership.integration.platform.catalog.model.dto.dependency.DependencyResponse;
+import org.qubership.integration.platform.runtime.catalog.model.dto.dependency.DependencyResponse;
 import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.element.ElementResponse;
 
 import java.util.List;

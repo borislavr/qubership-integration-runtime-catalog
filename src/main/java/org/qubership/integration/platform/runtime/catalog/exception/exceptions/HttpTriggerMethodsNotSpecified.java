@@ -16,7 +16,7 @@
 
 package org.qubership.integration.platform.runtime.catalog.exception.exceptions;
 
-import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.element.ChainElement;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.chain.element.ChainElement;
 
 public class HttpTriggerMethodsNotSpecified extends ChainElementVerificationException {
     public HttpTriggerMethodsNotSpecified(ChainElement element) {

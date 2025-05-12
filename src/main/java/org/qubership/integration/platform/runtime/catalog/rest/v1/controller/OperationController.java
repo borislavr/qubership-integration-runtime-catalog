@@ -20,7 +20,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.system.Operation;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.system.Operation;
 import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.OperationDTO;
 import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.OperationInfoDTO;
 import org.qubership.integration.platform.runtime.catalog.rest.v1.mapper.OperationMapper;

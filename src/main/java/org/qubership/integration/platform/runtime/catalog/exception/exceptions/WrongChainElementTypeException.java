@@ -16,11 +16,13 @@
 
 package org.qubership.integration.platform.runtime.catalog.exception.exceptions;
 
-import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.element.ChainElement;
+import lombok.Getter;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.chain.element.ChainElement;
 
 import java.util.Collection;
 import java.util.Optional;
 
+@Getter
 public class WrongChainElementTypeException extends ChainElementVerificationException {
     private final String elementType;
     private final Collection<String> expectedTypes;
@@ -40,11 +42,4 @@ public class WrongChainElementTypeException extends ChainElementVerificationExce
         return Optional.ofNullable(element).map(ChainElement::getType).orElse("-");
     }
 
-    public String getElementType() {
-        return elementType;
-    }
-
-    public Collection<String> getExpectedTypes() {
-        return expectedTypes;
-    }
 }

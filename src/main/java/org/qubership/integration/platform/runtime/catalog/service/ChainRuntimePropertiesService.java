@@ -18,14 +18,13 @@ package org.qubership.integration.platform.runtime.catalog.service;
 
 
 import lombok.extern.slf4j.Slf4j;
-import org.qubership.integration.platform.catalog.consul.ConsulService;
-import org.qubership.integration.platform.catalog.model.deployment.properties.DeploymentRuntimeProperties;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.AbstractEntity;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.actionlog.ActionLog;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.actionlog.EntityType;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.actionlog.LogOperation;
-import org.qubership.integration.platform.catalog.persistence.configs.repository.chain.ChainRepository;
-import org.qubership.integration.platform.catalog.service.ActionsLogService;
+import org.qubership.integration.platform.runtime.catalog.consul.ConsulService;
+import org.qubership.integration.platform.runtime.catalog.model.deployment.properties.DeploymentRuntimeProperties;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.AbstractEntity;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.actionlog.ActionLog;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.actionlog.EntityType;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.actionlog.LogOperation;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.repository.chain.ChainRepository;
 import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.chain.logging.properties.ChainLoggingPropertiesSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

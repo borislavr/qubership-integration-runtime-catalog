@@ -21,8 +21,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-import org.qubership.integration.platform.catalog.model.dto.BaseResponse;
-import org.qubership.integration.platform.catalog.model.dto.deployment.DeploymentResponse;
+import org.qubership.integration.platform.runtime.catalog.model.dto.BaseResponse;
+import org.qubership.integration.platform.runtime.catalog.model.dto.deployment.DeploymentResponse;
 import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.chain.ChainLabelDTO;
 import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.chain.logging.properties.ChainLoggingPropertiesSet;
 

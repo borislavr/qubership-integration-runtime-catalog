@@ -21,9 +21,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.Chain;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.system.Operation;
-import org.qubership.integration.platform.catalog.persistence.configs.repository.operations.OperationRepository;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.chain.Chain;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.system.Operation;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.repository.operations.OperationRepository;
 import org.qubership.integration.platform.runtime.catalog.service.helpers.ElementHelperService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -75,7 +75,7 @@ public class OperationService {
 
         prefixFilter = prefixFilter.stripLeading().stripTrailing();
 
-        boolean filterPresent = prefixFilter.length() > 0;
+        boolean filterPresent = !prefixFilter.isEmpty();
         List<String> query = Arrays.asList(prefixFilter.split("\\s+"));
 
         List<Operation> operations;

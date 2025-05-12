@@ -18,11 +18,10 @@ package org.qubership.integration.platform.runtime.catalog.service.filter;
 
 import jakarta.persistence.criteria.*;
 import org.jetbrains.annotations.NotNull;
-import org.qubership.integration.platform.catalog.model.filter.FilterCondition;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.Chain;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.element.ChainElement;
-import org.qubership.integration.platform.catalog.service.filter.FilterConditionPredicateBuilderFactory;
+import org.qubership.integration.platform.runtime.catalog.model.filter.FilterCondition;
 import org.qubership.integration.platform.runtime.catalog.model.filter.FilterFeature;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.chain.Chain;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.chain.element.ChainElement;
 import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.FilterRequestDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
@@ -33,8 +32,9 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static org.qubership.integration.platform.catalog.model.constant.CamelNames.*;
-import static org.qubership.integration.platform.catalog.model.constant.CamelOptions.*;
+import static org.qubership.integration.platform.runtime.catalog.model.constant.CamelNames.*;
+import static org.qubership.integration.platform.runtime.catalog.model.constant.CamelOptions.*;
+
 
 @Component
 public class ChainFilterSpecificationBuilder {

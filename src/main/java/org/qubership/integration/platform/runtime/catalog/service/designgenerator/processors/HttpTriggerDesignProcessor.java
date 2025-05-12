@@ -17,25 +17,24 @@
 package org.qubership.integration.platform.runtime.catalog.service.designgenerator.processors;
 
 import org.apache.commons.lang3.StringUtils;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.element.ChainElement;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.system.IntegrationSystem;
-import org.qubership.integration.platform.catalog.persistence.configs.repository.system.SystemRepository;
-import org.qubership.integration.platform.catalog.util.DiagramBuilderEscapeUtil;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.chain.element.ChainElement;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.system.IntegrationSystem;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.repository.system.SystemRepository;
 import org.qubership.integration.platform.runtime.catalog.service.SystemService;
 import org.qubership.integration.platform.runtime.catalog.service.designgenerator.SequenceDiagramBuilder;
 import org.qubership.integration.platform.runtime.catalog.service.designgenerator.processors.interfaces.DesignProcessor;
-import org.qubership.integration.platform.runtime.catalog.util.DiagramBuilderUtil;
+import org.qubership.integration.platform.runtime.catalog.util.DiagramBuilderEscapeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
 import java.util.Set;
 
-import static org.qubership.integration.platform.catalog.model.constant.CamelOptions.*;
-import static org.qubership.integration.platform.catalog.model.designgenerator.DiagramConstants.DEFAULT_RESPONSE_TITLE;
-import static org.qubership.integration.platform.catalog.model.designgenerator.DiagramConstants.EMPTY_PROPERTY_STUB;
-import static org.qubership.integration.platform.catalog.model.designgenerator.DiagramOperationType.LINE_WITH_ARROW_DOTTED_RIGHT;
-import static org.qubership.integration.platform.catalog.model.designgenerator.DiagramOperationType.LINE_WITH_ARROW_SOLID_RIGHT;
+import static org.qubership.integration.platform.runtime.catalog.model.constant.CamelOptions.*;
+import static org.qubership.integration.platform.runtime.catalog.model.designgenerator.DiagramConstants.DEFAULT_RESPONSE_TITLE;
+import static org.qubership.integration.platform.runtime.catalog.model.designgenerator.DiagramConstants.EMPTY_PROPERTY_STUB;
+import static org.qubership.integration.platform.runtime.catalog.model.designgenerator.DiagramOperationType.LINE_WITH_ARROW_DOTTED_RIGHT;
+import static org.qubership.integration.platform.runtime.catalog.model.designgenerator.DiagramOperationType.LINE_WITH_ARROW_SOLID_RIGHT;
 
 @Component
 public class HttpTriggerDesignProcessor implements DesignProcessor {
@@ -109,7 +108,7 @@ public class HttpTriggerDesignProcessor implements DesignProcessor {
         builder.append(LINE_WITH_ARROW_SOLID_RIGHT, getExternalParticipantId(element), refChainId, title);
 
         if (!isManualSource(element)) {
-            DiagramBuilderUtil.buildValidateRequest(refChainId, builder, properties);
+            DiagramBuilderEscapeUtil.buildValidateRequest(refChainId, builder, properties);
         }
     }
 

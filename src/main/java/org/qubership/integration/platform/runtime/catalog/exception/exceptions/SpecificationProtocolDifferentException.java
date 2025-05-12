@@ -16,9 +16,6 @@
 
 package org.qubership.integration.platform.runtime.catalog.exception.exceptions;
 
-
-import org.qubership.integration.platform.catalog.exception.CatalogRuntimeException;
-
 public class SpecificationProtocolDifferentException extends CatalogRuntimeException {
 
     public SpecificationProtocolDifferentException(String message) {

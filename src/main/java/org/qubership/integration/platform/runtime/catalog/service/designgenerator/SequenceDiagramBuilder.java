@@ -17,15 +17,16 @@
 package org.qubership.integration.platform.runtime.catalog.service.designgenerator;
 
 import org.apache.commons.lang3.StringUtils;
-import org.qubership.integration.platform.catalog.model.designgenerator.DiagramLangType;
-import org.qubership.integration.platform.catalog.model.designgenerator.DiagramOperation;
-import org.qubership.integration.platform.catalog.model.designgenerator.DiagramOperationType;
+import org.qubership.integration.platform.runtime.catalog.model.designgenerator.DiagramLangType;
+import org.qubership.integration.platform.runtime.catalog.model.designgenerator.DiagramOperation;
+import org.qubership.integration.platform.runtime.catalog.model.designgenerator.DiagramOperationType;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static org.qubership.integration.platform.catalog.model.designgenerator.DiagramConstants.*;
+import static org.qubership.integration.platform.runtime.catalog.model.designgenerator.DiagramConstants.*;
+
 
 public class SequenceDiagramBuilder {
 

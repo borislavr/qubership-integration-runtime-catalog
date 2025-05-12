@@ -16,11 +16,11 @@
 
 package org.qubership.integration.platform.runtime.catalog.service.filter.complex;
 
-import org.qubership.integration.platform.catalog.model.chain.ChainStatus;
-import org.qubership.integration.platform.catalog.model.deployment.engine.ChainRuntimeDeployment;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.Chain;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.Deployment;
+import org.qubership.integration.platform.runtime.catalog.model.chain.ChainStatus;
+import org.qubership.integration.platform.runtime.catalog.model.deployment.engine.ChainRuntimeDeployment;
 import org.qubership.integration.platform.runtime.catalog.model.filter.FilterFeature;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.chain.Chain;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.chain.Deployment;
 import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.FilterRequestDTO;
 import org.qubership.integration.platform.runtime.catalog.service.RuntimeDeploymentService;
 import org.springframework.util.CollectionUtils;

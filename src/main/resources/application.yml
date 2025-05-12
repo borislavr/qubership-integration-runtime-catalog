@@ -86,6 +86,15 @@ db:
 
 consul:
   url: ${CONSUL_URL:http://consul:8500}
+  token: ${CONSUL_ADMIN_TOKEN}
+  keys:
+    prefix: /config/${NAMESPACE}
+    engine-config-root: /qip-engine-configurations
+    runtime-configurations: /runtime-configurations
+    chains: /chains
+    deployments-update: /deployments-update
+    engines-state: /engines-state
+    libraries-update: /libraries-update
 
 management:
   endpoints:
@@ -155,3 +164,17 @@ qip:
       egress-gateway: ${QIP_REGISTER_EGRESS_CHAIN_ROUTES:true}
   build:
     artifact-descriptor-version: ${ARTIFACT_DESCRIPTOR_VERSION:'0'}
+  element-descriptors:
+    # These properties are injected in element descriptors
+    properties:
+      filter-header-allowlist-name: ${camel.constants.request-filter-header.name}
+
+protoc:
+  work-directory: /tmp/tmp-data
+  compiler: /usr/bin/protoc
+  grpc-java-plugin: /usr/bin/protoc-gen-grpc-java
+
+camel:
+  constants:
+    request-filter-header:
+      name: 'requestFilterHeaderAllowlist'

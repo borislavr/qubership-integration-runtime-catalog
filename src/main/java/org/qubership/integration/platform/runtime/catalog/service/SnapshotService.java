@@ -20,24 +20,23 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.time.DurationFormatUtils;
-import org.qubership.integration.platform.catalog.context.RequestIdContext;
-import org.qubership.integration.platform.catalog.exception.SnapshotCreationException;
-import org.qubership.integration.platform.catalog.persistence.TransactionHandler;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.AbstractEntity;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.AbstractLabel;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.actionlog.ActionLog;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.actionlog.EntityType;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.actionlog.LogOperation;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.*;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.element.ChainElement;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.element.ContainerChainElement;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.element.SwimlaneChainElement;
-import org.qubership.integration.platform.catalog.persistence.configs.repository.chain.ChainRepository;
-import org.qubership.integration.platform.catalog.persistence.configs.repository.chain.DependencyRepository;
-import org.qubership.integration.platform.catalog.persistence.configs.repository.chain.ElementRepository;
-import org.qubership.integration.platform.catalog.service.ActionsLogService;
 import org.qubership.integration.platform.runtime.catalog.builder.XmlBuilder;
+import org.qubership.integration.platform.runtime.catalog.context.RequestIdContext;
+import org.qubership.integration.platform.runtime.catalog.exception.exceptions.SnapshotCreationException;
+import org.qubership.integration.platform.runtime.catalog.persistence.TransactionHandler;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.AbstractEntity;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.AbstractLabel;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.actionlog.ActionLog;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.actionlog.EntityType;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.actionlog.LogOperation;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.chain.*;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.chain.element.ChainElement;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.chain.element.ContainerChainElement;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.chain.element.SwimlaneChainElement;
 import org.qubership.integration.platform.runtime.catalog.persistence.configs.repository.SnapshotRepository;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.repository.chain.ChainRepository;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.repository.chain.DependencyRepository;
+import org.qubership.integration.platform.runtime.catalog.persistence.configs.repository.chain.ElementRepository;
 import org.qubership.integration.platform.runtime.catalog.service.helpers.ChainFinderService;
 import org.qubership.integration.platform.runtime.catalog.service.verification.ElementPropertiesVerificationService;
 import org.qubership.integration.platform.runtime.catalog.service.verification.properties.VerificationError;
@@ -92,7 +91,7 @@ public class SnapshotService {
                            ActionsLogService actionLogger,
                            ElementPropertiesVerificationService elementPropertiesVerificationService,
                            MaskedFieldsService maskedFieldsService,
-                           TransactionHandler  transactionHandler) {
+                           TransactionHandler transactionHandler) {
         this.snapshotRepository = snapshotRepository;
         this.elementRepository = elementRepository;
         this.chainRepository = chainRepository;
