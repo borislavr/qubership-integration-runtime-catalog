@@ -190,9 +190,7 @@ public class RuntimeDeploymentService {
             }
         }
 
-        transactionHandler.runInTransaction(() -> {
-            deploymentRepository.deleteObsoleteDeployments(deployed, notDeployed);
-        });
+        transactionHandler.runInTransaction(() -> deploymentRepository.deleteObsoleteDeployments(deployed, notDeployed));
     }
 
     // key = engine_host + deployment_id

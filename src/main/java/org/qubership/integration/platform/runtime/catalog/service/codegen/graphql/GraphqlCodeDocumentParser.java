@@ -306,7 +306,7 @@ public class GraphqlCodeDocumentParser extends CustomDocumentParser {
             case client:
                 // Type annotations
                 graphqlUtils.concatStreams(Type.class, true, null, null, null, interfaceTypes, getObjectTypes(), unionTypes)
-                        .forEach(o -> addTypeAnnotationForClientMode(o));
+                        .forEach(this::addTypeAnnotationForClientMode);
 
                 // Field annotations
                 graphqlUtils.concatStreams(Type.class, true, null, null, null, getObjectTypes(), interfaceTypes)
@@ -315,9 +315,9 @@ public class GraphqlCodeDocumentParser extends CustomDocumentParser {
                 break;
             case server:
                 graphqlUtils.concatStreams(ObjectType.class, true, null, null, null, getObjectTypes(), interfaceTypes)
-                        .forEach(o -> addTypeAnnotationForServerMode(o));
+                        .forEach(this::addTypeAnnotationForServerMode);
                 graphqlUtils.concatStreams(ObjectType.class, true, null, null, null, getObjectTypes(), interfaceTypes)
-                        .flatMap(o -> o.getFields().stream()).forEach(f -> addFieldAnnotationForServerMode(f));
+                        .flatMap(o -> o.getFields().stream()).forEach(this::addFieldAnnotationForServerMode);
                 break;
         }
 
@@ -372,11 +372,11 @@ public class GraphqlCodeDocumentParser extends CustomDocumentParser {
 
         // Add the GraphQLQuery annotation fpr query/mutation/subscription and for objects that are a
         // query/mutation/subscription
-        if (type instanceof ObjectType && ((ObjectType) type).getRequestType() != null) {
+        if (type instanceof ObjectType && type.getRequestType() != null) {
             type.addImport(configuration.getPackageName(), GraphQLQuery.class.getName());
             type.addImport(configuration.getPackageName(), RequestType.class.getName());
             type.addAnnotation("@GraphQLQuery(name = \"" + type.getName() + "\", type = RequestType."
-                    + ((ObjectType) type).getRequestType() + ")");
+                               + type.getRequestType() + ")");
 
         }
 
@@ -560,9 +560,9 @@ public class GraphqlCodeDocumentParser extends CustomDocumentParser {
      */
     void initDataFetchers() {
         if (configuration.getMode().equals(PluginMode.server)) {
-            getObjectTypes().stream().forEach(o -> initDataFetcherForOneObject(o));
-            interfaceTypes.stream().forEach(o -> initDataFetcherForOneObject(o));
-            unionTypes.stream().forEach(o -> initDataFetcherForOneObject(o));
+            getObjectTypes().stream().forEach(this::initDataFetcherForOneObject);
+            interfaceTypes.stream().forEach(this::initDataFetcherForOneObject);
+            unionTypes.stream().forEach(this::initDataFetcherForOneObject);
         }
     }
 
@@ -633,7 +633,7 @@ public class GraphqlCodeDocumentParser extends CustomDocumentParser {
             } // for
 
             // If at least one DataFetcher has been created, we register this DataFetchersDelegate
-            if (dataFetcherDelegate.getDataFetchers().size() > 0) {
+            if (!dataFetcherDelegate.getDataFetchers().isEmpty()) {
                 dataFetchersDelegates.add(dataFetcherDelegate);
             }
         }
@@ -651,11 +651,11 @@ public class GraphqlCodeDocumentParser extends CustomDocumentParser {
             // We fetch only the objects, here. The interfaces are managed just after
             logger.debug("Init batch loader for objects");
             getObjectTypes().stream().filter(o -> (o.getGraphQlType() == GraphQlType.OBJECT && !o.isInputType()))
-                    .forEach(o -> initOneBatchLoader(o));
+                    .forEach(this::initOneBatchLoader);
 
             // Let's go through all interfaces.
             logger.debug("Init batch loader for objects");
-            interfaceTypes.stream().forEach(i -> initOneBatchLoader(i));
+            interfaceTypes.stream().forEach(this::initOneBatchLoader);
         }
     }
 

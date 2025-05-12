@@ -100,7 +100,6 @@ public class ServiceDeserializer {
             ArrayList<JsonNode> specificationGroupNodes = new ArrayList<>();
             Map<String, List<JsonNode>> specificationNodesMap = new HashMap<>();
             Map<String, List<File>> sourceFiles = new HashMap<>();
-            File ddlScriptFile = null;
             for (File file : listOfFile) {
                 String fileName = file.getName();
                 String parentDirName = Optional.ofNullable(file.getParentFile())

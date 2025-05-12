@@ -55,12 +55,10 @@ public class EnvironmentPropertiesHelper {
         }
         Map<String, Object> environmentProperties = environment.getProperties();
         if (environmentProperties != null) {
-            Map<String, Object> mergedProperties =
-                    ElementUtils.mergeProperties(
-                                    ElementUtils.extractServiceCallProperties(element.getProperties()), environmentProperties)
-                            .entrySet().stream()
-                            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-            return mergedProperties;
+            return ElementUtils.mergeProperties(
+                            ElementUtils.extractServiceCallProperties(element.getProperties()), environmentProperties)
+                    .entrySet().stream()
+                    .collect(Collectors.toMap(Entry::getKey, Entry::getValue));
         }
         return null;
     }
@@ -93,13 +91,11 @@ public class EnvironmentPropertiesHelper {
                 putMassParams(element, environment);
             }
             Map<String, Object> filteredEnvProperties = environment.getProperties();
-            Map<String, Object> mergedProperties =
-                ElementUtils.mergeProperties(
-                    ElementUtils.extractOperationAsyncProperties(element.getProperties()), filteredEnvProperties)
-                .entrySet().stream()
-                .filter(filterAsyncProperties())
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-            return mergedProperties;
+            return ElementUtils.mergeProperties(
+                ElementUtils.extractOperationAsyncProperties(element.getProperties()), filteredEnvProperties)
+            .entrySet().stream()
+            .filter(filterAsyncProperties())
+            .collect(Collectors.toMap(Entry::getKey, Entry::getValue));
         }
         return null;
     }

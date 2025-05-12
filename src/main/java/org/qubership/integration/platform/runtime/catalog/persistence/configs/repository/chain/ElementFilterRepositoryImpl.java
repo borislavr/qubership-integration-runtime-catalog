@@ -60,7 +60,7 @@ public class ElementFilterRepositoryImpl implements ElementFilterRepository {
         if (isImplementedOnly) {
             resultList = filterImplementedServices(resultList);
         }
-        filterElementProperties(resultList, isImplementedOnly);
+        filterElementProperties(resultList);
         return resultList;
     }
 
@@ -74,7 +74,7 @@ public class ElementFilterRepositoryImpl implements ElementFilterRepository {
         return filteredChainList;
     }
 
-    private void filterElementProperties(List<ChainElement> elementList, boolean isImplementedOnly) {
+    private void filterElementProperties(List<ChainElement> elementList) {
         elementList.forEach(chainElement -> {
             Map<String, Object> filteredProperties = chainElement
                     .getProperties()

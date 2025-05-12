@@ -55,8 +55,4 @@ public class GraphQLCodeGenerator implements SystemModelCodeGenerator {
         GraphqlRuntimePojoGenerator generator = graphqlPojoGeneratorFactory.apply(packageName);
         return generator.generateCode(model);
     }
-
-    private String escapePackageName(String value) {
-        return value.replaceAll("\\W", "_").toLowerCase();
-    }
 }

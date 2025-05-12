@@ -73,8 +73,7 @@ public class UnsavedChangesAspectConfiguration {
                 chainId = ((Chain) returningValue).getId();
             }
 
-            if (returningValue instanceof Dependency) {
-                Dependency dependency = (Dependency) returningValue;
+            if (returningValue instanceof Dependency dependency) {
                 chainId = getChainIdFromElement(dependency.getElementFrom() != null ? dependency.getElementFrom()
                         : dependency.getElementTo());
             }
@@ -83,8 +82,7 @@ public class UnsavedChangesAspectConfiguration {
                 chainId = getChainIdFromElement((ChainElement) returningValue);
             }
 
-            if (returningValue instanceof ContainerChainElement) {
-                ContainerChainElement containerChainElement = (ContainerChainElement) returningValue;
+            if (returningValue instanceof ContainerChainElement containerChainElement) {
                 if (containerChainElement.getChain() != null) {
                     chainId = containerChainElement.getChain().getId();
                 }

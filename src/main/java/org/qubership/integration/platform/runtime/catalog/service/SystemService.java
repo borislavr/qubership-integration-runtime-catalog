@@ -110,6 +110,7 @@ public class SystemService extends SystemBaseService {
         return systemRepository.findAll(specification);
     }
 
+    @Transactional
     public Optional<IntegrationSystem> deleteByIdAndReturnService(String systemId) {
         IntegrationSystem system = getByIdOrNull(systemId);
         if (system != null) {

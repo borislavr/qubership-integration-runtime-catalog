@@ -219,7 +219,7 @@ public class ExportService {
             }
 
             if (SERVICE_CALL.equals(element.getType())) {
-                String propString = null;
+                String propString;
                 List<Map<String, Object>> afterPropertyList = (List<Map<String, Object>>) element.getProperties().get(AFTER);
                 if (!CollectionUtils.isEmpty(afterPropertyList)) {
                     for (Map<String, Object> afterProperty : afterPropertyList) {

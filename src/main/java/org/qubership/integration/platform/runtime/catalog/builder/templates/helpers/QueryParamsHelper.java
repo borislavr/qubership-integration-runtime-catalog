@@ -79,7 +79,7 @@ public class QueryParamsHelper extends BaseHelper implements Helper<ChainElement
     }
 
     private void setPropertyValue(StringBuilder str, ElementProperty property, String value) {
-        if (str.length() == 0) {
+        if (str.isEmpty()) {
             str.append("?");
         } else {
             str.append("&");

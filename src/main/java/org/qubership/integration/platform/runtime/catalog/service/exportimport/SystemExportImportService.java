@@ -285,7 +285,7 @@ public class SystemExportImportService {
     }
 
     private void setCompareSystemResult(IntegrationSystem system, ImportSystemResult resultSystemCompareDTO) {
-        IntegrationSystem oldSystem = systemService.getByIdOrNull(system.getId());;
+        IntegrationSystem oldSystem = systemService.getByIdOrNull(system.getId());
         if (oldSystem == null) {
             resultSystemCompareDTO.setName(system.getName());
             resultSystemCompareDTO.setRequiredAction(SystemCompareAction.CREATE);
@@ -559,7 +559,7 @@ public class SystemExportImportService {
             newSystem.setLabels(oldSystem.getLabels());
             return;
         }
-        Set<String> existingLabelNames = oldSystem.getLabels().stream().filter(l -> !l.isTechnical()).map(l -> l.getName()).collect(Collectors.toSet());
+        Set<String> existingLabelNames = oldSystem.getLabels().stream().filter(l -> !l.isTechnical()).map(AbstractLabel::getName).collect(Collectors.toSet());
         newSystem.getLabels().removeIf(l -> !l.isTechnical() && existingLabelNames.contains(l.getName()));
         newSystem.addLabels(oldSystem.getLabels().stream().filter(l -> !l.isTechnical()).collect(Collectors.toSet()));
     }
@@ -692,7 +692,7 @@ public class SystemExportImportService {
         if (CollectionUtils.isEmpty(specification.getLabels())) {
             specification.setLabels(new HashSet<>());
         }
-        Set<String> existingLabelNames = specification.getLabels().stream().filter(l -> !l.isTechnical()).map(l -> l.getName()).collect(Collectors.toSet());
+        Set<String> existingLabelNames = specification.getLabels().stream().filter(l -> !l.isTechnical()).map(AbstractLabel::getName).collect(Collectors.toSet());
         newLabels = new HashSet<>(newLabels);
         newLabels.removeIf(l -> l.isTechnical() || existingLabelNames.contains(l.getName()));
         specification.addLabels(newLabels);
@@ -705,7 +705,7 @@ public class SystemExportImportService {
         if (CollectionUtils.isEmpty(specGroup.getLabels())) {
             specGroup.setLabels(new HashSet<>());
         }
-        Set<String> existingLabelNames = specGroup.getLabels().stream().filter(l -> !l.isTechnical()).map(l -> l.getName()).collect(Collectors.toSet());
+        Set<String> existingLabelNames = specGroup.getLabels().stream().filter(l -> !l.isTechnical()).map(AbstractLabel::getName).collect(Collectors.toSet());
         newLabels = new HashSet<>(newLabels);
         newLabels.removeIf(l -> l.isTechnical() || existingLabelNames.contains(l.getName()));
         specGroup.addLabels(newLabels);

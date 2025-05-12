@@ -261,9 +261,7 @@ public class SpecificationGroupService extends AbstractSpecificationGroupService
                 .sorted((sg1, sg2) -> sg2.getName().compareTo(sg1.getName()))
                 .collect(Collectors.toList());
 
-        specificationGroupsSorted.forEach(specificationGroup -> {
-            specificationGroup.getSystemModels().sort(Comparator.comparing(SystemModel::getVersion));
-        });
+        specificationGroupsSorted.forEach(specificationGroup -> specificationGroup.getSystemModels().sort(Comparator.comparing(SystemModel::getVersion)));
         return specificationGroupsSorted;
     }
 

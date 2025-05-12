@@ -234,9 +234,7 @@ public class AtlasMapInterpreter implements MappingInterpreter {
             dataFormat = MetadataUtils.getDataFormat(body.getMetadata());
         }
         switch (dataFormat) {
-            case UNSPECIFIED, JSON -> {
-                dataSource = new JsonDataSource();
-            }
+            case UNSPECIFIED, JSON -> dataSource = new JsonDataSource();
             case XML -> {
                 XmlDataSource xmlDataSource = new XmlDataSource();
                 XmlTemplateBuilder xmlTemplateBuilder = new XmlTemplateBuilder();
@@ -249,9 +247,7 @@ public class AtlasMapInterpreter implements MappingInterpreter {
                 dataSource = xmlDataSource;
 
             }
-            default -> {
-                throw new SnapshotCreationException(INCORRECT_DATA_SOURCE_FORMAT_ERROR_MESSAGE.concat(dataSourceType.value()));
-            }
+            default -> throw new SnapshotCreationException(INCORRECT_DATA_SOURCE_FORMAT_ERROR_MESSAGE.concat(dataSourceType.value()));
         }
 
         dataSource.setId(dataSourceName);
@@ -576,8 +572,7 @@ public class AtlasMapInterpreter implements MappingInterpreter {
                 bodyTypeResolveResult.definitionMap()).orElse(bodyTypeResolveResult.type())
                 : bodyTypeResolveResult.type();
         boolean rootIsArray = rootType.getKind().equals(TypeKind.ARRAY);
-        Field field = buildAttributeField(attributeReference, dataFormat, documentId, elementMap, rootIsArray);
-        return field;
+        return buildAttributeField(attributeReference, dataFormat, documentId, elementMap, rootIsArray);
     }
 
     private Field buildAttributeField(

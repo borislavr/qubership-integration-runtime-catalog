@@ -134,9 +134,8 @@ public class EnvironmentController {
         for (EnvironmentLabel label : labels) {
             List<Environment> labelEnvs = environmentService.getEnvironmentsByLabel(systemId, label);
             if (!labelEnvs.isEmpty()
-                    && (excludeEnvironmentId == null
-                    || labelEnvs.size() != 1
-                    || !labelEnvs.get(0).getId().equals(excludeEnvironmentId))) {
+                    && (labelEnvs.size() != 1
+                        || !labelEnvs.get(0).getId().equals(excludeEnvironmentId))) {
                 throw new BadRequestException(UNIQUE_LABEL_WITHIN_SINGLE_SYSTEM_MESSAGE + label);
             }
         }

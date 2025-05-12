@@ -147,10 +147,6 @@ public class ExportImportUtils {
         return Files.readString(foundFiles[0].toPath());
     }
 
-    public static File extractDirectoriesFromZip(File file, String importFolderName) throws IOException {
-        return extractDirectoriesFromZip(FileUtils.openInputStream(file), importFolderName);
-    }
-
     public static File extractDirectoriesFromZip(InputStream is, String importFolderName) throws IOException {
         ZipInputStream inputStream = new ZipInputStream(is);
         File importFolder = new File(IMPORT_TMP_DIR_PATH + importFolderName);
@@ -366,10 +362,6 @@ public class ExportImportUtils {
             return node.asText();
         }
         return null;
-    }
-
-    public static List<File> extractSystemsFromZip(File inputArchFile, String importFolderName) throws IOException {
-        return extractSystemsFromZip(FileUtils.openInputStream(inputArchFile), importFolderName);
     }
 
     public static List<File> extractSystemsFromZip(InputStream is, String importFolderName) throws IOException {

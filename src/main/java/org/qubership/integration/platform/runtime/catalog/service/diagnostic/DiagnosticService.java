@@ -188,20 +188,18 @@ public class DiagnosticService {
             boolean filterApplied = false;
             Set<String> filteredValidations = new HashSet<>();
             for (FilterRequestDTO filter : filters) {
-                switch (filter.getFeature()) {
-                    case VALIDATION_SEVERITY -> {
-                        filterApplied = true;
-                        for (Map.Entry<String, Pair<AbstractValidation, ValidationAlertsSet>> entry : result.entrySet()) {
-                            String k = entry.getKey();
-                            Pair<AbstractValidation, ValidationAlertsSet> pair = entry.getValue();
-                            String value = filter.getValue();
-                            Set<ValidationSeverity> values = Arrays.stream(value.split(","))
-                                    .map(ValidationSeverity::valueOf).collect(Collectors.toSet());
-                            if ((filter.getCondition() == FilterCondition.IN && values.contains(pair.getLeft().getSeverity()))
-                                    || (filter.getCondition() == FilterCondition.NOT_IN && !values.contains(pair.getLeft().getSeverity()))
-                            ) {
-                                filteredValidations.add(k);
-                            }
+                if (Objects.requireNonNull(filter.getFeature()) == FilterFeature.VALIDATION_SEVERITY) {
+                    filterApplied = true;
+                    for (Map.Entry<String, Pair<AbstractValidation, ValidationAlertsSet>> entry : result.entrySet()) {
+                        String k = entry.getKey();
+                        Pair<AbstractValidation, ValidationAlertsSet> pair = entry.getValue();
+                        String value = filter.getValue();
+                        Set<ValidationSeverity> values = Arrays.stream(value.split(","))
+                                .map(ValidationSeverity::valueOf).collect(Collectors.toSet());
+                        if ((filter.getCondition() == FilterCondition.IN && values.contains(pair.getLeft().getSeverity()))
+                            || (filter.getCondition() == FilterCondition.NOT_IN && !values.contains(pair.getLeft().getSeverity()))
+                        ) {
+                            filteredValidations.add(k);
                         }
                     }
                 }

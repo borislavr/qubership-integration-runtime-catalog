@@ -685,7 +685,7 @@ public class ImportService {
         }
     }
 
-    protected File getChainYAMLFile(File chainDir) throws IOException {
+    protected File getChainYAMLFile(File chainDir) {
         if (chainDir.listFiles() != null) {
             List<File> dirFiles = Arrays.asList(Objects.requireNonNull(chainDir.listFiles()));
             return dirFiles.stream().filter(
