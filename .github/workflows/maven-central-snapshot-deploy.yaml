@@ -27,7 +27,7 @@ permissions:
 
 jobs:
   mvn-snapshot-deploy:
-    uses: netcracker/qubership-workflow-hub/actions/maven-snapshot-deploy@main
+    uses: netcracker/qubership-workflow-hub/actions/maven-snapshot-deploy/action.yaml@main
     with:
       java-version: "21"
       additional-mvn-args: ""
