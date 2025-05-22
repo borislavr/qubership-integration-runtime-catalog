@@ -16,7 +16,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <revision>0.1.3-SNAPSHOT</revision>
+        <revision>0.1.4-SNAPSHOT</revision>
+        <catalog-library.revision>0.1.3</catalog-library.revision>
 
         <!-- BOMs -->
 
@@ -372,7 +373,6 @@
     </distributionManagement>
 
     <dependencies>
-
         <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-database-postgresql</artifactId>
