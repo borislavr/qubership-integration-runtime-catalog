@@ -26,6 +26,7 @@ import org.qubership.integration.platform.runtime.catalog.persistence.configs.en
 import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.chain.Folder;
 import org.qubership.integration.platform.runtime.catalog.persistence.configs.repository.chain.ChainRepository;
 import org.qubership.integration.platform.runtime.catalog.persistence.configs.repository.chain.FolderRepository;
+import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.chain.ChainSearchRequestDTO;
 import org.qubership.integration.platform.runtime.catalog.rest.v1.dto.folder.FolderContentFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.auditing.AuditingHandler;
@@ -134,10 +135,14 @@ public class FolderService {
         return newFolder;
     }
 
-    public List<Folder> getFoldersHierarchically(List<Chain> relatedChains) {
+    public List<Folder> searchFolders(ChainSearchRequestDTO searchRequest) {
+        return folderRepository.findByNameContaining(searchRequest.getSearchCondition());
+    }
+
+    public List<Folder> getFoldersHierarchically(List<? extends FoldableEntity> relatedChains) {
         List<String> foldersIds = relatedChains
                 .stream()
-                .map(Chain::getParentFolder)
+                .map(FoldableEntity::getParentFolder)
                 .filter(Objects::nonNull)
                 .map(Folder::getId)
                 .collect(Collectors.toList());

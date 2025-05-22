@@ -32,7 +32,6 @@ import java.util.Map;
 import java.util.Optional;
 
 import static org.qubership.integration.platform.runtime.catalog.model.constant.CamelNames.OPERATION_PATH_TOPIC;
-import static org.qubership.integration.platform.runtime.catalog.model.constant.CamelOptions.GROUP_ID;
 import static org.qubership.integration.platform.runtime.catalog.model.constant.CamelOptions.SASL_MECHANISM;
 
 @Component

@@ -232,7 +232,8 @@ public class ChainService extends ChainBaseService {
                 FilterFeature.EXCHANGE,
                 FilterFeature.TOPIC,
                 FilterFeature.QUEUE,
-                FilterFeature.LABELS
+                FilterFeature.LABELS,
+                FilterFeature.CLASSIFIER
         ).map(feature -> FilterRequestDTO
                 .builder()
                 .feature(feature)
@@ -502,6 +503,10 @@ public class ChainService extends ChainBaseService {
     public boolean containsUnsupportedElements(Chain chain) {
         return chain.getElements().stream()
                 .anyMatch(elementService::isElementUnsupported);
+    }
+
+    public List<Chain> findAllChainsInFolders(List<String> folderIds) {
+        return chainRepository.findAllChainsInFolders(folderIds);
     }
 
     public long getChainsCount() {

@@ -17,8 +17,6 @@
 package org.qubership.integration.platform.runtime.catalog.service.deployment.properties.builders;
 
 import lombok.extern.slf4j.Slf4j;
-import org.qubership.integration.platform.runtime.catalog.consul.ConfigurationPropertiesConstants;
-import org.qubership.integration.platform.runtime.catalog.model.constant.CamelOptions;
 import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.chain.element.ChainElement;
 import org.qubership.integration.platform.runtime.catalog.service.ElementService;
 import org.qubership.integration.platform.runtime.catalog.service.deployment.properties.ElementPropertiesBuilder;

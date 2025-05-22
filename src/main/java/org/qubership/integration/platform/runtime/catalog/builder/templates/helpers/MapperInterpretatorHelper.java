@@ -20,8 +20,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.jknack.handlebars.Options;
 import com.github.jknack.handlebars.helper.HelperFunction;
-import org.qubership.integration.platform.catalog.exception.SnapshotCreationException;
-import org.qubership.integration.platform.catalog.persistence.configs.entity.chain.element.ChainElement;
 import org.qubership.integration.platform.runtime.catalog.builder.templates.TemplatesHelper;
 import org.qubership.integration.platform.runtime.catalog.exception.exceptions.SnapshotCreationException;
 import org.qubership.integration.platform.runtime.catalog.mapper.MappingDescriptionValidator;

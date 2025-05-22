@@ -18,6 +18,7 @@ package org.qubership.integration.platform.runtime.catalog.service.deployment.pr
 
 import lombok.extern.slf4j.Slf4j;
 import org.qubership.integration.platform.runtime.catalog.consul.ConfigurationPropertiesConstants;
+import org.qubership.integration.platform.runtime.catalog.exception.exceptions.SnapshotCreationException;
 import org.qubership.integration.platform.runtime.catalog.model.constant.CamelNames;
 import org.qubership.integration.platform.runtime.catalog.model.constant.CamelOptions;
 import org.qubership.integration.platform.runtime.catalog.persistence.configs.entity.chain.element.ChainElement;
