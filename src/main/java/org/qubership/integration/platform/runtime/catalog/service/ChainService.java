@@ -47,6 +47,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.data.auditing.AuditingHandler;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.sql.Timestamp;
@@ -60,6 +61,7 @@ import static org.qubership.integration.platform.runtime.catalog.service.exporti
 
 @Slf4j
 @Service
+@Transactional
 public class ChainService extends ChainBaseService {
     private static final String CHAIN_TRIGGER = "chain-trigger-2";
 
