@@ -29,7 +29,7 @@ permissions:
   packages: write # Required for GitHub packages deployment. For maven central deployment it can be ommited
   contents: read
 jobs:
-  deploy:
+  mvn:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
