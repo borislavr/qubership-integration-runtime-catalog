@@ -19,7 +19,12 @@ on:
       - "docs/**"
       - "README.md"
       - ".github/**"
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      maven-command:
+        type: string
+        required: false
+        default: 'package'
 permissions:
   packages: write # Required for GitHub packages deployment. For maven central deployment it can be ommited
   contents: read
@@ -35,7 +40,7 @@ jobs:
         with:
           java-version: '21' # Specify the Java version to use for the build
           target-store: 'github' # or 'central' for Maven Central repository
-          maven-command: "package"
+          maven-command: ${{ inputs.maven-command || "package" }}
           additional-mvn-args: '-Dgpg.skip=true' # Additional arguments to pass to mvn command
           maven-username: ${{ github.actor }} # For maven central repository it would be ${{ secrets.MAVEN_USER }}
           maven-token: ${{ github.token }} # For maven central repository it would be ${{ secrets.MAVEN_PASSWORD}}
